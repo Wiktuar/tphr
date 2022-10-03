@@ -1,0 +1,230 @@
+/* основные стили */
+
+*{
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #d7e9e2;
+    font: 18px Arial, Helvetica, sans-serif;;
+    display: block;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 1200px;
+    background-color: #ffe0b3;
+}
+
+h3 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    padding: 10px;
+}
+
+/* стили формы */
+.flex-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.name-wrapper {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+form {
+    margin: 0 auto;
+    min-height: 500px;
+    font-style: italic;
+}
+
+.fName label {
+    display: block;
+    padding-left: 30px;
+}
+
+.fName input {
+    min-width: 400px;
+    min-height: 40px;
+    margin-top: 10px;
+    padding-left: 15px;
+    display: block;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
+    font-size: 20px;
+    font-family: Tahoma;
+}
+
+input:focus {
+    box-shadow: none;
+    border: 5px solid #2f3640;
+}
+
+.fName {
+    min-width: 500px;
+    min-height: 60px;
+    margin-top: 20px;
+    margin-left: 15px;
+    position: relative;
+}
+
+/*Стили для тогоб чтобы показывать пароль*/
+.showPassword {
+    position: absolute;
+    top: 34px;
+    right: 108px;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-image: url("../img/eye.svg");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.showPassword.view {
+    background-image: url("../img/noEye.svg");
+}
+
+/* Выбор аватара */
+
+.fileInput {
+    margin-top: 12px;
+}
+
+.fileInput p {
+    padding-bottom: 10px;
+}
+
+.fileInput input {
+    max-width: 1px;
+    max-height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+    display: inline-block;
+}
+
+.fileInput label {
+    min-width: 380px;
+    height: 45px;
+    padding-top: 12px;
+    padding-left: 20px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #2f3640;
+    color: #f5f6fa;
+    border-radius: 8px;
+}
+
+/*Отображение аватара*/
+.imgPreview {
+    margin-top: 30px;
+}
+
+.imageAva {
+    display: block;
+    width: 350px;
+    height: 350px;
+    margin: 0 25px;
+}
+
+
+/* добавление слциальных сетей */
+/* https://qna.habr.com/q/585750  +  и  ~  в css    */
+
+.social-box {
+    list-style-type: none;
+    /*отступы margin установливаются через js*/
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .8s ease-out;
+}
+
+
+.social-block {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: .5em;
+}
+
+.social-block input {
+    display: inline-block;
+    width: 500px;
+    height: 40px;
+    margin-right: 100px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
+    font-size: 20px;
+    font-family: Tahoma,;
+}
+
+.social-block input:focus {
+    box-shadow: none;
+    border: 5px solid #2f3640;
+}
+
+.social-block label {
+    padding-top: 10px;
+    display: inline-block;
+    margin-left: 100px;
+}
+
+@media (max-width: 1000px) {
+    .social-block input {
+        margin-right: 0;
+    }
+
+    .social-block label {
+        padding-left: 20px;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 800px) {
+    .social-block {
+        justify-content: center;
+    }
+
+    .social-block input {
+        display: inline-block;
+        width: 500px;
+        height: 40px;
+        margin-right: 0px;
+    }
+
+    .social-block label {
+        /*padding-top: 10px;*/
+        display: block;
+        margin-left: 0;
+        padding-top: 0;
+        padding-bottom: 10px;
+    }
+
+}
+
+/* Buttons */
+
+.btn, .socialNetsBtn, .regBtn {
+    width: 300px;
+    height: 45px;
+    display: block;
+    font-size: 20px;
+    padding: 8px 24px;
+    border-radius: 8px;
+    margin: 16px auto 0;
+    border: 0;
+    background: #e74c3c;
+    color: #f5f6fa;
+    cursor: pointer;
+}
