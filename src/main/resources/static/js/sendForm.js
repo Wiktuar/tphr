@@ -24,26 +24,25 @@ function _checkFormFields(){
     const checkPersonPattern = /[^А-Яа-яЁё]/;
     const checkEmailPattern = /[^0-9A-Za-z@.]/;
     const checkEmptyPattern = /^\s*$/;
-    const checkSpacePattern = /[^\s]/;
+    // const checkSpacePattern = /[^\s]/;
 
     if(checkEmptyPattern.test(firstName.value)){
-        mistakeMethod('Полк "Имя" пустое');
+        mistakeMethod('Поле "Имя" пустое');
         return true;
     }
 
     if(checkEmptyPattern.test(lastName.value)){
-        mistakeMethod('Полк "Фамилия" пустое');
+        mistakeMethod('Поле "Фамилия" пустое');
         return true;
-
     }
 
     if(checkEmptyPattern.test(email.value)){
-        mistakeMethod('Полк "Почта" пустое');
+        mistakeMethod('Поле "Почта" пустое');
         return true;
     }
 
     if(checkEmptyPattern.test(password.value)){
-        mistakeMethod('Полк "Пароль" пустое');
+        mistakeMethod('Поле "Пароль" пустое');
         return true;
     }
 
@@ -68,7 +67,7 @@ function _checkFormFields(){
     }
 
     if(checkEmailPattern.test(email.value.trim())){
-        mistakeMethod('В поле "Почта" присутствуют латинские символы или есть пробел');
+        mistakeMethod('В поле "Почта" присутствуют недопустимые символы или есть пробел');
         return true;
     }
 

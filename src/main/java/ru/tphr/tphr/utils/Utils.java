@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import ru.tphr.tphr.entities.security.Role;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -35,5 +36,13 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+//  метод, который возвращает URL сайта
+    public static String getSiteURL(HttpServletRequest request) {
+//  в нашем случае siteUrl = http://localhost:8070/
+//  в нашем случае request.getServletPath() = "/"; (для общего развития)
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
     }
 }

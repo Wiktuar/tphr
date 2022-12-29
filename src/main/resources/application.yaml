@@ -5,7 +5,7 @@ server:
 
 spring:
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
@@ -15,5 +15,5 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/tphr
     hikari:
-      username: root
+      username: user
       password: root

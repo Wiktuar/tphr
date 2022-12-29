@@ -47,7 +47,6 @@ const attentionWindow = $.modal({
         {
             text: "Хорошо!",
             handler() {
-                console.log("старый ъендлер");
                 attentionWindow.close();
             }
         }

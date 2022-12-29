@@ -1,12 +1,14 @@
 package ru.tphr.tphr.entities.security;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import ru.tphr.tphr.entities.Poem;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "authors")
 public class Author {
@@ -49,24 +51,29 @@ public class Author {
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
+
     //  social nets
     private String vk;
     private String tg;
     private String yt;
 
+    public Author() {
+
+    }
+
     public boolean isActive() {
         return getStatus().equals(Status.ACTIVE);
     }
 
-    //добавление и удаление роли
-    public void addRole(Role role){
-        this.roles.add(role);
-        role.getAuthors().add(this);
-    }
-
-    public void removeRole(Role role){
-        this.roles.remove(role);
-        role.getAuthors().remove(this);
-    }
+//    //добавление и удаление роли
+//    public void addRole(Role role){
+//        this.roles.add(role);
+//        role.getAuthors().add(this);
+//    }
+//
+//    public void removeRole(Role role){
+//        this.roles.remove(role);
+//        role.getAuthors().remove(this);
+//    }
 
 }

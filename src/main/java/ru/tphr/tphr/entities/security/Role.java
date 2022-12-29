@@ -1,14 +1,13 @@
 package ru.tphr.tphr.entities.security;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "roles")
 public class Role {
     @Id
@@ -16,8 +15,10 @@ public class Role {
     private long id;
     @Column(name = "name")
     private String name;
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<Author> authors;
+
+    public Role() { }
 
     public Role(String name) {
         this.name = name;

@@ -24,15 +24,15 @@ public class SendAnswerController {
     public String getPhotoPage(@RequestParam("myTextName") String myTextNam,
                                 @RequestParam("myFile") MultipartFile file,
                                @RequestParam("img") String img){
-        System.out.println(file.getOriginalFilename());
-        System.out.println(myTextNam);
-        System.out.println(img);
+        System.out.println("Оригинальное имя файла " + file.getOriginalFilename());
+        System.out.println("Текстовое поле" + myTextNam);
+        System.out.println("Картинка в битах" + img);
         String data = img;
         String base64Image = data.split(",")[1];
         byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
         try {
             BufferedImage bImg = ImageIO.read(new ByteArrayInputStream(imageBytes));
-            File outputfile = new File("C:\\Users\\wiktu\\Desktop\\tempFiles\\image.jpg");
+            File outputfile = new File("C:\\tempFiles\\image.jpeg");
             ImageIO.write(bImg, "jpg", outputfile);
         } catch (IOException e) {
             e.printStackTrace();

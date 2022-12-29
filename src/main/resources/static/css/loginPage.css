@@ -1,0 +1,157 @@
+/* основные стили */
+
+*{
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #d7e9e2;
+    font: 18px Arial, Helvetica, sans-serif;
+}
+
+.container {
+    margin: 0 auto;
+    padding-top: 50px;
+    max-width: 1200px;
+    min-height: 800px;
+    background-color: #ffe0b3;
+}
+
+/* стили формы логирования */
+
+h2 {
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+form {
+    margin: 0 auto;
+    max-width: 600px;
+    min-height: max-content;
+    font-style: italic;
+}
+
+.fName {
+    margin: 0 auto;
+    margin-bottom: 20px;
+    max-width: 400px;
+    position: relative;
+}
+
+.fName label {
+    display: block;
+    padding-left: 30px;
+}
+
+.fName input {
+    display: block;
+    margin-top: 10px;
+    padding-left: 15px;
+    width: 400px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
+    font-size: 20px;
+    font-family: Tahoma;
+}
+
+input:focus {
+    border: 5px solid #2f3640;
+    box-shadow: none;
+}
+
+button, a {
+    display: block;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding: 8px 24px;
+    width: 300px;
+    height: 45px;
+    background: #e74c3c;
+    color: #f5f6fa;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* основные стили ссылки выше*/
+a {
+    text-align: center;
+    text-decoration: none;
+    font-style: normal;
+}
+
+/*стили появляющегося предупреждения о неверных данных*/
+.credentialsWarning {
+    display: none;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    padding: 10px 5px;
+    max-width: 500px;
+    background: red;
+    color: #f5f6fa;
+    text-align: center;
+    font-size: 20px;
+}
+
+/* блок напоминания пароля */
+.remindEmail {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.remindEmail.unVisible {
+    display: none;
+}
+
+/* у формы напоминания пароля переопрееляем стили */
+.remindForm {
+    padding: 10px;
+    max-width: 1000px;
+    border: 3px solid #e74c3c;
+    border-radius: 8px;
+    background-color: #d7e9e2;
+}
+
+.remindForm label {
+    font-size: 20px;
+}
+
+.remindEmail input {
+    display: inline-block;
+    width: 350px;
+    height: 40px; 
+    font-size: 20px;
+    font-family: Tahoma;
+}
+
+/*Стили для тогоб чтобы показывать пароль*/
+.showPassword {
+    position: absolute;
+    top: 34px;
+    right: 10px;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-image: url("../img/eye.svg");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.showPassword.view {
+    background-image: url("../img/noEye.svg");
+}
+
+/*  у кнопки переопределяю стили, которые были заложены выше для тега button */
+.remindBtn {
+    display: inline-block;
+    margin-top: 15px;
+    margin-left: 15px;
+    width: 250px;    
+}

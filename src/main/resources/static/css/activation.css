@@ -1,0 +1,64 @@
+/* основные стили */
+
+*{
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #d7e9e2;
+    font: 18px Arial, Helvetica, sans-serif;;
+    display: block;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    padding-top: 70px;
+    margin: 0 auto;;
+    max-width: 1200px;
+    min-height: 600px;
+    background-color: #ffe0b3;
+}
+
+h3 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    padding: 10px;
+}
+
+a {
+    display: inline-block;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding: 8px 24px;
+    width: 300px;
+    height: 45px;
+    background: #e74c3c;
+    color: #f5f6fa;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-style: normal;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/*стиль блока со ссылками*/
+.refences {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    width: 700px;
+}
+
+/*ссылка на страницу техничесой поддерки*/
+.support {
+    display: inline;
+    padding: unset;
+    background: none;
+    color: grey;
+    text-decoration: none;
+    font-style: italic;
+    font-size: 26px;
+}

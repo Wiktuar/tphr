@@ -23,7 +23,7 @@
         let canvas = document.getElementById("canvas");
         let ctx = canvas.getContext("2d");
 
-        document.getElementById('imgFile')
+        document.getElementById('imgFile').
         addEventListener('change', e => {
             let files = e.target.files;
             let fr = new FileReader();
@@ -55,7 +55,7 @@
         }
 
 
-        const myForm = document.getElementById("myorm");
+        const myForm = document.getElementById("myform");
         const inpFile = document.getElementById("inpFile");
 
         myForm.addEventListener("submit", e => {

@@ -144,8 +144,8 @@ $.modal = function (options){
         setHandLer(){
             let buttons = Array.from(document.querySelectorAll(".btn"));
             buttons[1].onclick = function(){
-                document.location = "/cabinet";
                 attentionWindow.close();
+                document.location = "/cabinet";
             }
         }
     });

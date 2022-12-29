@@ -5,9 +5,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../static/css/reset.css">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/modal.css">
+    <link rel="stylesheet" href="../../static/css/reset.css">
+    <link rel="stylesheet" href="../../static/css/style.css">
+    <link rel="stylesheet" href="../../static/css/modal.css">
     <title>Document</title>
 </head>
 <body>
@@ -51,7 +51,7 @@
                         <input type="file"  id="file" name="file" accept="image/*">
                     </div>  <!-- end of .fileInput -->
                     <div class="imgPreview">
-                        <img src="../static/img/defaultAva.png" class="imageAva" alt="Ваша аватарка">
+                        <img src="../../static/img/defaultAva.png" class="imageAva" alt="Ваша аватарка">
                     </div> <#-- end of .imgPreview -->
                 </div>  <#--end of .image-wrapper -->
             </div> <#--end of .flex-wrapper -->
@@ -81,14 +81,14 @@
 </div> <#--end of .container -->
 
 <#-- Скрипты, относящиеся к модальному окну -->
-<script src="../static/js/modal/base.js"></script>
-<script src="../static/js/modal/plugins/modal.js"></script>
-<script src="../static/js/modal/index.js"></script>
+<script src="../../static/js/modal/base.js"></script>
+<script src="../../static/js/modal/plugins/modal.js"></script>
+<script src="../../static/js/modal/index.js"></script>
 <#--Скрипты добавления аватара и социальных сетей-->
-<script src="../static/js/imagePreview.js"></script>
-<script src="../static/js/socialBox.js"></script>
+<script src="../../static/js/imagePreview.js"></script>
+<script src="../../static/js/socialBox.js"></script>
 <#--Скрипты отправки формы-->
-<script src="../static/js/registerControl.js"></script>
-<script src="../static/js/sendForm.js"></script>
+<script src="../../static/js/registerControl.js"></script>
+<script src="../../static/js/sendForm.js"></script>
 </body>
 </html>

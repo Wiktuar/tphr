@@ -4,7 +4,6 @@ let $btnShowPassword = document.querySelectorAll(".showPassword");
 $btnShowPassword.forEach((btn) => {
     btn.addEventListener("click", () => {
         let target = btn.getAttribute("data-target");
-        console.log(target);
         let index;
         (target === "password") ? index = 0 : index = 1;
 

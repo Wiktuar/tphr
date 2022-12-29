@@ -147,7 +147,7 @@ input:focus {
     /*отступы margin установливаются через js*/
     max-height: 0;
     overflow: hidden;
-    transition: max-height .8s ease-out;
+    transition: max-height .2s ease-out;
 }
 
 
