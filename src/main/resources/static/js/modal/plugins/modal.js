@@ -19,7 +19,7 @@ function _createModalFooter(buttons= {}){
     wrap.classList.add("vmodal-footer");
 
     //проверка для того, чтобы не добавлять label в тех модальных окнах, где это не нужно
-    if(!(buttons[0].text === "Хорошо!")){
+    if(!(buttons[0].text === "Хорошо!" || buttons[0].text === "Отмена")){
         const label = document.createElement('label');
         label.setAttribute("for", "file");
         label.textContent = 'Другое фото';
@@ -29,7 +29,13 @@ function _createModalFooter(buttons= {}){
     buttons.forEach(btn => {
         const $btn = document.createElement('button');
         $btn.textContent = btn.text;
-        $btn.classList.add('btn');
+
+        if(btn.text === "Отмена"){
+            $btn.classList.add('cancel');
+        } else if(btn.text === "Удалить"){
+            $btn.classList.add('delete');
+        } else $btn.classList.add('btn');
+
         $btn.onclick = btn.handler || noop;
         wrap.appendChild($btn);
     })

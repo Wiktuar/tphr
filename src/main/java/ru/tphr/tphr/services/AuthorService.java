@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.tphr.tphr.DTO.AuthorDTO;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.entities.security.PasswordResetToken;
 import ru.tphr.tphr.entities.security.Role;
@@ -140,5 +141,9 @@ public class AuthorService implements UserDetailsService {
         return prt;
     }
 
+//  метод получения ID автора по его email
+    public Long getAuthorId(String email){
+        return authorRepo.getAuthorId(email);
+    }
 }
 

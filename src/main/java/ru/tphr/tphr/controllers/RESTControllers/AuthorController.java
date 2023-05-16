@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.tphr.tphr.entities.Poem;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.exceptions.AuthorExistsException;
 import ru.tphr.tphr.services.AuthorService;
+import ru.tphr.tphr.services.PoemService;
 import ru.tphr.tphr.utils.Utils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -25,6 +29,9 @@ public class AuthorController {
 
     @Value("${source.path}")
     private String fromPath;
+
+    @Autowired
+    private PoemService poemService;
 
     private AuthorService authorService;
 

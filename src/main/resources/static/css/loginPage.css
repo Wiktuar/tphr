@@ -129,7 +129,7 @@ a {
     font-family: Tahoma;
 }
 
-/*Стили для тогоб чтобы показывать пароль*/
+/*Стили для того, чтобы показывать пароль*/
 .showPassword {
     position: absolute;
     top: 34px;

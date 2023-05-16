@@ -10,6 +10,10 @@
 *.ipr
 /lib
 HELP.md
+.mvn
+mvnm
+mvnm.cmd
+
 
 
 

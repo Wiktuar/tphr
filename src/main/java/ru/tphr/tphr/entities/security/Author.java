@@ -1,10 +1,12 @@
 package ru.tphr.tphr.entities.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import ru.tphr.tphr.entities.Poem;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,6 +28,7 @@ public class Author {
     @Column(name = "email")
     private String email;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
@@ -38,19 +41,21 @@ public class Author {
     @Column(name = "path_to_Avatar")
     private String pathToAvatar;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    private Set<Poem> poems;
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Poem> poems;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "authors_roles",
             joinColumns = @JoinColumn(name = "author_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @JsonIgnore
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     private Status status;
-
 
     //  social nets
     private String vk;
@@ -59,6 +64,12 @@ public class Author {
 
     public Author() {
 
+    }
+
+    public Author(String firstName, String lastName, String pathToAvatar) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pathToAvatar = pathToAvatar;
     }
 
     public boolean isActive() {

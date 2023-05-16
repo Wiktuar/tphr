@@ -68,12 +68,25 @@ create table poems
         foreign key (author_id) references authors (id)
 );
 
+
+
 # создание таблицы "Категории"
 create table categories
 (
     id            bigint auto_increment primary key,
     category_name varchar(30) null
 );
+
+# создание таблицы комментариев
+create table comments
+(
+    id            bigint auto_increment primary key,
+    text          varchar(702)  not null,
+    time_stamp    varchar(25)   not null ,
+    author_id     bigint        not null ,
+    constraint  author_id_fk1
+        foreign key (author_id) references authors (id)
+)
 
 
 

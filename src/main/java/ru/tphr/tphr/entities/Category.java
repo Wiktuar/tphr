@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+//@Entity
 @Data
 @Table(name = "categories")
 public class Category {
@@ -14,6 +14,6 @@ public class Category {
     private long id;
     private String categoryName;
 
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
+//    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
     private Set<Poem> poems ;
 }

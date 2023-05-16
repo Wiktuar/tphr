@@ -61,22 +61,22 @@
         <div class="button">
             <input type="button"  value="Мои социальные сети" class="socialNetsBtn" />
         </div>
-        <ul class="social-box">
-            <li class="social-block">
+        <uL class="social-box">
+            <li class="sc-block">
                 <label for="vk">Добавьте Вашу страницу Вконтакте</label>
                 <input type="text" id="vk" name="vk" placeholder="Ваша страница Вконтакте">
             </li>
-            <li class="social-block">
+            <li class="sc-block">
                 <label for="tg">Добавьте Ваш аккаунт в Telegram</label>
                 <input type="text" id="tg" name="tg" placeholder="Ваш аккаунт в  Telegram">
             </li>
-            <li class="social-block">
+            <li class="sc-block">
                 <label for="yt">Добавьте Ваш канал на youT ube</label>
                 <input type="text" id="yt" name="yt" placeholder="Ваш канал на youtube">
             </li>
-        </ul>
+        </uL>
 
-        <input type="submit" id="regBtn" class="regBtn" value="Отправить данные" />
+        <input type="submit" id="regBtn" class="regBtn" value="Отправить данные">
     </form>
 </div> <#--end of .container -->
 

@@ -107,7 +107,7 @@
 
 .vmodal-footer label {
     min-width: 300px;
-    height: 29px;
+    height: 45px;
     display: block;
     font-size: 20px;
     padding: 8px 24px;
@@ -118,6 +118,30 @@
     color: #f5f6fa;
     text-align: center;
     cursor: pointer
+}
+
+/*стили кнопок Удаления и Отмены модальньго окна по удалению стихов и музыки*/
+
+.cancel {
+    width: 35%;
+    height: 35px;
+    font-size: 1em;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    background-color: royalblue;
+    padding: 5px;
+}
+
+.delete {
+    width: 35%;
+    height: 35px;
+    font-size: 1em;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    background-color: darkred;
+    padding: 5px;
 }
 
 /*стили загруженного фото и наложенного на него холста*/

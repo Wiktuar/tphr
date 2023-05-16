@@ -12,6 +12,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,4 +49,21 @@ public class Utils {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");
     }
+
+//  метод, переводящий в строку текущее время. (в базе данных время хранится в виде строки)
+    public static String conbertTimetoStrimg(){
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(timestamp);
+    }
+
+//  метод, берущий стизотворение и выделяющий из него первые четыре строфы
+    public static String getPoemPreview(String[] data){
+        return Arrays.stream(data).limit(4).collect(Collectors.joining("<br>"));
+    }
+
+//  метод, берущий стихотворение и добавляющий к его строфам тег переноса строки
+    public static String getAllPoem(String[] data){
+        return Arrays.stream(data).collect(Collectors.joining("<br>"));
+    }
+
 }

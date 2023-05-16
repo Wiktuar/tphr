@@ -54,12 +54,4 @@ const attentionWindow = $.modal({
 });
 
 
-// const deleteWindow = $.confirm( {
-//      title: "Выуверены?",
-//      content: 'Вы удаляете стихотворение',
-// }).then(() => {
-//     console.log("Вы удалили стихотворение");
-// }).catch(() => {
-//     console.log("Вы отменили удаление")
-// })
 
