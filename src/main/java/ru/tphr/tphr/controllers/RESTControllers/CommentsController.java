@@ -10,7 +10,7 @@ import ru.tphr.tphr.entities.Comment;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.CommentService;
-import ru.tphr.tphr.utils.CoverEntityToDTO;
+import ru.tphr.tphr.utils.ConvertEntityToDTO;
 import ru.tphr.tphr.utils.Utils;
 
 import java.security.Principal;
@@ -20,7 +20,7 @@ import java.util.List;
 public class CommentsController {
     private CommentService commentService;
     private AuthorService authorService;
-    private CoverEntityToDTO coverEntityToDTO;
+    private ConvertEntityToDTO convertEntityToDTO;
 
     @Autowired
     public void setCommentService(CommentService commentService) {
@@ -33,29 +33,32 @@ public class CommentsController {
     }
 
     @Autowired
-    public void setCoverEntityToDTO(CoverEntityToDTO coverEntityToDTO) {
-        this.coverEntityToDTO = coverEntityToDTO;
+    public void setConvertEntityToDTO(ConvertEntityToDTO convertEntityToDTO) {
+        this.convertEntityToDTO = convertEntityToDTO;
     }
 
 //  метод получения всех комментариев
-    @GetMapping("/getComments")
-    public List<CommentDTO> getAllComments(){
-        List<Comment> comments = commentService.getAllComments();
-        List<CommentDTO> commntDtoes = coverEntityToDTO.convertList(comments, c -> coverEntityToDTO.convertToCommentDtoForList(c));
-        return commntDtoes;
+    @GetMapping("/getComments/{id}")
+    public List<CommentDTO> getAllComments(@PathVariable long id){
+        List<Comment> comments = commentService.getListOfCommentsByPoemId(id);
+        List<CommentDTO> commentDtoes = convertEntityToDTO.convertList(comments, c -> convertEntityToDTO.convertToCommentDtoForList(c));
+        return commentDtoes;
     }
 
 //  метод сохранения комментария в БД
     @PostMapping("/addComment")
-    public CommentDTO addComment(@RequestBody Comment comment,
+    public CommentDTO addComment(@ModelAttribute Comment comment,
                               Principal principal){
-        comment.setTimeStamp(Utils.conbertTimetoStrimg());
+        comment.setTimeStamp(Utils.convertTimeToString());
         Author author = authorService.getAuthorByEmail(principal.getName());
+
+        String[] massOfLines = comment.getText().split("\\n");;
+        comment.setText(Utils.editPoem(massOfLines));
         comment.setAuthor(author);
         commentService.saveComment(comment);
         comment.setId(commentService.getCommentId(comment.getAuthor().getId(), comment.getTimeStamp()));;
-        CommentDTO commentDTO = coverEntityToDTO.convertToCommentDTO(comment);
-        commentDTO.setAuthorDTO(coverEntityToDTO.convertToAuthorDto(author));
+        CommentDTO commentDTO = convertEntityToDTO.convertToCommentDTO(comment);
+        commentDTO.setAuthorDTO(convertEntityToDTO.convertToAuthorDto(author));
 
         return commentDTO;
     }
@@ -70,19 +73,21 @@ public class CommentsController {
     @PostMapping("/editcomment/{id}")
     public CommentDTO updateComment(@RequestParam long id,
                                     @RequestParam String text){
+        String[] massOfLines = text.split("\\n");;
         Comment comment = commentService.getCommentById(id);
-        comment.setText(text);
+        comment.setText(Utils.editPoem(massOfLines));
         comment = commentService.saveComment(comment);
-        CommentDTO commentDTO = coverEntityToDTO.convertToCommentDTO(comment);
-        commentDTO.setAuthorDTO(coverEntityToDTO.convertToAuthorDto(comment.getAuthor()));
-        System.out.println(commentDTO.getText());
+        CommentDTO commentDTO = convertEntityToDTO.convertToCommentDTO(comment);
+        commentDTO.setAuthorDTO(convertEntityToDTO.convertToAuthorDto(comment.getAuthor()));
         return commentDTO;
     }
 
-//  метод получения ID и текста комментария в виде строки. Разделяется строка на Frontende
+//  метод получения ID и текста комментария в виде CommentDTO
     @GetMapping("/getcomment/{id}")
-    public String getCommentById(@PathVariable long id) throws JsonProcessingException {
-        String comment = commentService.getTextCommentById(id);
-        return new ObjectMapper().writeValueAsString(comment);
+    public CommentDTO getCommentById(@PathVariable long id) throws JsonProcessingException {
+        CommentDTO commentDTO = commentService.getTextCommentById(id);
+        commentDTO.setText(Utils.editPoem(commentDTO.getText()));
+        System.out.println(commentDTO.getText());
+        return commentDTO;
     }
 }

@@ -27,4 +27,7 @@ public class Comment {
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Author author;
+
+    @Column(name = "poem_id")
+    private long poemId;
 }

@@ -1,18 +1,16 @@
 package ru.tphr.tphr.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.tphr.tphr.entities.security.Author;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "poems")
 public class Poem {
@@ -35,13 +33,21 @@ public class Poem {
     @Column(name = "poem_preview")
     public String poemPreview;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY,
+               cascade = CascadeType.DETACH
+    )
     @JoinColumn(name = "author_id")
     private Author author;
 
-    //    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-//    @JoinTable(name = "poems_tags",
-//            joinColumns = @JoinColumn(name = "poem_id"),
-//            inverseJoinColumns = @JoinColumn(name = "tag_id"))
-//    private Set<Category> categories;
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE
+//            orphanRemoval = true
+    )
+    @JoinColumn(name = "poem_id")
+//  поле poem.id у комментария должно позволять устанавливать значение в NULL
+    private List<Comment> comments;
+
+//  для стороны Many принято переопределять equals() и hashCode()
+//  они переопределены в анноации lambok
 }

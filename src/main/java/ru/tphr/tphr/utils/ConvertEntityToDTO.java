@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.tphr.tphr.DTO.AuthorDTO;
 import ru.tphr.tphr.DTO.CommentDTO;
+import ru.tphr.tphr.DTO.PoemDTO;
 import ru.tphr.tphr.entities.Comment;
+import ru.tphr.tphr.entities.Poem;
 import ru.tphr.tphr.entities.security.Author;
 
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class CoverEntityToDTO {
+public class ConvertEntityToDTO {
 
     private static ModelMapper modelMapper;
 

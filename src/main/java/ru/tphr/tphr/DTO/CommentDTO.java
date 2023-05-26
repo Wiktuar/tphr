@@ -17,4 +17,9 @@ public class CommentDTO {
 
     @JsonProperty("author")
     private AuthorDTO authorDTO;
+
+    public CommentDTO(long id, String text){
+        this.id = id;
+        this.text = text;
+    }
 }

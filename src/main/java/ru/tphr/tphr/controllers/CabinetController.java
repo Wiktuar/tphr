@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.tphr.tphr.entities.Poem;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.services.AuthorService;
+import ru.tphr.tphr.services.CommentService;
 import ru.tphr.tphr.services.PoemService;
 import ru.tphr.tphr.utils.Utils;
 
@@ -16,6 +17,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -28,8 +31,12 @@ public class CabinetController {
     @Value("${source.path2}")
     private String sourcePath2;
 
+    @Value("${source.path3}")
+    private String deletePath;
+
     private PoemService poemService;
     private AuthorService authorService;
+    private CommentService commentService;
 
     @Autowired
     public void setAuthorService(AuthorService authorService) {
@@ -41,7 +48,12 @@ public class CabinetController {
         this.poemService = poemService;
     }
 
-//  получение всех стихотворений по id автора
+    @Autowired
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
+    //  получение всех стихотворений по id автора
     @GetMapping("/cabinet/getAll")
     public String getPoemsPage(Principal principal,
                                Model model){
@@ -52,7 +64,7 @@ public class CabinetController {
         return "cabinet/poems";
     }
 
-//  метод получения одного стиъотворения по его ID
+//  метод получения одного стихотворения по его ID
     @GetMapping("/cabinet/poem/{id}")
     public String getPoemById(@PathVariable long id,
                               Model model){
@@ -65,33 +77,50 @@ public class CabinetController {
     @PostMapping("/cabinet/poems")
     public String savePoemInBD(@ModelAttribute Poem poem,
                                @RequestParam("file") MultipartFile file,
+                               @RequestParam("oldFileName") String oldFileName,
                                Principal principal) throws IOException {
-//      если отсутствует имя в Multipart file, значит пользователь решил использовать
-//      для обложки картинку по умолчанию
+        System.out.println(poem.getReleaseDate());
         File uploadFolder = new File(uploadPath + "\\" + principal.getName());
         if(!uploadFolder.exists()){
             uploadFolder.mkdirs();
         }
-
-        if(file.getOriginalFilename().isEmpty()){
+//      если отсутствует имя в Multipart file, значит пользователь решил использовать
+//      для обложки картинку по умолчанию
+        if(file.getOriginalFilename().isEmpty() && oldFileName.isEmpty()){
+            System.out.println("Сохранение нового стихотворения и копирование картинки по умолчанию");
+            Path destPath = Paths.get(uploadFolder + "\\" + "poemCover.jpg");
+            if(!Files.exists(destPath)){
+                System.out.println("Картинка не существует");
+                Files.copy(Paths.get(sourcePath2), destPath);
+            } else {
+                System.out.println("картинка существует");
+            }
+            poem.setFileName(principal.getName() + "\\" + "poemCover.jpg");
+        } else if (!file.getOriginalFilename().isEmpty()){
+            System.out.println("Сохранение новой картинки");
+            if(!oldFileName.isEmpty()){
+                System.out.println("Удаление старой картинки");
+                Files.delete(Paths.get(deletePath + "\\" + oldFileName));
+            }
             String fileName = UUID.randomUUID().toString();
-            File sourceFile = new File(sourcePath2);
-            File destFile = new File(uploadPath + "\\"  + principal.getName() + "\\" + fileName + "_" + "poemCover.jpg");
-            Files.copy(sourceFile.toPath(), destFile.toPath());
-            poem.setFileName(principal.getName() + "\\" + fileName + "_" + "poemCover.jpg");
-        } else {
-            String fileName = UUID.randomUUID().toString();
-            String resultFileName = uploadPath + "\\"  + principal.getName() + "\\" + fileName + "_" + file.getOriginalFilename();
+            String resultFileName = uploadFolder + "\\" + fileName + "_" + file.getOriginalFilename();
             try(FileOutputStream fos = new FileOutputStream(resultFileName)){
                 fos.write(file.getBytes());
             }
             poem.setFileName(principal.getName() + "\\" + fileName + "_" + file.getOriginalFilename());
+        } else {
+            System.out.println("Сохранеи при обновлении предыдущего фото");
+            poem.setFileName(oldFileName);
         }
 
+        System.out.println(poem.getFileName());
+
         String[] massOfLines = poem.getContent().split("\\n");
-        poem.setContent(Utils.getAllPoem(massOfLines));
+        poem.setContent(Utils.editPoem(massOfLines));
         poem.setPoemPreview(Utils.getPoemPreview(massOfLines));
-        poem.setReleaseDate(Utils.conbertTimetoStrimg());
+        if(poem.getReleaseDate().isEmpty()){
+            poem.setReleaseDate(Utils.convertTimeToString());
+        }
         Author author = authorService.getAuthorByEmail(principal.getName());
         poem.setAuthor(author);
         poemService.savePoemInDB(poem);

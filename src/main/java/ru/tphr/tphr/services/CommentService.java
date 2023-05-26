@@ -2,6 +2,7 @@ package ru.tphr.tphr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.tphr.tphr.DTO.CommentDTO;
 import ru.tphr.tphr.entities.Comment;
 import ru.tphr.tphr.repository.CommentRepo;
 
@@ -38,17 +39,22 @@ public class CommentService {
     }
 
 //  метод получения текста комментария по его ID
-    public String getTextCommentById(long id){
+    public CommentDTO getTextCommentById(long id){
         return commentRepo.getTextCommentById(id);
-    }
-
-    @Transactional
-    public void updateComment(String text, long id){
-        commentRepo.updateComment(text, id);
     }
 
 //  удаление комментария о ID
     public void deleteCommentById(Long id){
         commentRepo.deleteById(id);
     }
+
+//  метод получения комментариев по значению poemId
+    public List<Comment> getListOfCommentsByPoemId(long poemId){
+        return commentRepo.getCommentsByPoemId(poemId);
+    }
+
+//  метод оценки количества комментариев для конкретного поста
+//    public long getCountOfCommentsById(long id){
+//        return commentRepo.getCountOfCommentsById(id);
+//    }
 }

@@ -26,7 +26,7 @@ h3 {
 }
 
 /* стили формы */
-.flex-container {
+.poems-container {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;

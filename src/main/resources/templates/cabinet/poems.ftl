@@ -26,6 +26,10 @@
 <#--  Форма добавления стихотворения      -->
         <div class="add_poem_box">
             <form method="post" action="/cabinet/poems" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="0">
+<#--    Поскольку картинка может измениться, на сервер перадаем и имя файла старой картинки, чтобы ее можно было удалить              -->
+                <input type="hidden" class="old_file_name" name="oldFileName">
+                <input type="hidden" class="release_date_input" name="releaseDate">
                 <input type="text" name="header" placeholder="Введите назввание стизотворения">
                 <textarea name="content" placeholder="Введите текст стихотворения"></textarea>
                 <div class="view_cover">
@@ -40,13 +44,13 @@
             </form>
         </div>
 <#--   flex контейнер. а внутри него стихотворения   -->
-        <div class="flex-container">
+        <div class="poems-container">
             <#if poems?has_content>
                 <#list poems as poem>
                     <div class="poem_box">
                         <div class="poem_box_header">
                             <div class="poem_header">
-                                <div class="inner_poem_header" data-id="${poem.id}">${poem.header}</div>
+                                <div class="inner_poem_header${poem.id}">${poem.header}</div>
                             </div>
                             <div class="author_block">
                                 <img src="../../static/img${author.pathToAvatar}" class="avatar" alt="аватар автора">
@@ -69,16 +73,17 @@
                                 <img src="../../static/test/test1/like.png" class="like" alt="мне нравится">
                                 <span class="digit">1234</span>
                                 <img src="../../static/test/test1/comment.png" class="comment" alt="комментарий">
-                                <span class="digit">568</span>
+                                <span class="digit">5</span>
                             </div>
-                            <div class="views_data">
-                                <img src="../../static/test/test1/eye.svg" class="views" alt="просмотры">
-                                <span class="digit">7</span>
-                            </div>
+<#--                            Здесь будет отображаться количество просмотров-->
+<#--                            <div class="views_data">-->
+<#--                                <img src="../../static/test/test1/eye.svg" class="views" alt="просмотры">-->
+<#--                                <span class="digit">7</span>-->
+<#--                            </div>-->
                         </div>
                         <div class="footer_buttons">
-                            <a href="/cabinet/update/poem/${poem.id}" class="update_link">Обновить</a>
-                            <a href="" class="delete_link">Удалить</a>
+                            <span class="update_link ${poem.id}" >Обновить</span>
+                            <span class="delete_link ${poem.id}" >Удалить</span>
                         </div>
                     </div>
                 </#list>

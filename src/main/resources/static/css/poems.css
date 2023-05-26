@@ -172,7 +172,7 @@ textarea {
 
 /*стили флекс контейнера и превью стихов*/
 
-.flex-container {
+.poems-container {
     display: flex;
     padding-left: 1%;
     padding-right: 1%;

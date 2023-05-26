@@ -51,9 +51,10 @@ public class Utils {
     }
 
 //  метод, переводящий в строку текущее время. (в базе данных время хранится в виде строки)
-    public static String conbertTimetoStrimg(){
+    public static String convertTimeToString(){
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(timestamp);
+//  k - 24- часовой форват времени, h- 12-ти часовой формат времени
+        return new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(timestamp);
     }
 
 //  метод, берущий стизотворение и выделяющий из него первые четыре строфы
@@ -62,8 +63,13 @@ public class Utils {
     }
 
 //  метод, берущий стихотворение и добавляющий к его строфам тег переноса строки
-    public static String getAllPoem(String[] data){
+    public static String editPoem(String[] data){
         return Arrays.stream(data).collect(Collectors.joining("<br>"));
     }
 
+//  метод, берущий стихотворение и удаляющий из строк тег переноса строки
+    public static String editPoem(String data){
+        String[] arr = data.split("<br>");
+        return Arrays.stream(arr).collect(Collectors.joining());
+    }
 }

@@ -81,11 +81,14 @@ create table categories
 create table comments
 (
     id            bigint auto_increment primary key,
-    text          varchar(702)  not null,
-    time_stamp    varchar(25)   not null ,
-    author_id     bigint        not null ,
-    constraint  author_id_fk1
-        foreign key (author_id) references authors (id)
+    text          varchar(702) not null,
+    time_stamp    varchar(25)  not null,
+    author_id     bigint       not null,
+    poem_id       bigint       not null,
+    constraint  author_id_fk3
+        foreign key (author_id) references authors (id),
+    constraint  poem_id_fk1
+        foreign key (poem_id) references poems(id)
 )
 
 

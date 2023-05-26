@@ -1,28 +1,36 @@
 // кнопка, отправляющая введенный комментарий на сохранение
 const sendCommentBtn = document.querySelector(".send_comment_btn");
+const textArea = document.getElementById("text_area");
 
 // контейнер для комментариев
 const commentsContainer = document.querySelector(".comments_container");
 
-// function printMessage(poemID){
-//     console.log(poemID);
-// }
-//
-// window.addEventListener("DOMContentLoaded", () => printMessage(poemID));
-window.addEventListener("DOMContentLoaded", getAllComments);
+// таким приемом можно передавать аргументы в функцию, которая вешается на событие
+window.addEventListener("DOMContentLoaded", () => getAllComments(poemID));
+// метод отправки комментария по нажатию Enter и перехода на новую строку при нажатии Shift + Enter
+sendCommentBtn.addEventListener("click",   async e => saveOrUpdate(e));
+textArea.addEventListener("keydown", e => {
+    if(e.shiftKey && e.key === "Enter"){
+        // здесь ничего нет, потому что он сам в текстовой области переводит на новую строку.
+    } else if(e.key === "Enter"){
+        saveOrUpdate(e);
+    }
+});
 
-sendCommentBtn.addEventListener("click",  async e => {
+// функция сохранения или обновления комментария
+async function saveOrUpdate(e){
     e.preventDefault();
     const input = document.getElementById("comment_input");
     const textArea = document.getElementById("text_area");
     let id = Number(input.value);
     let text = textArea.value;
+    let poemId = poemID;
 
     //если ID не равно 0, это значит, что мы обновляем комментарий
     // у вновь созданного комментария ID равно 0
     let res = null;
     if (id !== 0 ){
-    //  вместо строки json посылаю обычный post запрос, поскольку с точки зрения сервера так удобнее
+        //  вместо строки json посылаю обычный post запрос, поскольку с точки зрения сервера так удобнее
         const formData = new FormData();
         formData.append("id", String(id));
         formData.append("text", text);
@@ -35,28 +43,40 @@ sendCommentBtn.addEventListener("click",  async e => {
             body: formData
         })
 
-        res.json().then(comment => document.querySelector(`#comment${comment.id} .comment_text`)
-            .textContent = comment.text);
+        res.json().then(comment => {
+            // let txt = comment.text.replaceAll("<br>", "\r\n");
+            // console.log(txt);
+            document.querySelector(`#comment${comment.id} .comment_text`)
+                .innerHTML = comment.text;
+        });
 
     } else {
+        const formData = new FormData();
+        formData.append("id", String(id));
+        formData.append("text", text);
+        formData.append("poemId", poemId);
         res = await fetch("/addComment", {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            // headers: {
+            //     'Content-Type': 'application/json'
+            // },
             //навания переменных в фигурных скобках должны соответствовать
             //названию полей в сущности. В данном случае здесь одно поле text
-            body: JSON.stringify({id, text})
+            // body: JSON.stringify({id, text, poemId})
+            body: formData
         });
-        res.json().then(comment => commentToHTML(comment));
+        res.json().then(comment => {
+            commentToHTML(comment)
+        });
     }
 
-    textArea.value = "";
-});
+     input.value = String(0);
+     textArea.value = "";
+}
 
 //функция, получающая с сервера все комментарии
-async function getAllComments(){
-    const res = await fetch("/getComments");
+async function getAllComments(id){
+    const res = await fetch(`/getComments/${id}`);
     const comments = await res.json();
 
     comments.forEach(c => commentToHTML(c));
@@ -90,7 +110,7 @@ commentsContainer.addEventListener("click", e => {
         }
 
         if(e.target.classList[0] === "edit_pencil"){
-            editCommentById(Number(e.target.classList[1]));
+            updateCommentById(Number(e.target.classList[1]));
         }
     }
 })
@@ -112,7 +132,7 @@ commentsContainer.addEventListener("click", e => {
 }
 
 //  метод для редактирования комментария
-async function editCommentById(id){
+async function updateCommentById(id){
     const input = document.getElementById("comment_input");
     const textArea = document.getElementById("text_area");
 
@@ -123,9 +143,9 @@ async function editCommentById(id){
         }
     })
 
-    res.json().then(str => {
-        let arr = str.split(",");
-        input.value = arr[0];
-        textArea.value = arr[1];
+    res.json().then(comment => {
+        console.log(comment.text);
+        input.value = comment.id;
+        textArea.value = comment.text;
     })
 }

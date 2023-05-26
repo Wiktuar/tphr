@@ -2,11 +2,12 @@ package ru.tphr.tphr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.tphr.tphr.DTO.PoemDTO;
+import ru.tphr.tphr.entities.Comment;
 import ru.tphr.tphr.entities.Poem;
 import ru.tphr.tphr.repository.security.PoemRepo;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -34,7 +35,13 @@ public class PoemService {
         return poemRepo.getAllPoemsByAuthorId(id);
     }
 
+//  удаление стихотворения по id. Насчет exception подумать!!!
     public void deletePoem(long id) throws IOException {
         poemRepo.deleteById(id);
+    }
+
+//  метод получения PoemDTO
+    public PoemDTO getPoemDTO(long id){
+        return poemRepo.getPoemDTO(id);
     }
 }
