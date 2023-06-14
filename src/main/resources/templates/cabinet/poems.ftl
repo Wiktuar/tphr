@@ -50,6 +50,7 @@
                     <div class="poem_box">
                         <div class="poem_box_header">
                             <div class="poem_header">
+                                <#-- изменить названия класса, поскольку игнорируются css стили                                -->
                                 <div class="inner_poem_header${poem.id}">${poem.header}</div>
                             </div>
                             <div class="author_block">

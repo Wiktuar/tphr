@@ -81,7 +81,7 @@ poemsContainer.addEventListener("click", e => {
     }
 });
 
-
+// функция обновления стихотворения
 async function updatePoem(id){
     const addPoemBox = document.querySelector(".add_poem_box");
     const inputId = document.querySelector(".add_poem_box input[type=hidden]");
@@ -111,6 +111,7 @@ async function updatePoem(id){
          default_cover.textContent = "";
      });
 
+    // поднимет страницу вверх. С первого раза делает это резко, исправить!!!
     window.scroll({
         top : 0,
         behavior: "smooth"

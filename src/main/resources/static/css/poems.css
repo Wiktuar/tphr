@@ -449,6 +449,29 @@ h3 {
     margin: 0 auto;
 }
 
+/*сили лайков и количества комментариев*/
+.like_btn {
+    cursor: pointer;
+}
+
+.p_comment {
+    width: 4%;
+}
+
+.like_comment {
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+}
+
+.p_digit {
+    display: block;
+    margin-left: 1%;
+    margin-right: 2%;
+    font-size: 1.5em;
+}
+
+
 /*стилли комментариев*/
 
 .comments_container {

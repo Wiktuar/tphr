@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../../static/css/reset.css">
     <link rel="stylesheet" href="../../static/css/poems.css">
+    <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
     <title>Редактирование стихотворения</title>
 </head>
 <body>
@@ -28,6 +29,13 @@
                 </div>
             </div>
         </div>
+        <div class="like_comment">
+<#--            <i class="fa-solid fa-2x fa-heart" style="color: #e60f0f;"></i>-->
+            <span class="like_btn"><i class="fa-regular fa-2x fa-heart" style="color: #021027;"></i></span>
+            <span class="p_digit">${poem.likes}</span>
+            <img src="../../static/img/comments.png" class="p_comment" alt="комментарии">
+            <span class="p_digit">${poem.comments}</span>
+        </div>
         <img src="../../static/img/vin.png" class="vignette" alt="виньетка">
         <div class="comments_container">
             <#--Здесь будут загружаться комментарии из JavaScript -->
@@ -44,5 +52,6 @@
     let poemID = ${poem.id};
 </script>
 <script src="../../static/js/comments.js"></script>
+<script src="../../static/js/likes.js"></script>
 </body>
 </html>

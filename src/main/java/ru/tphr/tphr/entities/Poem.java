@@ -4,13 +4,15 @@ import lombok.*;
 import ru.tphr.tphr.entities.security.Author;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+//@EqualsAndHashCode
 @Entity
 @Table(name = "poems")
 public class Poem {
@@ -48,6 +50,17 @@ public class Poem {
 //  поле poem.id у комментария должно позволять устанавливать значение в NULL
     private List<Comment> comments;
 
-//  для стороны Many принято переопределять equals() и hashCode()
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name = "poems_likes",
+            joinColumns = @JoinColumn(name = "poem_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private Set<Author> likes = new HashSet<>();
+
+
+
+    //  для стороны Many принято переопределять equals() и hashCode()
 //  они переопределены в анноации lambok
 }

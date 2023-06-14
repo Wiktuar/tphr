@@ -1,6 +1,7 @@
 package ru.tphr.tphr.entities.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import ru.tphr.tphr.entities.Comment;
@@ -8,6 +9,7 @@ import ru.tphr.tphr.entities.Poem;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -99,4 +101,16 @@ public class Author {
         poem.setAuthor(null);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return id.equals(author.id) && firstName.equals(author.firstName) && lastName.equals(author.lastName) && email.equals(author.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email);
+    }
 }

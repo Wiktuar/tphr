@@ -91,6 +91,43 @@ create table comments
         foreign key (poem_id) references poems(id)
 )
 
+# создание таблицы для лайков
+create table poems_likes (
+     poem_id     bigint not null,
+     author_id   bigint not null,
+     unique (poem_id, author_id),
+     constraint p_l_fk1
+         foreign key (poem_id) references poems(id),
+     constraint p_l_fk2
+         foreign key (author_id) references authors(id)
+);
+
+# скрипт получения из базы данных сущности стихов с лайками и комментариями
+SELECT
+    p.id, p.header, p.file_name, p.release_date, IFNULL(l_count, 0), IFNULL(c_count, 0), status
+FROM
+    poems as p
+        LEFT JOIN
+    (SELECT
+         poem_id, author_id, count(poem_id) as l_count,
+         sum(IF(author_id = 1, 1, 0)) > 0 as status
+     from
+         poems_likes
+     GROUP BY
+         poem_id) as l
+    ON
+            p.id = l.poem_id
+
+        LEFT JOIN
+    (SELECT
+         poem_id, count(poem_id) as c_count
+     from
+         comments
+     GROUP BY
+         poem_id) as c
+    ON
+            p.id = c.poem_id;
+
 
 
 

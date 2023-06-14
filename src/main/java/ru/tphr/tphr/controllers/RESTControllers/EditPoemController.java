@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import ru.tphr.tphr.DTO.PoemDTO;
+import ru.tphr.tphr.DTO.EditPoemDTO;
+import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.services.PoemService;
 import ru.tphr.tphr.utils.Utils;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.security.Principal;
 
 @RestController
 public class EditPoemController {
@@ -21,9 +21,9 @@ public class EditPoemController {
     }
 
     @GetMapping("/cabinet/updatete/poem/{id}")
-    public PoemDTO getPoemById(@PathVariable long id){
-        PoemDTO poemDTO = poemService.getPoemDTO(id);
-        poemDTO.setContent(Utils.editPoem(poemDTO.getContent()));
-        return poemDTO;
+    public EditPoemDTO getPoemById(@PathVariable long id){
+        EditPoemDTO editPoemDTO = poemService.getEditPoemDTO(id);
+        editPoemDTO.setContent(Utils.editPoem(editPoemDTO.getContent()));
+        return editPoemDTO;
     }
 }
