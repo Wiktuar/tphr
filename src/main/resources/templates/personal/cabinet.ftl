@@ -22,7 +22,7 @@
         <#if author.activationCode??>
             <p class="attention">Пожалуйста, подтвердите Вашу почту, чтобы стать автором на нашем сайте.</p>
         </#if>
-        <div class="flex-wrapper">
+        <div class="flex-wrapper1">
             <img src="../../static/img${author.pathToAvatar}"  class="user-photo" alt="Фотография профиля">
             <div class="personal-data">
                 <h2>${author.firstName} ${author.lastName}</h2>

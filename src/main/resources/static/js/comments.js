@@ -1,14 +1,17 @@
 // кнопка, отправляющая введенный комментарий на сохранение
 const sendCommentBtn = document.querySelector(".send_comment_btn");
 const textArea = document.getElementById("text_area");
+//элемент HTML хрнящий количество комментариев
+const countOfComments = document.querySelector(".p_digit_c");
 
 // контейнер для комментариев
 const commentsContainer = document.querySelector(".comments_container");
 
 // таким приемом можно передавать аргументы в функцию, которая вешается на событие
 window.addEventListener("DOMContentLoaded", () => getAllComments(poemID));
+
 // метод отправки комментария по нажатию Enter и перехода на новую строку при нажатии Shift + Enter
-sendCommentBtn.addEventListener("click",   async e => saveOrUpdate(e));
+sendCommentBtn.addEventListener("click",   async e => saveOrUpdate(e, poemID));
 textArea.addEventListener("keydown", e => {
     if(e.shiftKey && e.key === "Enter"){
         // здесь ничего нет, потому что он сам в текстовой области переводит на новую строку.
@@ -66,8 +69,9 @@ async function saveOrUpdate(e){
             body: formData
         });
         res.json().then(comment => {
-            commentToHTML(comment)
-        });
+            commentToHTML(comment);
+            countOfComments.textContent = comment.countOfComments;
+        })
     }
 
      input.value = String(0);
@@ -106,7 +110,7 @@ commentsContainer.addEventListener("click", e => {
     if(e.target.classList.length === 2){
         if(e.target.classList[0] === "close_cross"){
             // Решить роблему! из метода возвращается промис, который игнорируется.
-            deleteCommentById(Number(e.target.classList[1]))
+            deleteCommentById(Number(e.target.classList[1]), poemID)
         }
 
         if(e.target.classList[0] === "edit_pencil"){
@@ -118,8 +122,8 @@ commentsContainer.addEventListener("click", e => {
 
 
 // функция, удаляющая комментарий. Без ассинхронности не работает
- async function deleteCommentById(id){
-    const res = await fetch(`/deletecomment/${id}`, {
+ async function deleteCommentById(id, poemId){
+    const res = await fetch(`/deletecomment/${id}/${poemId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -128,6 +132,7 @@ commentsContainer.addEventListener("click", e => {
 
     if(res.status === 200){
         document.getElementById(`comment${id}`).remove();
+        res.json().then(r => countOfComments.textContent = r);
     }
 }
 

@@ -26,22 +26,15 @@ h3 {
 }
 
 /* стили формы */
-.poems-container {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-
-.name-wrapper {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
 form {
     margin: 0 auto;
     min-height: 500px;
     font-style: italic;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .fName label {
@@ -136,6 +129,13 @@ input:focus {
     width: 350px;
     height: 350px;
     margin: 0 25px;
+}
+
+.g-recaptcha {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 

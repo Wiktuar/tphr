@@ -1,8 +1,6 @@
-// https://ru.stackoverflow.com/questions/545859/spring-security-%D0%9F%D1%80%D0%B8-%D0%B2%D0%B2%D0%BE%D0%B4%D0%B5-%D0%BB%D0%BE%D0%B3%D0%B8%D0%BD%D0%B0-%D0%B8-%D0%BF%D0%B0%D1%80%D0%BE%D0%BB%D1%8F-%D0%B2%D1%8B%D0%BA%D0%B8%D0%B4%D1%8B%D0%B2%D0%B0%D0%B5%D1%82-%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D1%83-reason-user-is-dis
 // эта информация поможет оптимизировать запросы при аутентификации пользователя
 // https://stackoverflow.com/questions/56566406/spring-security-differentiate-between-wrong-username-password-combination-and
-// https://docs.spring.io/spring-security/site/docs/4.1.3.RELEASE/guides/html5/form-javaconfig.html
-
+// https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html#match-by-dispatcher-type
 package ru.tphr.tphr.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +10,26 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import ru.tphr.tphr.services.AuthorService;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.List;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,28 +44,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(getCustomLoginFilter(), CustomLoginFilter.class)
                 .csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/", "/img/**", "/reset/*", "/registration", "/check/**", "/static/**", "/activate/*").permitAll()
+                    .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                    .antMatchers("/", "/auth-error", "/img/**", "/photo", "/reset/*", "/registration", "/check/**", "/static/**", "/activate/*").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .loginPage("/login")
                     .permitAll()
+                    .defaultSuccessUrl("/")
+                .and()
+                    .rememberMe()
+                    .key("secretTphr")
+                    .tokenValiditySeconds(172800)
                 .and()
                     .logout()
                     .permitAll()
-                    .logoutSuccessUrl("/");
+                    .logoutSuccessUrl("/")
+                    .deleteCookies("JSESSIONID");
     }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(){
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource();
+    }
+
+//    @Bean
+//    public AuthenticationFailureHandler authenticationFailureHandler() {
+//        return new CustomAuthenticationFailureHandler();
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
     }
 
     @Bean
@@ -66,4 +94,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationProvider.setUserDetailsService(authorService);
         return authenticationProvider;
     }
+
+    public CustomLoginFilter getCustomLoginFilter() throws Exception{
+        CustomLoginFilter filter = new CustomLoginFilter("/login","POST");
+        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                System.out.println("Успех");
+                HttpSession session = request.getSession();
+                SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+                if(savedRequest != null) {
+                    response.sendRedirect(savedRequest.getRedirectUrl());
+                } else {
+                    response.sendRedirect("/");
+                }
+            }
+        });
+        filter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(){
+
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                String failUrl = String.format("/auth-error?username=%s&password=%s", username, password);
+                response.sendRedirect(failUrl);
+            }
+        });
+
+        return filter;
+    }
 }
+
+
+

@@ -54,7 +54,7 @@ public class Utils {
     public static String convertTimeToString(){
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
 //  k - 24- часовой форват времени, h- 12-ти часовой формат времени
-        return new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(timestamp);
+        return new SimpleDateFormat("dd-MM-yyyy kk:mm:ss").format(timestamp);
     }
 
 //  метод, берущий стизотворение и выделяющий из него первые четыре строфы

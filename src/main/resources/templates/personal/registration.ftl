@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="../../static/css/reset.css">
     <link rel="stylesheet" href="../../static/css/style.css">
     <link rel="stylesheet" href="../../static/css/modal.css">
-    <title>Document</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <title>Регистрация на сайте</title>
 </head>
 <body>
 <div class="container">
     <h3>Для того, что стать автором на сайте, пожалуйста, заполните эту форму</h3>
-<#--    <form id="regForm"  method="post" action="/" enctype="multipart/form-data">-->
+<#-- параметры формы method и action задаются через js -->
     <form id="regForm">
         <div class="flex-container">
             <div class="flex-wrapper">
@@ -56,6 +57,7 @@
                 </div>  <#--end of .image-wrapper -->
             </div> <#--end of .flex-wrapper -->
         </div> <#--end of .flex-container -->
+        <div class="g-recaptcha" data-sitekey = "6LfWK9snAAAAANq4m051wQ-VPZP3z9UA_4ERO9Sj"></div>
 
         <#-- Блок добавления социальных сетей -->
         <div class="button">

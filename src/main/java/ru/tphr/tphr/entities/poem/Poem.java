@@ -1,18 +1,22 @@
-package ru.tphr.tphr.entities;
+package ru.tphr.tphr.entities.poem;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.tphr.tphr.entities.Comment;
 import ru.tphr.tphr.entities.security.Author;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@EqualsAndHashCode
+@Getter
+@Setter
 @Entity
 @Table(name = "poems")
 public class Poem {
@@ -23,9 +27,6 @@ public class Poem {
     @Column(name = "header")
     private String header;
 
-    @Column(name = "content")
-    private String content;
-
     @Column(name = "release_date")
     private String releaseDate;
 
@@ -35,7 +36,7 @@ public class Poem {
     @Column(name = "poem_preview")
     public String poemPreview;
 
-    @ManyToOne(fetch = FetchType.LAZY,
+    @ManyToOne(fetch = FetchType.EAGER,
                cascade = CascadeType.DETACH
     )
     @JoinColumn(name = "author_id")
@@ -51,7 +52,7 @@ public class Poem {
     private List<Comment> comments;
 
     @ManyToMany(fetch = FetchType.LAZY,
-                cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "poems_likes",
             joinColumns = @JoinColumn(name = "poem_id"),
@@ -59,8 +60,17 @@ public class Poem {
     )
     private Set<Author> likes = new HashSet<>();
 
+//  equals and hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Poem poem = (Poem) o;
+        return id == poem.id && header.equals(poem.header) && releaseDate.equals(poem.releaseDate) && fileName.equals(poem.fileName) && poemPreview.equals(poem.poemPreview);
+    }
 
-
-    //  для стороны Many принято переопределять equals() и hashCode()
-//  они переопределены в анноации lambok
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, header, releaseDate, fileName, poemPreview);
+    }
 }

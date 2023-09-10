@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../../static/css/reset.css">
     <link rel="stylesheet" href="../../static/css/poems.css">
     <link rel="stylesheet" href="../../static/css/modal.css">
+    <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
     <title>Мои стихи</title>
 </head>
 <body>
@@ -50,12 +51,13 @@
                     <div class="poem_box">
                         <div class="poem_box_header">
                             <div class="poem_header">
-                                <#-- изменить названия класса, поскольку игнорируются css стили                                -->
-                                <div class="inner_poem_header${poem.id}">${poem.header}</div>
+                                <#-- .inner_poem_header испльзуется в js коде для поиска элемента.  -->
+                                <#-- .ph отвечает непосредственно за стиль заголовка.  -->
+                                <div class="inner_poem_header${poem.id} ph">${poem.header}</div>
                             </div>
                             <div class="author_block">
-                                <img src="../../static/img${author.pathToAvatar}" class="avatar" alt="аватар автора">
-                                <h2 class="author-name">${author.firstName} ${author.lastName}</h2>
+                                <img src="../../static/img${poem.pathToAvatar}" class="avatar" alt="аватар автора">
+                                <h2 class="author-name">${poem.firstName} ${poem.lastName}</h2>
                             </div>
                         </div>
 
@@ -71,16 +73,18 @@
 
                         <div class="poem_box_footer">
                             <div class="like_comment">
-                                <img src="../../static/test/test1/like.png" class="like" alt="мне нравится">
-                                <span class="digit">1234</span>
-                                <img src="../../static/test/test1/comment.png" class="comment" alt="комментарий">
-                                <span class="digit">5</span>
+                                <#if poem.meLiked>
+                                    <i class="fa-solid fa-heart" style="color: #e60f0f;"></i>
+                                <#else>
+                                    <i class="fa-regular fa-heart" style="color: #e60f0f;"></i>
+                                </#if>
+                                <span class="digit">${poem.likes}</span>
+                                <img src="../../static/img/comments.png" class="comment" alt="комментарий">
+                                <span class="digit">${poem.comments}</span>
                             </div>
-<#--                            Здесь будет отображаться количество просмотров-->
-<#--                            <div class="views_data">-->
-<#--                                <img src="../../static/test/test1/eye.svg" class="views" alt="просмотры">-->
-<#--                                <span class="digit">7</span>-->
-<#--                            </div>-->
+                            <div class="time-stamp">
+                                ${poem.releaseDate?truncate(11, "")}
+                            </div>
                         </div>
                         <div class="footer_buttons">
                             <span class="update_link ${poem.id}" >Обновить</span>

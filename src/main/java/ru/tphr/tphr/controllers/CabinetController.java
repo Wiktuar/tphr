@@ -7,10 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.tphr.tphr.DTO.LikesPoemDto;
-import ru.tphr.tphr.entities.Poem;
+import ru.tphr.tphr.entities.poem.Content;
+import ru.tphr.tphr.entities.poem.Poem;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.CommentService;
+import ru.tphr.tphr.services.ContentService;
 import ru.tphr.tphr.services.PoemService;
 import ru.tphr.tphr.utils.Utils;
 
@@ -38,6 +40,7 @@ public class CabinetController {
     private PoemService poemService;
     private AuthorService authorService;
     private CommentService commentService;
+    private ContentService contentService;
 
     @Autowired
     public void setAuthorService(AuthorService authorService) {
@@ -54,31 +57,29 @@ public class CabinetController {
         this.commentService = commentService;
     }
 
-    //  получение всех стихотворений по id автора
+    @Autowired
+    public void setContentService(ContentService contentService) {
+        this.contentService = contentService;
+    }
+
+//  получение всех стихотворений одного автора
     @GetMapping("/cabinet/getAll")
-    public String getPoemsPage(Principal principal,
-                               Model model){
-        Author author = authorService.getAuthorByEmail(principal.getName());
-        List<Poem> poems = poemService.getAllPoemsByAuthorId(author.getId());
-        model.addAttribute("author", author);
-        model.addAttribute("poems", poems);
+    public String getAllLikesPoemDto(Model model,
+                                     Principal principal){
+        List<LikesPoemDto> lpd =  poemService.getPoemsByUser(principal.getName(),principal.getName());
+        model.addAttribute("poems", lpd);
         return "cabinet/poems";
     }
 
-//  метод получения одного стихотворения по его ID
-//    @GetMapping("/cabinet/poem/{id}")
-//    public String getPoemById(@PathVariable long id,
-//                              Model model){
-//        Poem poem = poemService.getPoemById(id);
-//        model.addAttribute("poem", poem);
-//        return "cabinet/poem";
-//    }
 
+//  метод, возращающий стихотворение с его лайками и комментариями
     @GetMapping("/cabinet/poem/{id}")
     public String getPoemById(@PathVariable long id,
                                Principal principal,
                                Model model){
         LikesPoemDto likesPoemDto = poemService.getPoemDtoWithLikesAndComments(principal.getName(), id);
+        String content = contentService.findById(id).getContent();
+        likesPoemDto.setContent(content);
         model.addAttribute("poem", likesPoemDto);
         return "cabinet/poem";
     }
@@ -86,9 +87,13 @@ public class CabinetController {
 //  метод, добавляющий стихотворение в базу данных.
     @PostMapping("/cabinet/poems")
     public String savePoemInBD(@ModelAttribute Poem poem,
+                               @RequestParam("content") String poemContent,
                                @RequestParam("file") MultipartFile file,
                                @RequestParam("oldFileName") String oldFileName,
                                Principal principal) throws IOException {
+
+        Content content = new Content();
+
         File uploadFolder = new File(uploadPath + "\\" + principal.getName());
         if(!uploadFolder.exists()){
             uploadFolder.mkdirs();
@@ -104,9 +109,7 @@ public class CabinetController {
             }
             poem.setFileName(principal.getName() + "\\" + "poemCover.jpg");
         } else if (!file.getOriginalFilename().isEmpty()){
-            System.out.println("Сохранение новой картинки");
             if(!oldFileName.isEmpty()){
-                System.out.println("Удаление старой картинки");
                 Files.delete(Paths.get(deletePath + "\\" + oldFileName));
             }
             String fileName = UUID.randomUUID().toString();
@@ -116,29 +119,36 @@ public class CabinetController {
             }
             poem.setFileName(principal.getName() + "\\" + fileName + "_" + file.getOriginalFilename());
         } else {
-            System.out.println("Сохранеи при обновлении предыдущего фото");
             poem.setFileName(oldFileName);
         }
 
-        String[] massOfLines = poem.getContent().split("\\n");
-        poem.setContent(Utils.editPoem(massOfLines));
+        String[] massOfLines = poemContent.split("\\n");
+        content.setContent(Utils.editPoem(massOfLines));
         poem.setPoemPreview(Utils.getPoemPreview(massOfLines));
         if(poem.getReleaseDate().isEmpty()){
             poem.setReleaseDate(Utils.convertTimeToString());
         }
         Author author = authorService.getAuthorByEmail(principal.getName());
         poem.setAuthor(author);
-        poemService.savePoemInDB(poem);
+
+//   данная проверка делается, чтобы избежать ошибки
+//   detached entity passed to persist, связанной с проблемой предсуществования ID
+//   e сущности Poem при ее обновлении
+        if(poem.getId() != 0){
+            content.setId(poem.getId());
+            contentService.savePoemInDB(content);
+            poemService.savePoem(poem);
+        } else {
+//   если же ID == 0, значит мы сохраняем новую сущность
+            content.setPoem(poem);
+            contentService.savePoemInDB(content);
+        }
         return "redirect:/cabinet/getAll";
     }
 
     @GetMapping("/cabinet/delete/poem/{id}")
     public String deletePoemById(@PathVariable long id){
-        try{
-            poemService.deletePoem(id);
-        }catch(IOException e){
-            System.out.println("Удаление стихотворения не удалось");
-        }
+        contentService.deletePoemById(id);
         return "redirect:/cabinet/getAll";
     }
 }

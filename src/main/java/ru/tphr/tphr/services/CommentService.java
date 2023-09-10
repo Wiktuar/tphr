@@ -29,16 +29,11 @@ public class CommentService {
         return commentRepo.getCommentID(authorId, timeStamp);
     }
 
-//  получение всех комментриев
-    public List<Comment> getAllComments(){
-        return commentRepo.getAllComments();
-    }
-
     public Comment getCommentById(long id){
         return commentRepo.getCommentById(id);
     }
 
-//  метод получения текста комментария по его ID
+//  метод получения CommentDTO по ID комментария
     public CommentDTO getTextCommentById(long id){
         return commentRepo.getTextCommentById(id);
     }
@@ -53,8 +48,8 @@ public class CommentService {
         return commentRepo.getCommentsByPoemId(poemId);
     }
 
-//  метод оценки количества комментариев для конкретного поста
-//    public long getCountOfCommentsById(long id){
-//        return commentRepo.getCountOfCommentsById(id);
-//    }
+//  метод получения количества комментариев для конкретного стихотворения
+    public String getCountOfCommentsById(long id){
+        return commentRepo.getCountOfCommentsById(id);
+    }
 }

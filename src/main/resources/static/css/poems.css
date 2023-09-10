@@ -84,7 +84,7 @@ ul {
 }
 
 /*стили кнопки добавления стихотворения*/
-button {
+.add_poem_btn {
     width: 300px;
     height: 45px;
     display: block;
@@ -227,7 +227,7 @@ textarea {
     padding-left: 3%;
 }
 
-.inner_poem_header {
+.ph {
     display: table-cell;
     font-family: "Alexander";
     font-size: .8em;
@@ -271,30 +271,30 @@ textarea {
     justify-content: space-between;
 }
 
-.like, .comment {
-    width: 10%;
+.comment {
+    width: 15%;
 }
 
 .like_comment {
-    display: flex;
+    display: flex;;
     align-items: center;
 }
 
-.views_data {
-    display: flex;
-    align-items: center;
-}
-
-.views {
-    width: 20%;
-}
-
-/*стили цифр лайков, комментов и просмотров*/
+/*стили цифр лайков, комментов*/
 .digit {
     display: block;
     margin-left: 2%;
-    margin-right: 2%;
-    font-size: .5em;
+    margin-right: 5%;
+    font-size: 0.6em;
+}
+
+.time-stamp {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    width: 50%;
+    margin-right: 5%;
+    font-size: 0.6em;
 }
 
 /*стили ссылок редактирования и удаления*/
@@ -464,7 +464,7 @@ h3 {
     padding-left: 2%;
 }
 
-.p_digit {
+.p_digit_l, .p_digit_c {
     display: block;
     margin-left: 1%;
     margin-right: 2%;

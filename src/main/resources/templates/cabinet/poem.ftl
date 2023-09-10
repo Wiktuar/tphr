@@ -1,4 +1,8 @@
- <!DOCTYPE html>
+<#--https://stackoverflow.com/questions/28347589/checking-spring-security-roles-and-logged-username-in-freemarker-template-->
+<#--https://stackoverflow.com/questions/47637166/spring-security-taglib-loading-error-in-freemarker-page-->
+<#--https://vorba.ch/2018/spring-boot-freemarker-security-jsp-taglib.html-->
+<#assign known = SPRING_SECURITY_CONTEXT??>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -30,26 +34,32 @@
             </div>
         </div>
         <div class="like_comment">
-<#--            <i class="fa-solid fa-2x fa-heart" style="color: #e60f0f;"></i>-->
-            <span class="like_btn"><i class="fa-regular fa-2x fa-heart" style="color: #021027;"></i></span>
-            <span class="p_digit">${poem.likes}</span>
+            <span class="like_btn"></span>
+            <span class="p_digit_l">${poem.likes}</span>
             <img src="../../static/img/comments.png" class="p_comment" alt="комментарии">
-            <span class="p_digit">${poem.comments}</span>
+            <span class="p_digit_c">${poem.comments}</span>
         </div>
         <img src="../../static/img/vin.png" class="vignette" alt="виньетка">
         <div class="comments_container">
-            <#--Здесь будут загружаться комментарии из JavaScript -->
+            <#--Здесь загружаются комментарии из JavaScript -->
         </div>
-        <div class="new_comment">
-            <input type="hidden" id="comment_input">
-            <textarea placeholder="Ваш комментарий" maxlength="700" rows="8" id="text_area"></textarea>
-            <a href="#" class="send_comment_btn"><img src="../../static/img/send_message.png" class="send_comment_img" alt="Отправка сообщения"></a>
-        </div>
+
+        <#if known>
+            <div class="new_comment">
+                <input type="hidden" id="comment_input">
+                <textarea placeholder="Ваш комментарий" maxlength="700" rows="8" id="text_area"></textarea>
+                <a href="#" class="send_comment_btn"><img src="../../static/img/send_message.png" class="send_comment_img" alt="Отправка сообщения"></a>
+            </div>
+        <#else>
+            Пожалуйста, зарегистрируйтесь!
+        </#if>
+
     </div>
 </div>
 <#--Необходимо для получения ID стихотворения для запроса комментариев -->
 <script>
     let poemID = ${poem.id};
+    let meLiked = ${poem.meLiked?string("1", "0")};
 </script>
 <script src="../../static/js/comments.js"></script>
 <script src="../../static/js/likes.js"></script>

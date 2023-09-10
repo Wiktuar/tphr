@@ -3,12 +3,11 @@ package ru.tphr.tphr.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.tphr.tphr.DTO.EditPoemDTO;
-import ru.tphr.tphr.DTO.LikesDto;
 import ru.tphr.tphr.DTO.LikesPoemDto;
-import ru.tphr.tphr.entities.Poem;
+import ru.tphr.tphr.entities.poem.Poem;
 import ru.tphr.tphr.repository.security.PoemRepo;
 
-import java.io.IOException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -21,24 +20,14 @@ public class PoemService {
         this.poemRepo = poemRepo;
     }
 
-//  сохранение стихотворения в базе данных.
-    public Poem savePoemInDB(Poem poem){
+//  метод отдельного сохранения превью стихотворения (необходим для обновления)
+    public Poem savePoem(Poem poem){
         return poemRepo.save(poem);
     }
 
-//  нахождение стиха по идентификатору
-    public Poem getPoemById(long id){
-        return poemRepo.findById(id).get();
-    }
-
 //  получение всех стихотворений по id их автора
-    public List<Poem> getAllPoemsByAuthorId(long id){
-        return poemRepo.getAllPoemsByAuthorId(id);
-    }
-
-//  удаление стихотворения по id. Насчет exception подумать!!!
-    public void deletePoem(long id) throws IOException {
-        poemRepo.deleteById(id);
+    public List<Poem> getAllPoemsByAuthorEmail(String email){
+        return poemRepo.getAllPoemsByAuthorEmail(email);
     }
 
 //  метод получения PoemDTO
@@ -54,5 +43,16 @@ public class PoemService {
 //  метод, возвращающий список пользователей, лайкнувших стихотворение
     public Poem getListOfLikes(long id){
         return poemRepo.getListOfLikes(id);
+    }
+
+//  метод, позволяющий получить все Poem с количеством лайков и комментариев
+    @Transactional
+    public List<LikesPoemDto> getPoemsByUser(String enail1, String email2){
+        return poemRepo.getPoemsByUser(enail1, email2);
+    }
+
+//  метод, возвращающий список всех стихотворений.
+    public List<LikesPoemDto> getAllPoems(String email){
+        return poemRepo.getAllPoem(email);
     }
 }

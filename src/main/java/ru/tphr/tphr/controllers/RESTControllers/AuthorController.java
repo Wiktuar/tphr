@@ -3,35 +3,37 @@ package ru.tphr.tphr.controllers.RESTControllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.tphr.tphr.entities.Poem;
+import org.springframework.web.client.RestTemplate;
+import ru.tphr.tphr.DTO.CaptchaResponseDto;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.exceptions.AuthorExistsException;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.PoemService;
 import ru.tphr.tphr.utils.Utils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Principal;
-import java.util.Set;
-import java.util.UUID;
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/check")
 public class AuthorController {
+    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
+
     @Value("${upload.path}")
     private String uploadPath;
 
     @Value("${source.path}")
     private String fromPath;
 
-    @Autowired
+    @Value("${google.recaptcha.key.secret}")
+    private String secret;
+
     private PoemService poemService;
+    private RestTemplate restTemplate;
 
     private AuthorService authorService;
 
@@ -40,11 +42,27 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-//    метод сначала проверяет есть ли польователь в базе с таким email,
+    @Autowired
+    public void setPoemService(PoemService poemService) {
+        this.poemService = poemService;
+    }
+
+    @Autowired
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    //    метод сначала проверяет есть ли польователь в базе с таким email,
 //    а птом сохраняет
     @PostMapping
-    public HttpStatus saveAuthorIfNotExists(@ModelAttribute Author author) throws IOException {
-         if(authorService.getAuthorByEmail(author.getEmail()) != null ) throw new AuthorExistsException();
+    public HttpStatus saveAuthorIfNotExists(@ModelAttribute Author author,
+                                            @RequestParam("recaptcha-response") String captchaResponse) throws IOException {
+    //  часть кода отвечающаяющая за работу капчи
+        String url = String.format(CAPTCHA_URL, secret, captchaResponse);
+        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
+        if(!response.isSuccess()) return HttpStatus.CONFLICT;
+
+        if(authorService.getAuthorByEmail(author.getEmail()) != null ) throw new AuthorExistsException();
     // создаем папку автора, куда будет сохранен его аватар
         Path targetPath = Paths.get(uploadPath + "\\" + author.getEmail());
         Files.createDirectory(targetPath);
@@ -59,7 +77,7 @@ public class AuthorController {
             author.setPathToAvatar("\\" + author.getEmail() + "\\avatar.jpg");
         }
 
-      authorService.saveAuthor(author);
+        authorService.saveAuthor(author);
         return HttpStatus.OK;
     }
 }

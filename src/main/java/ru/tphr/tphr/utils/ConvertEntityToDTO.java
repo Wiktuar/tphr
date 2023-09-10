@@ -20,7 +20,7 @@ public class ConvertEntityToDTO {
 
     @Autowired
     public void setModelMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
+        ConvertEntityToDTO.modelMapper = modelMapper;
     }
 
 //  метод, преобразующий Comment в CommentDTO

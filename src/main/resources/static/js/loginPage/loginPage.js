@@ -12,7 +12,8 @@
 (function (){
     let credentialsWarning = document.querySelector(".credentialsWarning");
 
-    if(window.location.search.includes("error"))
+    if(attention !== "")
+        console.log(attention);
         credentialsWarning.style.display = "block";
 })()
 

@@ -1,12 +1,8 @@
 package ru.tphr.tphr.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class EditPoemDTO {
@@ -16,4 +12,10 @@ public class EditPoemDTO {
     private String fileName;
     private String releaseDate;
 
+    public EditPoemDTO(long id, String header, String fileName, String releaseDate) {
+        this.id = id;
+        this.header = header;
+        this.fileName = fileName;
+        this.releaseDate = releaseDate;
+    }
 }

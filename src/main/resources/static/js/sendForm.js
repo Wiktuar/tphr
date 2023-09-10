@@ -8,6 +8,7 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirm_password");
 const imageAva = document.getElementById("inp_img");
+// const reCaptcha = document.getElementById("g-recaptcha-response");
 const vk = document.getElementById("vk");
 const tg = document.getElementById("tg");
 const yt = document.getElementById("yt");
@@ -25,6 +26,12 @@ function _checkFormFields(){
     const checkEmailPattern = /[^0-9A-Za-z@.]/;
     const checkEmptyPattern = /^\s*$/;
     // const checkSpacePattern = /[^\s]/;
+
+    let recaptcha = grecaptcha.getResponse();
+    if(recaptcha.length === 0){
+        mistakeMethod("Пожалуйста, подтвердите, что Вы человек");
+        return true;
+    }
 
     if(checkEmptyPattern.test(firstName.value)){
         mistakeMethod('Поле "Имя" пустое');
@@ -103,6 +110,7 @@ $regBtn.addEventListener("click", e => {
     formData.append("email", email.value);
     formData.append("password", password.value);
     formData.append("pathToAvatar", imageAva.value);
+    formData.append("recaptcha-response", grecaptcha.getResponse());
     formData.append("vk", vk.value);
     formData.append("tg", tg.value);
     formData.append("yt", yt.value);
@@ -115,10 +123,13 @@ $regBtn.addEventListener("click", e => {
             if(response.status === 400) {
                 attentionWindow.open();
                 attentionWindow.setContent(`<p>Аккаунт с почтой <span style="red">${email.value}</span> уже занят</p>`);
+            } else if(response.status === 200){
+                attentionWindow.open();
+                attentionWindow.setContent(`<p>Ошибка валидации капчи. Попробуйте еще раз</p>`);
             } else if (response.status === 200){
                 attentionWindow.open();
                 attentionWindow.setTitle(`<p style="text-align: center; font-size: 20px">Поздравляем!</p>`);
-                attentionWindow.setContent(`<p>Вы успешно зарегистрированы. 
+                attentionWindow.setContent(`<p>Вы успешно зарегистрированы.
                         На Ваш email мы направили письмо с ссылкой для активации Вашего аккаунта</p>`);
                 attentionWindow.setHandLer();
             }

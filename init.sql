@@ -57,18 +57,23 @@ create table tokens(
 # создание таблицы "Стихи"
 create table poems
 (
-    id           bigint auto_increment
-        primary key,
-    header       varchar(40)  not null,
-    content      text         not null,
-    release_date timestamp    null,
-    file_name    varchar(255) null,
-    author_id    bigint       not null,
+    id              bigint auto_increment primary key,
+    header          varchar(40)  not null,
+    poem_preview    text         not null,
+    release_date    varchar(20)  not null ,
+    file_name       varchar(255) not null,
+    author_id       bigint       not null,
     constraint author_id_fk1
         foreign key (author_id) references authors (id)
 );
 
-
+# таблица содержания стихотворения
+create table contents (
+    content      text    not null,
+    id           bigint  not null,
+    primary key (id),
+    foreign key (id) references poems (id)
+);
 
 # создание таблицы "Категории"
 create table categories
@@ -77,19 +82,21 @@ create table categories
     category_name varchar(30) null
 );
 
+drop table comments;
+
 # создание таблицы комментариев
 create table comments
 (
     id            bigint auto_increment primary key,
     text          varchar(702) not null,
     time_stamp    varchar(25)  not null,
-    author_id     bigint       not null,
-    poem_id       bigint       not null,
+    author_id     bigint       null,
+    poem_id       bigint       null,
     constraint  author_id_fk3
         foreign key (author_id) references authors (id),
     constraint  poem_id_fk1
         foreign key (poem_id) references poems(id)
-)
+);
 
 # создание таблицы для лайков
 create table poems_likes (

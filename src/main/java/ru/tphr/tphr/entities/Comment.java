@@ -3,7 +3,7 @@ package ru.tphr.tphr.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.tphr.tphr.DTO.AuthorDTO;
+import ru.tphr.tphr.entities.poem.Poem;
 import ru.tphr.tphr.entities.security.Author;
 
 import javax.persistence.*;

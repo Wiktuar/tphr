@@ -1,6 +1,7 @@
 package ru.tphr.tphr.entities;
 
 import lombok.Data;
+import ru.tphr.tphr.entities.poem.Poem;
 
 import javax.persistence.*;
 import java.util.Set;

@@ -7,7 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.entities.security.PasswordResetToken;
 import ru.tphr.tphr.exceptions.TokenExistsException;
@@ -15,9 +19,9 @@ import ru.tphr.tphr.services.AuthorService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
-@RequestMapping("/")
 public class LoginController {
 
     @Value("${upload.path}")
@@ -31,8 +35,8 @@ public class LoginController {
     }
 
     // получение страницы регистрации автора
-    @GetMapping
-    public String getRegistrationPage(HttpServletRequest request){
+    @GetMapping("registration")
+    public String getRegistrationPage(){
         return "personal/registration";
     }
 
@@ -85,11 +89,35 @@ public class LoginController {
 //    метод, помогающий обраотать случай, когда пользователь аутентифицировался, перешел куда, и ему нужно нажать "Назад"
 //    и при этом не попасть снова на форму логирования
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String showLoginForm(Model model,
+                                HttpServletRequest request) {
+//        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+//        String redirect = null;
+//        String userName = null;
+//        String password = null;
+//        if(map != null){
+//            for (Map.Entry<String, ?> entry : map.entrySet()) {
+//                String k = entry.getKey();
+//                Object v = entry.getValue();
+//                System.out.println(k + " " + v);
+//            }
+//            redirect = (String) map.get("flashAttr");
+//            userName = (String) map.get("username");
+//            password = (String) map.get("password");
+//        }
+        System.out.println("Вызов метода");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            System.out.println("Блок аутентификации");
+//            if(redirect != null){
+//                System.out.println("Записываю атрибуты");
+//                model.addAttribute("fail", redirect);
+//                model.addAttribute("userName", userName);
+//                model.addAttribute("password", password);
+//            }
             return "personal/login";
         }
+        System.out.println("блок редиректа");
         return "redirect:/";
     }
 }

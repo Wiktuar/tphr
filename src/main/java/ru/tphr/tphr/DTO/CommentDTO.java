@@ -15,6 +15,9 @@ public class CommentDTO {
     private String text;
     private String timeStamp;
 
+//  поле используется при добавлении нового комментария
+    private int countOfComments;
+
     @JsonProperty("author")
     private AuthorDTO authorDTO;
 

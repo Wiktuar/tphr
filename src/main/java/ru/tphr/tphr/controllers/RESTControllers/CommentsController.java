@@ -1,9 +1,9 @@
 package ru.tphr.tphr.controllers.RESTControllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tphr.tphr.DTO.CommentDTO;
 import ru.tphr.tphr.entities.Comment;
@@ -48,7 +48,7 @@ public class CommentsController {
 //  метод сохранения комментария в БД
     @PostMapping("/addComment")
     public CommentDTO addComment(@ModelAttribute Comment comment,
-                              Principal principal){
+                                 Principal principal){
         comment.setTimeStamp(Utils.convertTimeToString());
         Author author = authorService.getAuthorByEmail(principal.getName());
 
@@ -59,15 +59,18 @@ public class CommentsController {
         comment.setId(commentService.getCommentId(comment.getAuthor().getId(), comment.getTimeStamp()));;
         CommentDTO commentDTO = convertEntityToDTO.convertToCommentDTO(comment);
         commentDTO.setAuthorDTO(convertEntityToDTO.convertToAuthorDto(author));
-
+        commentDTO.setCountOfComments(Integer.parseInt(commentService.getCountOfCommentsById(comment.getPoemId())));
         return commentDTO;
     }
 
 //  метод удаления комментария по ID
-    @DeleteMapping("/deletecomment/{id}")
-    public HttpStatus deleteCommentById(@PathVariable long id){
+    @DeleteMapping("/deletecomment/{id}/{poemId}")
+    public ResponseEntity<String> deleteCommentById(@PathVariable long id,
+                                            @PathVariable long poemId){
         commentService.deleteCommentById(id);
-        return HttpStatus.OK;
+        String count = commentService.getCountOfCommentsById(poemId);
+
+        return new ResponseEntity<String>(count, HttpStatus.OK);
     }
 
     @PostMapping("/editcomment/{id}")
@@ -82,12 +85,11 @@ public class CommentsController {
         return commentDTO;
     }
 
-//  метод получения ID и текста комментария в виде CommentDTO
+//  метод получения комментария в виде CommentDTO
     @GetMapping("/getcomment/{id}")
     public CommentDTO getCommentById(@PathVariable long id) throws JsonProcessingException {
         CommentDTO commentDTO = commentService.getTextCommentById(id);
         commentDTO.setText(Utils.editPoem(commentDTO.getText()));
-        System.out.println(commentDTO.getText());
         return commentDTO;
     }
 }

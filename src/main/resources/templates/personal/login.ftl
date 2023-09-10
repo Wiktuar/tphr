@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../../static/css/reset.css">
     <link rel="stylesheet" href="../../static/css/loginPage.css"">
     <link rel="stylesheet" href="../../static/css/modal.css">
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <title>Вход на сайт</title>
 </head>
 <body>
@@ -20,13 +21,21 @@
             <form method="post" action="/login">
                 <div class="fName">
                     <label for="username">Ваша почта:</label>
-                    <input type="email" id="username" name="username" autofocus/>
+                    <input type="email" id="username" name="username" value="${username?has_content?then(username, "")}" autofocus/>
                 </div>
                 <div class="fName">
                     <label for="password">Ваш пароль:</label>
-                    <input type="password" id="password" name="password"/>
-                    <span class="showPassword" data-target="password" ></span>
+                    <input type="password" id="password" name="password" value="${password?has_content?then(password, "")}"/>
+                    <span class="showPassword" data-target="password"></span>
                 </div>
+                <p>
+                    <input id="remember" type="checkbox" name="remember-me" value="true">
+                    <label for="remember">Запомнить меня</label>
+                </p>
+                <#if flashAttr??>
+                    ${flashAttr}
+                </#if>
+                <div class="g-recaptcha" data-sitekey = "6LfWK9snAAAAANq4m051wQ-VPZP3z9UA_4ERO9Sj"></div>
                 <button type="submit" id="sendLoginForm">Войти на сайт</button>
              </form>
         </div> <!-- end wrapLoginForm -->
@@ -43,6 +52,9 @@
         <a class="loginBtn">Я забыл(-а) пароль</a>
     </div>
 
+<script>
+    let attention = ${attention?has_content?then(attention, "")};
+</script>
 <#-- Скрипты, относящиеся к модальному окну -->
 <script src="../../static/js/modal/base.js"></script>
 <script src="../../static/js/modal/plugins/modal.js"></script>

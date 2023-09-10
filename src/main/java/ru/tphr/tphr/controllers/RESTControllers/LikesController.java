@@ -5,12 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tphr.tphr.DTO.LikesDto;
-import ru.tphr.tphr.entities.Poem;
+import ru.tphr.tphr.DTO.LikesPoemDto;
+import ru.tphr.tphr.entities.poem.Poem;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.PoemService;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 public class LikesController {
@@ -27,20 +29,21 @@ public class LikesController {
         this.poemService = poemService;
     }
 
+//  добавление или удаление лайка
     @GetMapping("/poem/likes/{id}")
     public String manageLikes(@PathVariable long id,
-                              Principal principal){
+                              Principal principal) {
         Author author = authorService.getAuthorByEmail(principal.getName());
-        LikesDto l  = poemService.getLikes(id);
-        l.getSetOfLikes().forEach(l1 -> System.out.println(l1.getFirstName()));
-//        System.out.println(p == null);
-//        System.out.println(p.getLikes().size());
-//        p.getLikes().forEach(a -> System.out.println(a.getFirstName()));
-//        System.out.println(p.getLikes().size());
-//        System.out.println(p.getLikes().contains(author));
-//        p.getLikes().remove(author);
-//        System.out.println(p.getLikes().size());
-//        poemService.savePoemInDB(p);
-        return "{\"status\": \"1\"}";
+        Poem poem = poemService.getListOfLikes(id);
+        boolean status = false;
+        if (!poem.getLikes().contains(author)) {
+            poem.getLikes().add(author);
+            status = true;
+            poemService.savePoem(poem);
+        } else {
+            poem.getLikes().remove(author);
+            poemService.savePoem(poem);
+        }
+        return String.format("{\"status\": %s, \"count\": %d}", status, poem.getLikes().size());
     }
 }

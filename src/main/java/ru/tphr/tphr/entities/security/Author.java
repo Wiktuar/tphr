@@ -1,11 +1,9 @@
 package ru.tphr.tphr.entities.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import ru.tphr.tphr.entities.Comment;
-import ru.tphr.tphr.entities.Poem;
+import ru.tphr.tphr.entities.poem.Poem;
 
 import javax.persistence.*;
 import java.util.List;

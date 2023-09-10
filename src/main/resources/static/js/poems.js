@@ -1,5 +1,5 @@
 //расположение фотографии в зависимости от соотношения длины и ширины
-(function(){
+(function resizePoemImage(){
     let poemImage = document.getElementsByClassName("poem-image");
 
     for(let image of poemImage){
@@ -9,9 +9,7 @@
             image.style.width = '60%';
         }
     }
-})()
-
-
+})();
 
 // отображение загруженной фотографии на обложку стиха
 const image = document.getElementById("image");

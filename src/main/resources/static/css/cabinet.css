@@ -68,7 +68,7 @@ ul {
     padding: 10px;
 }
 
-.flex-wrapper {
+.flex-wrapper1 {
     display: flex;
     justify-content: center;
 }
@@ -147,7 +147,7 @@ ul {
         width: 100%;
     }
 
-    .flex-wrapper {
+    .flex-wrapper1 {
         flex-direction: column;
     }
 
