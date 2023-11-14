@@ -35,7 +35,7 @@ public class LoginController {
     }
 
     // получение страницы регистрации автора
-    @GetMapping("registration")
+    @GetMapping("/registration")
     public String getRegistrationPage(){
         return "personal/registration";
     }
@@ -69,6 +69,7 @@ public class LoginController {
         return "personal/activation";
     }
 
+//  метод получения страницы сброса пароля
     @GetMapping("/reset/{token}")
     public String resetPassword(@PathVariable("token") String token,
                                 Model model){
@@ -105,7 +106,7 @@ public class LoginController {
 //            userName = (String) map.get("username");
 //            password = (String) map.get("password");
 //        }
-        System.out.println("Вызов метода");
+        System.out.println("Вызов метода showLoginForm из LoginController");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             System.out.println("Блок аутентификации");

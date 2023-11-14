@@ -13,11 +13,10 @@
 </head>
 <body>
     <div class="container">
-        <!-- Форма логирования в личном кабинете -->
+        <#-- Форма логирования в личном кабинете    -->
         <div class="wrapLoginForm">
             <H2>Добро пожаловать!</H2>
-                <div class="credentialsWarning"> К сожалению, пользователь с такими учетными данными не найден!
-                    Пожалуйста, попробуйте еще раз</div>
+            <div class="authenticationWarning"></div>
             <form method="post" action="/login">
                 <div class="fName">
                     <label for="username">Ваша почта:</label>
@@ -29,16 +28,12 @@
                     <span class="showPassword" data-target="password"></span>
                 </div>
                 <p>
-                    <input id="remember" type="checkbox" name="remember-me" value="true">
+                    <input id="remember" type="checkbox" name="remember-me">
                     <label for="remember">Запомнить меня</label>
                 </p>
-                <#if flashAttr??>
-                    ${flashAttr}
-                </#if>
-                <div class="g-recaptcha" data-sitekey = "6LfWK9snAAAAANq4m051wQ-VPZP3z9UA_4ERO9Sj"></div>
                 <button type="submit" id="sendLoginForm">Войти на сайт</button>
              </form>
-        </div> <!-- end wrapLoginForm -->
+        </div> <#-- end wrapLoginForm -->
 
     <#--Блок напоминания пароля-->
         <div class="remindEmail unVisible">
@@ -47,14 +42,9 @@
                 <input type="email" id="email" name="email">
                 <button type="submit" class="remindBtn">Напомнить пароль</button>
             </form>
-        </div><!-- end remindEmmail -->
+        </div><#-- end remindEmmail -->
         <#--атрибут "href" удален, поскольку при пустом его значении не отображается окно напоминания пароля -->
         <a class="loginBtn">Я забыл(-а) пароль</a>
-    </div>
-
-<script>
-    let attention = ${attention?has_content?then(attention, "")};
-</script>
 <#-- Скрипты, относящиеся к модальному окну -->
 <script src="../../static/js/modal/base.js"></script>
 <script src="../../static/js/modal/plugins/modal.js"></script>

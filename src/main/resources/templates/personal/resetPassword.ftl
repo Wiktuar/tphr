@@ -15,7 +15,7 @@
     <!-- Форма создания нового пароля -->
     <div class="wrapLoginForm">
         <H2>Придумайте новый пароль</H2>
-        <div class="credentialsWarning"></div>
+        <div class="authenticationWarning"></div>
         <form>
             <input type="hidden" id="id" name="id" value="${author_id}">
             <div class="fName">

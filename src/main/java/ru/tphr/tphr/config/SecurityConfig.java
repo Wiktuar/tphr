@@ -27,24 +27,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.List;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private AuthorService authorService;
+    private DataSource dataSource;
 
     @Autowired
     public void setAuthorService(AuthorService authorService) {
         this.authorService = authorService;
     }
 
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(getCustomLoginFilter(), CustomLoginFilter.class)
                 .csrf().disable()
                     .authorizeRequests()
                     .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
@@ -54,28 +58,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .formLogin()
                     .loginPage("/login")
                     .permitAll()
-                    .defaultSuccessUrl("/")
-                .and()
-                    .rememberMe()
-                    .key("secretTphr")
-                    .tokenValiditySeconds(172800)
+                    .failureHandler(authenticationFailureHandler())
+                    .successHandler(customAuthenticationSuccessHandler())
                 .and()
                     .logout()
                     .permitAll()
                     .logoutSuccessUrl("/")
-                    .deleteCookies("JSESSIONID");
+                    .deleteCookies("JSESSIONID")
+                .and()
+                    .rememberMe()
+                    .key("ghjtyughj")
+                    .userDetailsService(authorService)
+                    .tokenValiditySeconds(30*24*60*60)
+                    .tokenRepository(tokenRepository());
     }
 
     @Bean
-    public PersistentTokenRepository persistentTokenRepository(){
-        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-        jdbcTokenRepository.setDataSource();
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler(){
+        return new CustomAuthenticationSuccessHandler();
     }
 
-//    @Bean
-//    public AuthenticationFailureHandler authenticationFailureHandler() {
-//        return new CustomAuthenticationFailureHandler();
-//    }
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -92,37 +98,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProvider.setUserDetailsService(authorService);
+        authenticationProvider.setPreAuthenticationChecks(new AccountStatusUserDetailsChecker());
+        authenticationProvider.setHideUserNotFoundExceptions(false);
         return authenticationProvider;
     }
 
-    public CustomLoginFilter getCustomLoginFilter() throws Exception{
-        CustomLoginFilter filter = new CustomLoginFilter("/login","POST");
-        filter.setAuthenticationManager(authenticationManagerBean());
-        filter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                System.out.println("Успех");
-                HttpSession session = request.getSession();
-                SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-                if(savedRequest != null) {
-                    response.sendRedirect(savedRequest.getRedirectUrl());
-                } else {
-                    response.sendRedirect("/");
-                }
-            }
-        });
-        filter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(){
-
-            @Override
-            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                String username = request.getParameter("username");
-                String password = request.getParameter("password");
-                String failUrl = String.format("/auth-error?username=%s&password=%s", username, password);
-                response.sendRedirect(failUrl);
-            }
-        });
-
-        return filter;
+    @Bean
+    public PersistentTokenRepository tokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl=new JdbcTokenRepositoryImpl();
+        jdbcTokenRepositoryImpl.setDataSource(dataSource);
+        return jdbcTokenRepositoryImpl;
     }
 }
 

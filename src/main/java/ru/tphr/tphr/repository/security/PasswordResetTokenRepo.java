@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.tphr.tphr.entities.security.PasswordResetToken;
 
 @Repository
-public interface PasswordTokenRepo extends CrudRepository<PasswordResetToken, Long> {
+public interface PasswordResetTokenRepo extends CrudRepository<PasswordResetToken, Long> {
     PasswordResetToken findByToken(String token);
 }

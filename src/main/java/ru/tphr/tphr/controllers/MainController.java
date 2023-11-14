@@ -27,6 +27,7 @@ public class MainController {
         this.poemService = poemService;
     }
 
+//  метод получения стихотворений на индексной странице
     @GetMapping("/")
     public String getMainPage(Model model, Principal principal){ ;
         String principalName = null;
@@ -46,7 +47,7 @@ public class MainController {
                                      HttpServletRequest request,
                                      RedirectAttributes ra){
         System.out.println(username);
-        ra.addFlashAttribute("flashAttr", "Gожалуйста, подтвердите, что Вы не робот!");
+        ra.addFlashAttribute("flashAttr", "Пожалуста, подтвердите, что Вы не робот!");
         ra.addFlashAttribute("username", username);
         ra.addFlashAttribute("password", password);;
         return new RedirectView("/login", true);

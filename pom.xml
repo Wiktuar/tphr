@@ -13,9 +13,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>tphr</name>
     <description>Demo project for Spring Boot</description>
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
+
     <dependencies>
 
         <!--Основные библиотки  Spring -->
@@ -54,6 +56,13 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!-- для BasicDataSource bean  -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
         </dependency>
 
         <!--тестовая библиотека -->

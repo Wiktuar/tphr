@@ -2,21 +2,19 @@ package ru.tphr.tphr.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.tphr.tphr.DTO.AuthorDTO;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.entities.security.PasswordResetToken;
 import ru.tphr.tphr.entities.security.Role;
 import ru.tphr.tphr.entities.security.Status;
 import ru.tphr.tphr.exceptions.TokenExistsException;
 import ru.tphr.tphr.repository.security.AuthorRepo;
-import ru.tphr.tphr.repository.security.PasswordTokenRepo;
+import ru.tphr.tphr.repository.security.PasswordResetTokenRepo;
 import ru.tphr.tphr.utils.Utils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +27,7 @@ import java.util.UUID;
 public class AuthorService implements UserDetailsService {
 
     private AuthorRepo authorRepo;
-    private PasswordTokenRepo passwordTokenRepo;
+    private PasswordResetTokenRepo passwordResetTokenRepo;
     private PasswordEncoder passwordEncoder;
     private MailSenderService mailSenderService;
 
@@ -39,8 +37,8 @@ public class AuthorService implements UserDetailsService {
     }
 
     @Autowired
-    public void setPasswordTokenRepo(PasswordTokenRepo passwordTokenRepo) {
-        this.passwordTokenRepo = passwordTokenRepo;
+    public void setPasswordTokenRepo(PasswordResetTokenRepo passwordResetTokenRepo) {
+        this.passwordResetTokenRepo = passwordResetTokenRepo;
     }
 
     @Autowired
@@ -58,8 +56,9 @@ public class AuthorService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Author author = authorRepo.findByEmail(email);
+
         if (author == null) {
-            throw new UsernameNotFoundException(String.format("User %s not exists", email));
+            throw new UsernameNotFoundException(String.format(" User %s is not exists!", email));
         }
 
         return new User(
@@ -76,14 +75,9 @@ public class AuthorService implements UserDetailsService {
         author.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         author.setPassword(passwordEncoder.encode(author.getPassword()));
         author.setActivationCode(UUID.randomUUID().toString());
-        author.setStatus(Status.NO_ACTIVE);
+        author.setStatus(Status.ACTIVE);
         authorRepo.save(author);
-
-        String message = String.format("Здравствуйте, %s! \n" +
-                "для активация Вашего аккаунта на нашем сайте перейдите, пожалуйста, по ссылке \n" +
-                "http://localhost:8070/activate/%s", author.getFirstName(), author.getActivationCode());
-
-        mailSenderService.send(author.getEmail(), "Активация Вашего аккаунта на tphr.ru", message);
+        mailSenderService.sendEmail(author.getEmail(), author.getFirstName());
         return true;
     }
 
@@ -102,7 +96,6 @@ public class AuthorService implements UserDetailsService {
             return false;
 
         author.setActivationCode(null);
-        author.setStatus(Status.ACTIVE);
         authorRepo.save(author);
 
         return true;
@@ -129,13 +122,13 @@ public class AuthorService implements UserDetailsService {
                 + "<p>Не переходите по ссылке если Вы помните свой прежний пароль "
                 + "или не запрашивали опцию сьроса пароля.</p>", author.getFirstName(), Utils.getSiteURL(request) + "/reset/" + token);
         mailSenderService.send(author.getEmail(), "Сброс пароля на tphr.ru", message);
-        passwordTokenRepo.save(passwordResetToken);
+        passwordResetTokenRepo.save(passwordResetToken);
     }
 
 //  метод, вовзращающий автора по токену для смены пароля
     @Transactional
     public PasswordResetToken getPasswordResetToken(String token){
-         PasswordResetToken prt = passwordTokenRepo.findByToken(token);
+         PasswordResetToken prt = passwordResetTokenRepo.findByToken(token);
          if(prt == null) throw new TokenExistsException("Автор не найден. Запросите новую ссылку " +
                  "восстановления пароля или обратитесь в техническую поддержку.");
         return prt;

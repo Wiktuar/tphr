@@ -123,7 +123,7 @@ $regBtn.addEventListener("click", e => {
             if(response.status === 400) {
                 attentionWindow.open();
                 attentionWindow.setContent(`<p>Аккаунт с почтой <span style="red">${email.value}</span> уже занят</p>`);
-            } else if(response.status === 200){
+            } else if(response.status === 401){
                 attentionWindow.open();
                 attentionWindow.setContent(`<p>Ошибка валидации капчи. Попробуйте еще раз</p>`);
             } else if (response.status === 200){

@@ -3,6 +3,7 @@ package ru.tphr.tphr.controllers.RESTControllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import ru.tphr.tphr.DTO.CaptchaResponseDto;
@@ -53,16 +54,16 @@ public class AuthorController {
     }
 
     //    метод сначала проверяет есть ли польователь в базе с таким email,
-//    а птом сохраняет
+    //    а птом сохраняет
     @PostMapping
-    public HttpStatus saveAuthorIfNotExists(@ModelAttribute Author author,
-                                            @RequestParam("recaptcha-response") String captchaResponse) throws IOException {
+    public ResponseEntity saveAuthorIfNotExists(@ModelAttribute Author author,
+                                                @RequestParam("recaptcha-response") String captchaResponse) throws IOException {
     //  часть кода отвечающаяющая за работу капчи
         String url = String.format(CAPTCHA_URL, secret, captchaResponse);
         CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
-        if(!response.isSuccess()) return HttpStatus.CONFLICT;
+        if(!response.isSuccess()) return new ResponseEntity(HttpStatus.UNAUTHORIZED);
 
-        if(authorService.getAuthorByEmail(author.getEmail()) != null ) throw new AuthorExistsException();
+      if(authorService.getAuthorByEmail(author.getEmail()) != null ) throw new AuthorExistsException();
     // создаем папку автора, куда будет сохранен его аватар
         Path targetPath = Paths.get(uploadPath + "\\" + author.getEmail());
         Files.createDirectory(targetPath);
@@ -78,6 +79,6 @@ public class AuthorController {
         }
 
         authorService.saveAuthor(author);
-        return HttpStatus.OK;
+        return ResponseEntity.ok().build();
     }
 }

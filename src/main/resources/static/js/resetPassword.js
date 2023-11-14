@@ -2,7 +2,7 @@
 const id = document.getElementById("id")
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirm_password");
-const credentialsWarning = document.querySelector(".credentialsWarning");
+const credentialsWarning = document.querySelector(".authenticationWarning");
 const submit = document.getElementById("updatePassport");
 
 //переменная приходит с шаблона. Блок кода сработает, когда пользователь вводит токен

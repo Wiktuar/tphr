@@ -18,13 +18,8 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-//        httpServletResponse.sendRedirect("/customError");
-
-
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-
-//        String jsonPayload = "{\"message\" : \"%s\", \"timestamp\" : \"%s\" }";
-//        response.getOutputStream().println(String.format(jsonPayload, e.getMessage(), Calendar.getInstance().getTime()));
-//        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
-    }
+        response.getOutputStream()
+                .println(objectMapper.writeValueAsString(e.getMessage()));
+   }
 }

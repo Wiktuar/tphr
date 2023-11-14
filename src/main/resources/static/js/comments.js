@@ -149,7 +149,6 @@ async function updateCommentById(id){
     })
 
     res.json().then(comment => {
-        console.log(comment.text);
         input.value = comment.id;
         textArea.value = comment.text;
     })

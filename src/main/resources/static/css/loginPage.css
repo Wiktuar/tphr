@@ -85,7 +85,7 @@ a {
 }
 
 /*стили появляющегося предупреждения о неверных данных*/
-.credentialsWarning {
+.authenticationWarning {
     display: none;
     margin: 0 auto;
     margin-bottom: 30px;
