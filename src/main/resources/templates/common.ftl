@@ -13,11 +13,11 @@
         <#if known>
             <div class="user-data">
                 <button type="button" class="cabinet-button">
-                    <img src="../static/img/defaultAva.png" class="user-pic" alt="аватар пользователя"> Виктор
-                </button>
+                      <img src="../static/img${authorDTO.pathToAvatar}" class="user-pic" alt="аватар пользователя"> ${authorDTO.firstName}
+                 </button>
                 <div class="dropdown-box">
                     <a href="/cabinet">Личные данные</a>
-                    <a href="/cabinet/getAll">Мои стихи</a>
+                      <a href="/cabinet/poems">Мои стихи</a>
                     <a href="#">Моя проза</a>
                     <a href="#">Моя музыка</a>
                     <a href="#">Мои рисунки</a>

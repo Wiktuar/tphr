@@ -5,8 +5,7 @@ USE tphr;
 # создание таблицы "Авторы"
 create table authors
 (
-    id              bigint auto_increment
-        primary key,
+    id              bigint auto_increment primary key,
     email           varchar(255) not null,
     first_name      varchar(50)  not null,
     last_name       varchar(100) not null,
@@ -14,6 +13,7 @@ create table authors
     activation_code varchar(255) null,
     path_to_Avatar  varchar(255) not null,
     status          varchar(40)  not null,
+    block          varchar(40)  not null,
     vk              varchar(255) null,
     tg              varchar(255) null,
     yt              varchar(255) null,
@@ -45,6 +45,7 @@ create table authors_roles
 # создание таблицы "Токены"
 use tphr;
 
+# таблица используется для восстановления забытого пароля
 create table tokens(
   id            int primary key auto_increment,
   token         varchar(100)    null,
@@ -53,6 +54,7 @@ create table tokens(
        foreign key(author_id) references authors(id)
 );
 
+# таблица используется для функции RememberMe Spring Security
 create table persistent_logins(
    username      varchar(50) not null,
    series        varchar(64) primary key,
@@ -67,7 +69,7 @@ create table poems
     id              bigint auto_increment primary key,
     header          varchar(40)  not null,
     poem_preview    text         not null,
-    release_date    varchar(20)  not null ,
+    release_date    varchar(20)  not null,
     file_name       varchar(255) not null,
     author_id       bigint       not null,
     constraint author_id_fk1

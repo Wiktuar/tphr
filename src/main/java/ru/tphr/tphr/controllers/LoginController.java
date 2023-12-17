@@ -49,6 +49,7 @@ public class LoginController {
         author.setLastName(authorFromDb.getLastName());
         author.setEmail(authorFromDb.getEmail());
         author.setActivationCode(authorFromDb.getActivationCode());
+        System.out.println(authorFromDb.getPathToAvatar());
         author.setPathToAvatar(authorFromDb.getPathToAvatar());
         author.setVk("Виктор");
         author.setTg("Виктор");
@@ -56,7 +57,6 @@ public class LoginController {
         model.addAttribute("author", author);
         return "personal/cabinet";
     }
-
 
     // активация аакаунта автора
     @GetMapping("/activate/{code}")
@@ -106,10 +106,8 @@ public class LoginController {
 //            userName = (String) map.get("username");
 //            password = (String) map.get("password");
 //        }
-        System.out.println("Вызов метода showLoginForm из LoginController");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            System.out.println("Блок аутентификации");
 //            if(redirect != null){
 //                System.out.println("Записываю атрибуты");
 //                model.addAttribute("fail", redirect);
@@ -118,7 +116,6 @@ public class LoginController {
 //            }
             return "personal/login";
         }
-        System.out.println("блок редиректа");
         return "redirect:/";
     }
 }

@@ -13,11 +13,11 @@
 <div class="container">
     <div class="left-sb">
         <ul>
-            <li class="menu-item"><a href="/person">Личные данные</a></li>
-            <li class="menu-item"><a href="/poems">Мои стихи</a></li>
-            <li class="menu-item"><a href="/tails">Моя проза</a></li>
-            <li class="menu-item"><a href="/music">Моя музыка</a></li>
-            <li class="menu-item"><a href="/draws">Мои рисунки</a></li>
+            <li class="menu-item"><a href="/cabinet">Личные данные</a></li>
+            <li class="menu-item"><a href="/cabinet/poems">Мои стихи</a></li>
+            <li class="menu-item"><a href="/cabinet/tails">Моя проза</a></li>
+            <li class="menu-item"><a href="/cabinet/music">Моя музыка</a></li>
+            <li class="menu-item"><a href="/cabinet/draws">Мои рисунки</a></li>
         </ul>
     </div>
 

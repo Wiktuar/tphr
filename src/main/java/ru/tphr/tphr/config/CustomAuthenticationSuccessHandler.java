@@ -22,7 +22,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         System.out.println("Успех");
         HttpSession session = httpServletRequest.getSession();
         SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-        String targetUrl = ((SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST")).getRedirectUrl();
+        String targetUrl = null;
+        if(session.getAttribute("SPRING_SECURITY_SAVED_REQUEST") != null){
+            targetUrl = ((SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST")).getRedirectUrl();
+        } else {
+            targetUrl = "http://localhost:8070/";
+        }
         httpServletResponse.setStatus(200);
         httpServletResponse.getOutputStream()
                 .println(objectMapper.writeValueAsString(targetUrl));

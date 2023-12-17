@@ -16,7 +16,10 @@
         <#-- Форма логирования в личном кабинете    -->
         <div class="wrapLoginForm">
             <H2>Добро пожаловать!</H2>
-            <div class="authenticationWarning"></div>
+            <div class="authenticationWarning">
+                <p class="authMessage"></p>
+                <div class="repeatBtn">Отправить письмо повторно</div>
+            </div>
             <form method="post" action="/login">
                 <div class="fName">
                     <label for="username">Ваша почта:</label>
@@ -45,6 +48,7 @@
         </div><#-- end remindEmmail -->
         <#--атрибут "href" удален, поскольку при пустом его значении не отображается окно напоминания пароля -->
         <a class="loginBtn">Я забыл(-а) пароль</a>
+        <#-- @тот блок появляется в сообщении authenticationWarning, когда пользователь не активировал аккаунт        -->
 <#-- Скрипты, относящиеся к модальному окну -->
 <script src="../../static/js/modal/base.js"></script>
 <script src="../../static/js/modal/plugins/modal.js"></script>
@@ -53,5 +57,6 @@
 <#-- Скрипты, относящиеся к отправке запроса на восстановление пароля   -->
 <script src="../../static/js/loginPage/loginPage.js"></script>
 <script src="../../static/js/loginPage/remindPassword.js"></script>
+<script src="../../static/js/loginPage/repeatActivationCode.js"></script>
 </body>
 </html>

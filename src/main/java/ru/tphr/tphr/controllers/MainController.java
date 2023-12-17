@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+import ru.tphr.tphr.DTO.AuthorDTO;
 import ru.tphr.tphr.DTO.LikesPoemDto;
+import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.PoemService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,48 +23,59 @@ import java.util.List;
 public class MainController {
 
     private PoemService poemService;
+    private AuthorService authorService;
 
     @Autowired
     public void setPoemService(PoemService poemService) {
         this.poemService = poemService;
     }
 
-//  метод получения стихотворений на индексной странице
+    @Autowired
+    public void setAuthorService(AuthorService authorService) {
+        this.authorService = authorService;
+    }
+
+    //  метод получения стихотворений на индексной странице
     @GetMapping("/")
-    public String getMainPage(Model model, Principal principal){ ;
+    public String getMainPage(Model model, Principal principal){
+        AuthorDTO authorDTO = null;
         String principalName = null;
         if(principal != null){
             principalName = principal.getName();
+            authorDTO = authorService.getAuthorDTOByEmail(principalName);
+            System.out.println(authorDTO.getFirstName());
+            System.out.println(authorDTO.getPathToAvatar());
         } else {
             principalName = "default";
         }
         List<LikesPoemDto> lpd =  poemService.getAllPoems(principalName);
+        model.addAttribute("authorDTO", authorDTO);
         model.addAttribute("poems", lpd);
         return "index";
     }
 
-    @PostMapping("/fail")
-    public RedirectView getLoginPage(@RequestParam String username,
-                                     @RequestParam String password,
-                                     HttpServletRequest request,
-                                     RedirectAttributes ra){
-        System.out.println(username);
-        ra.addFlashAttribute("flashAttr", "Пожалуста, подтвердите, что Вы не робот!");
-        ra.addFlashAttribute("username", username);
-        ra.addFlashAttribute("password", password);;
-        return new RedirectView("/login", true);
-    }
+//    @PostMapping("/fail")
+//    public RedirectView getLoginPage(@RequestParam String username,
+//                                     @RequestParam String password,
+//                                     HttpServletRequest request,
+//                                     RedirectAttributes ra){
+//        System.out.println(username);
+//        ra.addFlashAttribute("flashAttr", "Пожалуста, подтвердите, что Вы не робот!");
+//        ra.addFlashAttribute("username", username);
+//        ra.addFlashAttribute("password", password);;
+//        return new RedirectView("/login", true);
+//    }
 
-    @GetMapping("/auth-error")
-    public RedirectView getFailAuth(@RequestParam String username,
-                              @RequestParam String password,
-                              HttpServletRequest request,
-                              RedirectAttributes ra){
-        System.out.println("Вызов GET метода при ошибке " + username);
-        System.out.println("Вызов GET метода при ошибке " + password);
-        ra.addFlashAttribute("username", username);
-        ra.addFlashAttribute("password", password);
-        ra.addFlashAttribute("attention", "true");
-        return new RedirectView("/login", true);
-    }
+//    @GetMapping("/auth-error")
+//    public RedirectView getFailAuth(@RequestParam String username,
+//                              @RequestParam String password,
+//                              HttpServletRequest request,
+//                              RedirectAttributes ra){
+//        System.out.println("Вызов GET метода при ошибке " + username);
+//        System.out.println("Вызов GET метода при ошибке " + password);
+//        ra.addFlashAttribute("username", username);
+//        ra.addFlashAttribute("password", password);
+//        ra.addFlashAttribute("attention", "true");
+//        return new RedirectView("/login", true);
+//    }
 }

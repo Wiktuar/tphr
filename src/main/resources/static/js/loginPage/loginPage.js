@@ -1,55 +1,56 @@
 // функция, отвечающая за появление формы напоминания пароля
-// (function(){
-//     const btn = document.querySelector(".loginBtn");
-//     const remindEmail = document.querySelector(".remindEmail");
-//
-//     btn.addEventListener("click", function () {
-//         remindEmail.classList.toggle("unVisible");
-//     });
-// })();
-//
-// // функция, отображающая в зависимости от  наличия парамтра "/error" блок с предупреждением о неверно введенных данных
-// (function (){
-//     let credentialsWarning = document.querySelector(".authenticationWarning");
-//
-//     if(attention !== "")
-//         console.log(attention);
-//         credentialsWarning.style.display = "block";
-// })()
-//
-// // изменение типа инпута пароля и подтверждения пароля для текстового отображения введенных данных
-// const $btnShowPassword = document.querySelector(".showPassword");
-// const $inputPass = document.getElementById("password");
-//
-// $btnShowPassword.addEventListener("click", () => {
-//     if($inputPass.getAttribute('type') === 'password'){
-//         $inputPass.setAttribute('type', 'text');
-//         $btnShowPassword.classList.add('view');
-//     } else {
-//         $inputPass.setAttribute('type', 'password');
-//         $btnShowPassword.classList.remove('view');
-//     }
-// })
+ (function(){
+    const btn = document.querySelector(".loginBtn");
+    const remindEmail = document.querySelector(".remindEmail");
+
+    btn.addEventListener("click", function () {
+        remindEmail.classList.toggle("unVisible");
+    });
+})();
+
+
+// изменение типа инпута пароля и подтверждения пароля для текстового отображения введенных данных
+const $btnShowPassword = document.querySelector(".showPassword");
+const $inputPass = document.getElementById("password");
+
+
+$btnShowPassword.addEventListener("click", () => {
+
+    if($inputPass.getAttribute('type') === 'password'){
+        $inputPass.setAttribute('type', 'text');
+        $btnShowPassword.classList.add('view');
+    } else {
+        $inputPass.setAttribute('type', 'password');
+        $btnShowPassword.classList.remove('view');
+    }
+})
 
 let sendFormBtn = document.getElementById("sendLoginForm");
-sendFormBtn.addEventListener("click", e => loginUser(e))
+sendFormBtn.addEventListener("click", e => loginUser(e));
 
 // функция обработки результата запроса на логгирование
 function handleJsonResult(status, result){
-    console.log(result);
-    console.log(status);
     let authenticationWarning = document.querySelector(".authenticationWarning");
+    let authMessage = document.querySelector(".authMessage");
+    let repeatBtn = document.querySelector(".repeatBtn");
     if(status === 401){
-        console.log(result);
-        if(result.includes("Bad credentials"))authenticationWarning.textContent = "Неыерпный пароль";
-        else if(result.includes("not exists"))
-            authenticationWarning.textContent ="Пользователь с таким логином не найллен";
-        else if(result.includes("not active"))
-            authenticationWarning.textContent = "Ваш аккаунт не активен. Пожалуйста, активируйте его," +
-                "воспользовавшись отправленной Вам на почту ссылкой. Если письмо не пришло, проверьте папку \"Спам\"" +
-                "Отправить письмо повторно";
-        else authenticationWarning.textContent = "Ваш аккаунт заблокирован администрацией сайта";
-        authenticationWarning.style.display = "block";
+        if(result.includes("Bad credentials")){
+            authenticationWarning.style.display = 'block';
+            authMessage.textContent = "Неыерпный пароль";
+        }
+        else if(result.includes("not exists")){
+            authenticationWarning.style.display = 'block';
+            authMessage.textContent ="Пользователь с таким логином не найллен";
+        }
+        else if(result.includes("is disabled")){
+            authenticationWarning.style.display = 'block';
+            repeatBtn.style.display = 'block';
+            authMessage.textContent = "Ваш аккаунт не активен";
+        }
+        else {
+            authenticationWarning.style.display = 'block';
+            authMessage.textContent = "Ваш аккаунт заблокирован администрацией сайта";
+        }
     } else {
         window.location.href = result;
     }

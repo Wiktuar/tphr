@@ -7,8 +7,6 @@ import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.exceptions.AuthorExistsException;
 import ru.tphr.tphr.services.AuthorService;
 
-import javax.servlet.http.HttpServletRequest;
-
 // метод получения страницы "resetpassword.ftl" находится в классе LoginController.java
 @RestController
 @RequestMapping("/reset")
@@ -23,12 +21,11 @@ public class ResetPasswordController {
 //  метод, высылающий письмо на электронную почту со ссылкой на напоминание пароля
 //  в качестве аргумента получает адрес почты, на который нужно отправить ссылку
     @PostMapping("/remindPassword")
-    public HttpStatus resetPassword(@RequestParam String email,
-                                    HttpServletRequest request){
+    public HttpStatus resetPassword(@RequestParam String email){
         Author author = authorService.getAuthorByEmail(email);
         if (author == null)
             throw new AuthorExistsException();
-        authorService.createResetPassToken(author, request);
+        authorService.createResetPassToken(author);
         return HttpStatus.OK;
     }
 

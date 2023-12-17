@@ -8,16 +8,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.tphr.tphr.entities.security.Author;
-import ru.tphr.tphr.entities.security.PasswordResetToken;
-import ru.tphr.tphr.entities.security.Role;
-import ru.tphr.tphr.entities.security.Status;
+import ru.tphr.tphr.DTO.AuthorDTO;
+import ru.tphr.tphr.entities.security.*;
 import ru.tphr.tphr.exceptions.TokenExistsException;
 import ru.tphr.tphr.repository.security.AuthorRepo;
 import ru.tphr.tphr.repository.security.PasswordResetTokenRepo;
 import ru.tphr.tphr.utils.Utils;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.UUID;
@@ -63,8 +60,10 @@ public class AuthorService implements UserDetailsService {
 
         return new User(
                 author.getEmail(), author.getPassword(),
-                author.isActive(), author.isActive(),
-                author.isActive(), author.isActive(),
+                author.isActive(),
+                author.isActive(),
+                author.isActive(),
+                author.isBlock(),
                 Utils.mapRoleToAuthority(author.getRoles())
         );
     }
@@ -75,9 +74,10 @@ public class AuthorService implements UserDetailsService {
         author.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         author.setPassword(passwordEncoder.encode(author.getPassword()));
         author.setActivationCode(UUID.randomUUID().toString());
-        author.setStatus(Status.ACTIVE);
+        author.setStatus(Status.NO_ACTIVE);
+        author.setBlock(Block.NO_BANNED);
         authorRepo.save(author);
-        mailSenderService.sendEmail(author.getEmail(), author.getFirstName());
+        mailSenderService.sendEmail(author.getEmail(), author.getFirstName(), author.getActivationCode());
         return true;
     }
 
@@ -85,7 +85,9 @@ public class AuthorService implements UserDetailsService {
     @Transactional
     public void updateAuthorById(String password, long id) {
         password = passwordEncoder.encode(password);
+        passwordResetTokenRepo.deleteByAuthorId(id);
         authorRepo.updateAuthor(password, id);
+
     }
 
     // активация пользователя по коду активации
@@ -96,9 +98,17 @@ public class AuthorService implements UserDetailsService {
             return false;
 
         author.setActivationCode(null);
+        author.setStatus(Status.ACTIVE);
         authorRepo.save(author);
 
         return true;
+    }
+
+    // повторная активация пользователя по коду активации
+    public void getRepeatActivationEmail(Author author){
+        author.setActivationCode(UUID.randomUUID().toString());
+        authorRepo.save(author);
+        mailSenderService.sendEmail(author.getEmail(), author.getFirstName(), author.getActivationCode());
     }
 
 //    метод получения автора по почте. Необходим для проверки в контроллере
@@ -110,18 +120,10 @@ public class AuthorService implements UserDetailsService {
     }
 
 //  метод создания токена для сброса пароля
-    public void createResetPassToken(Author author, HttpServletRequest request) {
+    public void createResetPassToken(Author author) {
         String token = UUID.randomUUID().toString();
         PasswordResetToken passwordResetToken = new PasswordResetToken(token, author);
-
-        String message = String.format("<p>Здравсвуйте, %s</p>"
-                + "<p>Вы запраивали сброс пароля на нашем сайте.</p>"
-                + "<p>Нажмите на ссылке ниже, чтобы сбросить Ваш пароль:</p>"
-                + "<p><a href=\"%s\">Change my password</a></p>"
-                + "<br>"
-                + "<p>Не переходите по ссылке если Вы помните свой прежний пароль "
-                + "или не запрашивали опцию сьроса пароля.</p>", author.getFirstName(), Utils.getSiteURL(request) + "/reset/" + token);
-        mailSenderService.send(author.getEmail(), "Сброс пароля на tphr.ru", message);
+        mailSenderService.sendNewPassword(author.getEmail(), author.getFirstName(), token);
         passwordResetTokenRepo.save(passwordResetToken);
     }
 
@@ -137,6 +139,11 @@ public class AuthorService implements UserDetailsService {
 //  метод получения ID автора по его email
     public Long getAuthorId(String email){
         return authorRepo.getAuthorId(email);
+    }
+
+//  метод получения AuthorDTO по его почте
+    public AuthorDTO getAuthorDTOByEmail(String email){
+        return authorRepo.getAuthorDTOByEmail(email);
     }
 }
 

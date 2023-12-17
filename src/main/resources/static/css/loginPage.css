@@ -34,8 +34,7 @@ form {
 }
 
 .fName {
-    margin: 0 auto;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
     max-width: 400px;
     position: relative;
 }
@@ -65,8 +64,7 @@ input:focus {
 
 button, a {
     display: block;
-    margin: 0 auto;
-    margin-top: 30px;
+    margin: 30px auto 0;
     padding: 8px 24px;
     width: 300px;
     height: 45px;
@@ -87,14 +85,19 @@ a {
 /*стили появляющегося предупреждения о неверных данных*/
 .authenticationWarning {
     display: none;
-    margin: 0 auto;
-    margin-bottom: 30px;
+    margin: 0 auto 30px;
     padding: 10px 5px;
-    max-width: 500px;
+    max-width: 500px;;
     background: red;
     color: #f5f6fa;
     text-align: center;
     font-size: 20px;
+}
+
+.authMessage {
+    margin-bottom: 15px;
+    font-size: 22px;
+    text-align: center;
 }
 
 /* блок напоминания пароля */
@@ -154,4 +157,12 @@ a {
     margin-top: 15px;
     margin-left: 15px;
     width: 250px;    
+}
+
+.repeatBtn {
+    display: none;
+    background-color: yellow;
+    color: red;
+    font-size: 20px;
+    padding: 1rem 2rem;
 }

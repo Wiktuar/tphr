@@ -58,6 +58,13 @@ public class Author {
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
+    @JsonIgnore
+    @Column(name = "block")
+    @Enumerated(value = EnumType.STRING)
+    private Block block;
+
+
+
     //  social nets
     private String vk;
     private String tg;
@@ -76,6 +83,11 @@ public class Author {
     public boolean isActive() {
         return getStatus().equals(Status.ACTIVE);
     }
+
+    public boolean isBlock(){
+        return getBlock().equals(Block.NO_BANNED);
+    }
+
 
     //добавление и удаление роли
     public void addRole(Role role){

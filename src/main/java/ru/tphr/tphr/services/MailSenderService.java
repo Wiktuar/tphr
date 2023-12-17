@@ -50,15 +50,35 @@ public class MailSenderService {
         mailSender.send(mailMessage);
     }
 
+//  метод отправки сообщения для смены пароля
     @Async
-    public void sendEmail(String email, String name){
+    public void sendNewPassword(String email, String name, String token){
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+
+        try{
+            helper.setSubject("Сброс пароля на сайте tphr.ru");
+            helper.setTo(email);
+            String emailContent = getEmailContent("changePasswordEmail.ftl", name, token);
+            helper.setText(emailContent, true);
+        } catch (MessagingException ex){
+            System.out.println("Ошибка при указании темы письма, адреса адресата или получения текста письма");
+        }
+
+        mailSender.send(mimeMessage);
+
+    }
+
+//  метод отправки сообщений о необходимости активации аккаунта
+    @Async
+    public void sendEmail(String email, String name, String activationCode){
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 
         try{
             helper.setSubject("Регистрация на сайте tphr.ru");
             helper.setTo(email);
-            String emailContent = getEmailContent(name);
+            String emailContent = getEmailContent("email.ftl", name, activationCode);
             helper.setText(emailContent, true);
         } catch (MessagingException ex){
             System.out.println("Ошибка при указании темы письма, адреса адресата или получения текста письма");
@@ -68,12 +88,13 @@ public class MailSenderService {
     }
 
 //  метод, который получает шаблон и внедряет в него данные из карты
-    String getEmailContent(String name) {
+    String getEmailContent(String template, String name, String code) {
         StringWriter stringWriter = new StringWriter();
         Map<String, Object> model = new HashMap<>();
         model.put("name", name);
+        model.put("code", code);
         try{
-            configuration.getTemplate("email.ftl").process(model, stringWriter);
+            configuration.getTemplate(template).process(model, stringWriter);
         } catch (IOException | TemplateException ex){
             System.out.println("Ошибка при формирования письма для подтверждения регистрации");
         }

@@ -63,7 +63,7 @@ public class CabinetController {
     }
 
 //  получение всех стихотворений одного автора
-    @GetMapping("/cabinet/getAll")
+    @GetMapping("/cabinet/poems")
     public String getAllLikesPoemDto(Model model,
                                      Principal principal){
         List<LikesPoemDto> lpd =  poemService.getPoemsByUser(principal.getName(),principal.getName());
@@ -143,12 +143,13 @@ public class CabinetController {
             content.setPoem(poem);
             contentService.savePoemInDB(content);
         }
-        return "redirect:/cabinet/getAll";
+        return "redirect:/cabinet/poems";
     }
 
     @GetMapping("/cabinet/delete/poem/{id}")
     public String deletePoemById(@PathVariable long id){
         contentService.deletePoemById(id);
-        return "redirect:/cabinet/getAll";
+
+        return "redirect:/cabinet/poems";
     }
 }

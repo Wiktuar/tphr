@@ -13,6 +13,10 @@ public interface AuthorRepo extends CrudRepository<Author, Long> {
     Author findByEmail(String email);
     Author findByActivationCode(String code);
 
+    @Query("select new ru.tphr.tphr.DTO.AuthorDTO(a.firstName, a.lastName, a.pathToAvatar) " +
+            "from Author a WHERE a.email = :email")
+    AuthorDTO getAuthorDTOByEmail(@Param("email") String email);
+
     @Query("SELECT a.id from Author a WHERE a.email = :email")
     long getAuthorId(@Param("email") String email);
 

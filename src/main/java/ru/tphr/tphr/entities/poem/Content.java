@@ -21,7 +21,6 @@ public class Content {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @MapsId
-//    @LazyToOne(LazyToOneOption.PROXY)
     @JoinColumn(name = "id")
     private Poem poem;
 }
