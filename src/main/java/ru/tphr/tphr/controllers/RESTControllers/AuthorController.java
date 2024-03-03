@@ -74,7 +74,7 @@ public class AuthorController {
             Files.copy(sourcePath, Paths.get(targetPath + "\\defaultAva.png"));
             author.setPathToAvatar("\\" + author.getEmail() + "/" + author.getPathToAvatar());
         } else { //  Если же пользователь добавил аватар, тогда...
-            Utils.saveAuthorsAvatar(targetPath.toString(), author.getPathToAvatar());
+            Utils.saveCircumcisedImage(targetPath.toString(), author.getPathToAvatar(), "\\avatar.jpg");
             author.setPathToAvatar("\\" + author.getEmail() + "\\avatar.jpg");
         }
 

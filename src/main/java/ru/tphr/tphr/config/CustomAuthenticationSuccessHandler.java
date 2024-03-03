@@ -19,7 +19,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        System.out.println("Успех");
         HttpSession session = httpServletRequest.getSession();
         SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
         String targetUrl = null;
@@ -28,6 +27,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         } else {
             targetUrl = "http://localhost:8070/";
         }
+        System.out.println(targetUrl);
         httpServletResponse.setStatus(200);
         httpServletResponse.getOutputStream()
                 .println(objectMapper.writeValueAsString(targetUrl));

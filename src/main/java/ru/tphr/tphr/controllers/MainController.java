@@ -4,15 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.tphr.tphr.DTO.AuthorDTO;
 import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.services.AuthorService;
+import ru.tphr.tphr.services.ContentService;
 import ru.tphr.tphr.services.PoemService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +22,7 @@ public class MainController {
 
     private PoemService poemService;
     private AuthorService authorService;
+    private ContentService contentService;
 
     @Autowired
     public void setPoemService(PoemService poemService) {
@@ -35,6 +34,11 @@ public class MainController {
         this.authorService = authorService;
     }
 
+    @Autowired
+    public void setContentService(ContentService contentService) {
+        this.contentService = contentService;
+    }
+
     //  метод получения стихотворений на индексной странице
     @GetMapping("/")
     public String getMainPage(Model model, Principal principal){
@@ -43,8 +47,6 @@ public class MainController {
         if(principal != null){
             principalName = principal.getName();
             authorDTO = authorService.getAuthorDTOByEmail(principalName);
-            System.out.println(authorDTO.getFirstName());
-            System.out.println(authorDTO.getPathToAvatar());
         } else {
             principalName = "default";
         }
@@ -52,6 +54,29 @@ public class MainController {
         model.addAttribute("authorDTO", authorDTO);
         model.addAttribute("poems", lpd);
         return "index";
+    }
+
+
+    //  метод, возвращающий стихотворение с его лайками и комментариями
+    @GetMapping("/main/poem/{id}")
+    public String getPoemById(@PathVariable long id,
+                              Principal principal,
+                              Model model){
+        AuthorDTO authorDTO = null;
+        String userName = null;
+        if(principal != null){
+            userName = principal.getName();
+            authorDTO = authorService.getAuthorDTOByEmail(userName);
+            model.addAttribute("authorDTO", authorDTO);
+        } else {
+            userName = "default";
+        }
+
+        LikesPoemDto likesPoemDto = poemService.getPoemDtoWithLikesAndComments(userName, id);
+        String content = contentService.findById(id).getContent();
+        likesPoemDto.setContent(content);
+        model.addAttribute("poem", likesPoemDto);
+        return "single/singlePoem";
     }
 
 //    @PostMapping("/fail")

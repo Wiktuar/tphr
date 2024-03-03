@@ -34,6 +34,7 @@ const modalWindow = $.modal( {
                 const file = document.getElementById("file");
                 file.value = null;
                 modalWindow.close();
+                modalWindow.destroy();
             }
         }
     ]

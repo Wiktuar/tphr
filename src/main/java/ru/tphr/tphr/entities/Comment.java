@@ -3,7 +3,6 @@ package ru.tphr.tphr.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.tphr.tphr.entities.poem.Poem;
 import ru.tphr.tphr.entities.security.Author;
 
 import javax.persistence.*;
@@ -24,7 +23,7 @@ public class Comment {
     @Column(name = "time_stamp")
     private String timeStamp;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Author author;
 

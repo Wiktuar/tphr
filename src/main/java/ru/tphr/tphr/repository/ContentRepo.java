@@ -7,5 +7,4 @@ import ru.tphr.tphr.entities.poem.Content;
 
 @Repository
 public interface ContentRepo extends JpaRepository<Content, Long> {
-
 }

@@ -78,6 +78,14 @@
             <artifactId>modelmapper</artifactId>
             <version>2.3.9</version>
         </dependency>
+
+        <!-- библиотека для определения длины mp3 файла      -->
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>mp3spi</artifactId>
+            <version>1.9.5.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>

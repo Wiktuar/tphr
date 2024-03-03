@@ -1,0 +1,423 @@
+@font-face {
+    font-family: 'Alexander';
+    src: url('fonts/Alexander.ttf');
+    /*src: local('☺'),*/
+    /*        url('../fonts/Alexander/Alexander.woff') format('woff'),*/
+    /*        url('../fonts/Alexander/Alexander.ttf') format('truetype'),*/
+    /*        url('../fonts/Alexander/Alexander.svg') format('svg');*/
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Arsenal-Regular';
+    src: url('fonts/Arsenal-Regular.ttf');
+    /*src: local('☺'),*/
+    /*        url('../fonts/Arsenal/Arsenal-Regular.woff') format('woff'),*/
+    /*        url('fonts/Arsenal-Regular.ttf') format('truetype'),*/
+    /*        url('../fonts/Arsenal/Arsenal-Regular.svg') format('svg');*/
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.container {
+    display: flex;
+    margin: 0 auto;
+    width: 1200px;
+    min-height: 600px;
+    background-color: #ffe0b3;
+}
+
+/*левый блок и его меню*/
+.left-sb {
+    width: 15%;
+    background-color: white;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.menu-item {
+    width: 100%;
+    font-size: 18px;
+}
+
+.menu-item a {
+    display: inline-block;
+    text-decoration: none;
+    width: 100%;
+    height: 40px;
+    padding: 8px;
+}
+
+.menu-item a:hover {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #2f3640;
+    color: white;
+}
+
+/*правый блок*/
+.right-sb {
+    width: 85%;
+    padding: 20px 0 20px;
+}
+
+/*стили кнопок выбора сингла или альбома*/
+.choose-music {
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+    margin: 0 auto 30px;
+}
+
+.create-single, .create-album {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;;
+    gap: 40 px;
+    cursor: pointer;
+    border: 2px solid #2f3640;
+    border-radius: 15px;
+}
+
+.add_music_img {
+    max-width: 150px;
+}
+
+.create_music_header {
+    font-size: 28px;
+    color: #2f3640;
+}
+
+/*стили для названия и картинки альбома*/
+.header_image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 45px;
+}
+
+.cover {
+    display: block;
+    width: 30%;
+    margin: 0 auto;
+}
+
+/*стили для холста*/
+.edit_cover_container {
+    display: flex;
+    justify-content: space-evenly;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .2s ease-out;
+}
+
+.preview_cover {
+    position: relative;
+}
+
+.image {
+    display: inline-block;
+    max-width: 350px;
+}
+
+.canvas {
+    position: absolute;
+    border: 0;
+    border-radius: 15px;
+    cursor: move;
+}
+
+.resultAvatar {
+    min-width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.resultPhoto {
+    margin: 0 auto;
+}
+
+/*форма для добавления музыки*/
+.add_song {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    height: 60px;
+    padding-left: 20px;
+}
+
+input[type=text]{
+    width: 320px;
+    min-height: 40px;
+    padding-left: 15px;
+    display: block;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
+    font-size: 20px;
+    font-family: Tahoma;
+}
+
+input:focus {
+    box-shadow: none;
+    border: 5px solid #2f3640;
+}
+
+
+input[type=file] {
+   display: none;
+}
+
+label {
+    max-width: 250px;
+    height: 45px;
+    padding-top: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #2f3640;
+    color: #f5f6fa;
+    border-radius: 8px;
+}
+
+button {
+    width: 300px;
+    height: 45px;
+    display: block;
+    font-size: 20px;
+    padding: 8px 24px;
+    border-radius: 8px;
+    margin: 16px auto 0;
+    border: none;
+    background: #e74c3c;
+    color: #f5f6fa;
+    cursor: pointer;
+}
+
+/*стили для карточек альбомов*/
+.albums-container {
+    display: flex;
+    padding-left: 1%;
+    padding-right: 1%;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    height: 100%;
+}
+
+.album_box {
+    background-color: #f1f1f1;
+    width: 285px;
+    height: fit-content;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    font-size: 30px;
+}
+
+/*стили заголовка превью блока стизотворения*/
+.album_box_header {
+    display: flex;
+    justify-content: space-between;
+}
+
+/*блок автора: аватар и имя*/
+.author_block {
+    width: 25%;
+    margin: 10px;
+}
+
+.author-name {
+    text-align: center;
+    font-family: Arial, Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: 0.3em;
+}
+
+.avatar {
+    width: 70%;
+    margin-left: 20%;
+    border-radius: 50%;
+}
+
+/*заголовок стихотворения*/
+.album_header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding-left: 3%;
+}
+
+.ah {
+    display: table-cell;
+    font-family: "Alexander";
+    font-size: .8em;
+    text-align: center;
+    vertical-align: middle;
+    color: darkred;
+}
+
+.fool_reading {
+    margin: 5% 15%;
+    padding: 2%;
+    font-size: 0.5em;
+    font-weight: bold;
+    letter-spacing: .1em;
+    text-align: center;
+    border-radius: 10px;
+}
+
+
+/*Это уже "тело" превью блока. Стили катинки*/
+/* ширина картинки устанавливается скриптом JavaScript*/
+.album-image {
+    display: block;
+    margin: 2px auto;
+}
+
+.album_box_footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment {
+    width: 15%;
+}
+
+.like_comment {
+    display: flex;;
+    align-items: center;
+}
+
+/*стили цифр лайков, комментов*/
+.digit {
+    display: block;
+    margin-left: 2%;
+    margin-right: 5%;
+    font-size: 0.6em;
+}
+
+.time-stamp {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    width: 50%;
+    margin-right: 5%;
+    font-size: 0.6em;
+}
+
+/*стили ссылок редактирования и удаления*/
+
+.footer_buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.update_link {
+    width: 45%;
+    font-size: 0.6em;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    background-color: royalblue;
+    padding: 5px;
+}
+
+.delete_link {
+    width: 45%;
+    font-size: 0.6em;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    background-color: darkred;
+    padding: 5px;
+}
+
+/*стили музыкального плеера*/
+.player {
+    padding: 15px;
+}
+
+.meta-data {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.title {
+    padding-top: 15px;
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.duration, .current_time {
+    font-size: 22px;
+    color: red;
+}
+
+.progress_container {
+    width: 100%;
+    height: 10px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+}
+
+.progress {
+    height: 7px;
+    /*width: 150px;*/
+    background-color: black;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.btn img {
+    width: 50px;
+}
+/*список песен*/
+.song_list {
+    width: 530px;
+    background-color: #f3f153;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 25px;
+    border-bottom: 2px solid white;
+    padding: 10px;
+}
+
+.item.active {
+    background-color: #F3B353;
+}
+

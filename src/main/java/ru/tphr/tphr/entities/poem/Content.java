@@ -4,6 +4,7 @@ package ru.tphr.tphr.entities.poem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.tphr.tphr.entities.security.Author;
 
 import javax.persistence.*;
 
@@ -23,4 +24,8 @@ public class Content {
     @MapsId
     @JoinColumn(name = "id")
     private Poem poem;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private Author author;
 }

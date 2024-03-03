@@ -11,14 +11,17 @@ const commentsContainer = document.querySelector(".comments_container");
 window.addEventListener("DOMContentLoaded", () => getAllComments(poemID));
 
 // метод отправки комментария по нажатию Enter и перехода на новую строку при нажатии Shift + Enter
-sendCommentBtn.addEventListener("click",   async e => saveOrUpdate(e, poemID));
-textArea.addEventListener("keydown", e => {
-    if(e.shiftKey && e.key === "Enter"){
-        // здесь ничего нет, потому что он сам в текстовой области переводит на новую строку.
-    } else if(e.key === "Enter"){
-        saveOrUpdate(e);
-    }
-});
+if(sendCommentBtn !== null){
+    sendCommentBtn.addEventListener("click",   async e => saveOrUpdate(e, poemID));
+    textArea.addEventListener("keydown", e => {
+        if(e.shiftKey && e.key === "Enter"){
+            // здесь ничего нет, потому что он сам в текстовой области переводит на новую строку.
+        } else if(e.key === "Enter"){
+            saveOrUpdate(e);
+        }
+    });
+}
+
 
 // функция сохранения или обновления комментария
 async function saveOrUpdate(e){

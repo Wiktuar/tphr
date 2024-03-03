@@ -13,7 +13,8 @@ create table authors
     activation_code varchar(255) null,
     path_to_Avatar  varchar(255) not null,
     status          varchar(40)  not null,
-    block          varchar(40)  not null,
+    block           varchar(40)  not null,
+    description     text(2000)   null,
     vk              varchar(255) null,
     tg              varchar(255) null,
     yt              varchar(255) null,
@@ -25,7 +26,7 @@ create table authors
 create table roles
 (
     id   bigint auto_increment
-        primary key,
+         primary key,
     name varchar(40) not null
 );
 
@@ -79,9 +80,37 @@ create table poems
 # таблица содержания стихотворения
 create table contents (
     content      text    not null,
+    author_id    bigint  not null,
     id           bigint  not null,
     primary key (id),
-    foreign key (id) references poems (id)
+    foreign key (id) references poems (id),
+    foreign key (author_id) references authors (id)
+);
+
+# табица музыкальных альбомов
+create table albums
+(
+    id                bigint auto_increment primary key,
+    header            varchar(40)  not null,
+    song_preview      varchar(255) not null,
+    release_date      varchar(20)  not null,
+    file_name         varchar(255) not null,
+    description       text         null,
+    author_id         bigint       not null,
+    constraint author_id_fk4
+        foreign key (author_id) references authors (id)
+);
+
+# таблица песен
+create table songs
+(
+    id                  bigint auto_increment primary key,
+    header              varchar(50)       not null,
+    file_url            varchar(255)      not null,
+    duration            varchar(15)       not null,
+    album_id            bigint            not null,
+    constraint album_fk_1
+        foreign key (album_id) references albums (id)
 );
 
 # создание таблицы "Категории"
@@ -111,7 +140,6 @@ create table comments
 create table poems_likes (
      poem_id     bigint not null,
      author_id   bigint not null,
-     unique (poem_id, author_id),
      constraint p_l_fk1
          foreign key (poem_id) references poems(id),
      constraint p_l_fk2

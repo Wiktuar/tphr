@@ -1,0 +1,197 @@
+@font-face {
+    font-family: 'Alexander';
+    src: url('../fonts/Alexander.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Arsenal-Regular';
+    src: url('../fonts/Arsenal-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1 {
+    text-align: center;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    font-size: 40px;
+    font-family: "Alexander";
+}
+
+.poem_fool_image {
+    height: 350px;
+    display: block;
+    margin: 0 auto 20px;
+    border-radius: 5%;
+}
+
+.poem_content_container {
+    display: flex;
+    justify-content: center;
+}
+
+.poem_fool_content {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-family: "Arsenal-Regular";
+    font-size: 25px;
+}
+
+.vignette {
+    display: block;
+    margin: 0 auto;
+}
+
+/*сили лайков и количества комментариев*/
+.like_btn {
+    cursor: pointer;
+}
+
+.p_comment {
+    width: 4%;
+}
+
+.like_comment {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 500px;
+    margin: 20px auto;
+    padding-left: 2%;
+}
+
+.p_digit_l, .p_digit_c {
+    display: block;
+    margin-left: 1%;
+    margin-right: 2%;
+    font-size: 1.5em;
+}
+
+/*эти стили используются, если пользователь не авторизован*/
+.enter_for_like {
+    display: none;
+}
+
+.enter_for_like.visible {
+    display: block;
+    position: absolute;
+    top: -280px;
+    left: 10px;
+    max-width: 500px;
+    min-height: 250px;
+    background-color: white;
+    padding: 20px 15px 10px 25px;
+    color: gray;
+    box-shadow: 0 10px 10px #57541D;
+}
+
+.enter_for_like {
+    display: none;
+}
+
+.enter_for_like h3 {
+    margin-bottom: 20px;
+    font-size: 25px;
+}
+
+.enter_for_like p {
+    margin-bottom: 65px;
+    font-size: 22px;
+}
+
+.enter_for_comment {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 30px;
+}
+
+/*стили для комментариев*/
+.comments_container {
+    margin: 0 auto;
+    width: 80%;
+    height: fit-content;
+}
+
+.comment_block {
+    display: flex;
+    /*свойство не позволяет аватарке растягиваться на всю высоты контейнера при увеличении масштаба*/
+    align-items: flex-start;
+    width: 80%;
+    margin: 20px auto 0;
+    background-color: white;
+}
+
+.comment_author_avatar {
+    width: 10%;
+    display: block;
+    border-radius: 50%;
+}
+
+.comment_body {
+    position: relative;
+    width: 90%;
+    margin-left: 2%;
+    padding-right: 2%;
+}
+
+.comment_author_name {
+    margin-bottom: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.edit_pencil {
+    position: absolute;
+    left: 93%;
+    top: 3%;
+    width: 2.5%;
+    opacity: .3;
+}
+
+.close_cross {
+    position: absolute;
+    left: 97%;
+    top: 3%;
+    width: 2.5%;
+    opacity: .3;
+}
+
+.close_cross:hover, .edit_pencil:hover {
+    opacity: 1;
+}
+
+.time_stamp {
+    float: right;
+}
+
+.new_comment {
+    position: relative;
+    width: 65%;
+    margin: 10px auto 0;
+    height: 250px;
+    background-color: white;
+}
+
+.new_comment textarea {
+    width: 90%;
+    margin-top: 5px;
+    margin-left: 8%;
+    padding-right: 2%;
+    height: 200px;
+    border: 2px solid black;
+    border-radius: unset;
+    box-shadow: none;
+}
+
+.send_comment_img {
+    position: absolute;
+    left: 94%;
+    top: 80%;
+    width: 6%;
+}
+
+
+
+

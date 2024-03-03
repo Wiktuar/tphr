@@ -1,4 +1,5 @@
 <#--http://tradebenefit.ru/kak-raspolozhit-neskolko-div-v-ryad-css-->
+<#import "../common.ftl" as c>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -11,16 +12,8 @@
 </head>
 <body>
 <div class="container">
-    <div class="left-sb">
-        <ul>
-            <li class="menu-item"><a href="/cabinet">Личные данные</a></li>
-            <li class="menu-item"><a href="/cabinet/poems">Мои стихи</a></li>
-            <li class="menu-item"><a href="/cabinet/tails">Моя проза</a></li>
-            <li class="menu-item"><a href="/cabinet/music">Моя музыка</a></li>
-            <li class="menu-item"><a href="/cabinet/draws">Мои рисунки</a></li>
-        </ul>
-    </div>
-
+<#-- импорт левого сайдбара с кнопками меню личного кабинета   -->
+    <@c.cabinetButtons></@c.cabinetButtons>
     <div class="right-sb">
 <#--  кнопка добавления стихотврения      -->
         <button type="button" class="add_poem_btn">Добавить стихотворение</button>

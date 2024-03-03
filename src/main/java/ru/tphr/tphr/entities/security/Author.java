@@ -3,6 +3,8 @@ package ru.tphr.tphr.entities.security;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import ru.tphr.tphr.entities.Comment;
+import ru.tphr.tphr.entities.poem.Content;
 import ru.tphr.tphr.entities.poem.Poem;
 
 import javax.persistence.*;
@@ -33,9 +35,6 @@ public class Author {
     @Column(name = "password")
     private String password;
 
-    @Transient
-    private String passwordConfirm;
-
     @Column(name = "activation_code")
     private String activationCode;
 
@@ -43,9 +42,18 @@ public class Author {
     private String pathToAvatar;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Poem> poems;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Content> contents;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
+//  Если тип каскадирования стоит PERSIST или ALL, то получим ошибку
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "authors_roles",
@@ -63,7 +71,8 @@ public class Author {
     @Enumerated(value = EnumType.STRING)
     private Block block;
 
-
+    @Column(name = "description")
+    private String description;
 
     //  social nets
     private String vk;

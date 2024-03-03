@@ -98,13 +98,7 @@ input:focus {
 }
 
 .fileInput input {
-    max-width: 1px;
-    max-height: 1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-    display: inline-block;
+    display: none;
 }
 
 .fileInput label {

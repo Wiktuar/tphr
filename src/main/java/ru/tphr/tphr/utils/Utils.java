@@ -1,13 +1,15 @@
 package ru.tphr.tphr.utils;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
+import org.tritonus.share.sampled.file.TAudioFileFormat;
 import ru.tphr.tphr.entities.security.Role;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,13 +32,13 @@ public class Utils {
                 .collect(Collectors.toList());
     }
 
-    //метод сохранения аватара автора
-    public static void saveAuthorsAvatar(String uploadPath, String imagePath){
+    //метод сохранения аватара автора, обложек стихов и музыкальных альбомов
+    public static void saveCircumcisedImage(String uploadPath, String imagePath, String fileName){
         String base64Image = imagePath.split(",")[1];
         byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
         try {
             BufferedImage bImg = ImageIO.read(new ByteArrayInputStream(imageBytes));
-            File outputFile = new File(uploadPath + "\\avatar.jpg");
+            File outputFile = new File(uploadPath + fileName);
             ImageIO.write(bImg, "jpg", outputFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,5 +74,23 @@ public class Utils {
     public static String editPoem(String data){
         String[] arr = data.split("<br>");
         return Arrays.stream(arr).collect(Collectors.joining());
+    }
+
+//  метод, возвращающий времмя аудиотрека с минутаи и секундами
+    public static String getMusicFileDuration(String fileName) throws IOException, UnsupportedAudioFileException {
+        AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(new File(fileName));
+        if (fileFormat instanceof TAudioFileFormat) {
+            Map<?, ?> properties = fileFormat.properties();
+            String key = "duration";
+            Long microseconds = (Long) properties.get(key);
+            int milli = (int) (microseconds / 1000);
+            int sec = (milli / 1000) % 60;
+            int min = (milli / 1000) / 60;
+            if(min < 10) return String.format("0%d", min) + ":" + sec;
+            else
+                return min + ":" + sec;
+        } else {
+            throw new UnsupportedAudioFileException(String.format("Файл %s не поддерживается", fileName));
+        }
     }
 }

@@ -9,6 +9,7 @@ import ru.tphr.tphr.repository.security.PoemRepo;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PoemService {
@@ -54,5 +55,15 @@ public class PoemService {
 //  метод, возвращающий список всех стихотворений.
     public List<LikesPoemDto> getAllPoems(String email){
         return poemRepo.getAllPoem(email);
+    }
+
+//  метод, возвращающий относительный путь к картинки стихотворения
+    public String getPoemFileName(Long id){
+        return poemRepo.getPoemFileName(id);
+    }
+
+    //  получения списка имен всех файлов картинок перед удалением
+    public Set<String> getAllPoemFileNames(){
+        return poemRepo.getAllPoemFileNames();
     }
 }

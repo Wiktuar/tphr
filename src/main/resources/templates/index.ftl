@@ -7,7 +7,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="../static/css/reset.css">
-  <link rel="stylesheet" href="../static/css/index.css">
+  <link rel="stylesheet" href="../static/css/common.css">
   <link rel="stylesheet" href="../static/css/poems.css">
   <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
   <title>Главная страница</title>
@@ -37,7 +37,7 @@
             <div class="poem_content">
               ${poem.poemPreview}
             </div>
-            <a href="/cabinet/poem/${poem.id}"><div class="fool_reading">
+            <a href="/main/poem/${poem.id}"><div class="fool_reading">
                 читать полностью
               </div></a>
           </div>

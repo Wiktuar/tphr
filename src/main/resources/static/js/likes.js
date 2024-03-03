@@ -2,10 +2,8 @@
 const likeBtn = document.querySelector(".like_btn");
 const countOfLikes = document.querySelector(".p_digit_l");
 
-//переменная meLiked определена в разделе js в шаблоне ftl, она приходит оттуда
-// затем она преобразуется в число, чтобы потом из числа преобразоваться в boolean и стать параметром для функции
-let isLike = Number(meLiked);
-isMeLiked(Boolean(isLike));
+//переменная meLiked определена в разделе js в шаблоне ftl, она приходит оттуда в виле числа
+isMeLiked(Boolean(meLiked));
 
 //функция изменяющая сердечки в зависимости от того, лайкнул пользователь данное стихотворение или нет
 function isMeLiked(isNeLiked){
@@ -19,6 +17,12 @@ function isMeLiked(isNeLiked){
 
 // функция добавления или удаления лайков
 async function addOrRemoveLike(id){
+    if(knownUser === 0){
+        const attention = document.querySelector(".enter_for_like");
+        attention.classList.toggle("visible");
+        return;
+    }
+
     let res = await fetch(`/poem/likes/${id}`, {
         method: 'GET',
         headers: {

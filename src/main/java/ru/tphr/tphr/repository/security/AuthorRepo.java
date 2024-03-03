@@ -25,4 +25,6 @@ public interface AuthorRepo extends CrudRepository<Author, Long> {
     @Query("UPDATE Author a SET a.password = :pass WHERE a.id = :id")
     void updateAuthor(@Param("pass") String password, @Param("id") long id);
 
+    @Override
+    void deleteById(Long id);
 }

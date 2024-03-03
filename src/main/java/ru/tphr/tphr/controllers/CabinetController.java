@@ -110,7 +110,7 @@ public class CabinetController {
             poem.setFileName(principal.getName() + "\\" + "poemCover.jpg");
         } else if (!file.getOriginalFilename().isEmpty()){
             if(!oldFileName.isEmpty()){
-                Files.delete(Paths.get(deletePath + "\\" + oldFileName));
+                Files.delete(Paths.get(deletePath + oldFileName));
             }
             String fileName = UUID.randomUUID().toString();
             String resultFileName = uploadFolder + "\\" + fileName + "_" + file.getOriginalFilename();
@@ -130,6 +130,7 @@ public class CabinetController {
         }
         Author author = authorService.getAuthorByEmail(principal.getName());
         poem.setAuthor(author);
+        content.setAuthor(author);
 
 //   данная проверка делается, чтобы избежать ошибки
 //   detached entity passed to persist, связанной с проблемой предсуществования ID
@@ -146,10 +147,30 @@ public class CabinetController {
         return "redirect:/cabinet/poems";
     }
 
+/*
+    блок удаления всех стихотворений не имеет кнопки в личном кабинете.
+    Надо поправить.
+ */
+
+
+//  метод удаляющий все стихотворения из базы данных
+    @GetMapping("/cabinet/poems/deleteall")
+    public String deleteAllPoems(){
+        contentService.deleteAllPoems();
+        return "redirect:/cabinet/poems";
+    }
+
+//  метод, удаляющий стихотворение их базы данных
     @GetMapping("/cabinet/delete/poem/{id}")
     public String deletePoemById(@PathVariable long id){
         contentService.deletePoemById(id);
-
         return "redirect:/cabinet/poems";
+    }
+
+//  метод удаления автора по его ID
+    @GetMapping("/author/delete")
+    public String deleteAuthorById(){
+        authorService.deleteAuthorById(7L);
+        return "redirect:/logout";
     }
 }

@@ -145,5 +145,10 @@ public class AuthorService implements UserDetailsService {
     public AuthorDTO getAuthorDTOByEmail(String email){
         return authorRepo.getAuthorDTOByEmail(email);
     }
+
+//  метод удаления автора по его ID
+    public void deleteAuthorById(long id){
+        authorRepo.deleteById(id);
+    }
 }
 

@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
 
 @Controller
 public class SendAnswerController {
@@ -37,7 +36,6 @@ public class SendAnswerController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return "photo";
     }
 }

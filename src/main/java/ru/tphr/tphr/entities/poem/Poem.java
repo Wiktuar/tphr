@@ -36,7 +36,7 @@ public class Poem {
     @Column(name = "poem_preview")
     public String poemPreview;
 
-    @ManyToOne(fetch = FetchType.EAGER,
+    @ManyToOne(fetch = FetchType.LAZY,
                cascade = CascadeType.DETACH
     )
     @JoinColumn(name = "author_id")
@@ -44,15 +44,13 @@ public class Poem {
 
     @OneToMany(
             fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE
-//            orphanRemoval = true
+            cascade = CascadeType.ALL
     )
     @JoinColumn(name = "poem_id")
 //  поле poem.id у комментария должно позволять устанавливать значение в NULL
     private List<Comment> comments;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "poems_likes",
             joinColumns = @JoinColumn(name = "poem_id"),

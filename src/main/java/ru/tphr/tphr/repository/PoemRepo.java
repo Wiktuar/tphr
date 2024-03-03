@@ -9,6 +9,7 @@ import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.entities.poem.Poem;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface PoemRepo extends CrudRepository<Poem, Long> {
@@ -29,12 +30,20 @@ public interface PoemRepo extends CrudRepository<Poem, Long> {
             "from Poem p left join p.likes pl group by p having p.id = :id" )
     LikesPoemDto getPoemWithLikesAndComments(@Param("email") String email, @Param("id") long id);
 
-//    @Query("from Poem p join fetch p.likes pl join fetch p.comments pc where    p.author.id = 1" )
+//    @Query("from Poem p join fetch p.likes pl join fetch p.comments pc where p.author.id = :id" )
 //    List<Poem> getListPoemsWithLikesAndComments(@Param("email1") String email1,
 //                                                                    @Param("email2") String email2);
 
+//  получение относительного пути файла картинки для стиховторения (нужно для удаления)
+    @Query("select p.fileName from Poem p where p.id = :id")
+    String getPoemFileName(@Param("id") long id);
 
-    //  получение списка пользователей, поставивших лайки стихотворению
+//  получения списка имен всех файлов каринок стихотворения перед удалением
+    @Query("select p.fileName from Poem p")
+    Set<String> getAllPoemFileNames();
+
+
+//  получение списка пользователей, поставивших лайки стихотворению
     @Query("from Poem p left join fetch p.likes where p.id = :id")
     Poem getListOfLikes(@Param("id") long id);
 
