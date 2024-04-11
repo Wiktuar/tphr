@@ -14,9 +14,14 @@ export const toMinAndSec = duration => {
     return minutesVal + ':' + secondsVal;
 }
 
-function confirmAvatar(){
-
+// метод удаления особенного класса у массива одинаковых элементов
+export function removeAdditionalClass(commonClass, uniqueClass){
+   const nodes = document.querySelectorAll(commonClass);
+   let item = Array.from(nodes).find(arr => arr.classList.contains(uniqueClass));
+   if(item) item.classList.remove(uniqueClass);
 }
+
+
 
 
 // function verticalApearElemenet(element, btn){

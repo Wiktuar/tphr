@@ -38,14 +38,9 @@ public interface PoemRepo extends CrudRepository<Poem, Long> {
     @Query("select p.fileName from Poem p where p.id = :id")
     String getPoemFileName(@Param("id") long id);
 
-//  получения списка имен всех файлов каринок стихотворения перед удалением
+//  получения списка имен всех файлов картинок стихотворения перед удалением
     @Query("select p.fileName from Poem p")
     Set<String> getAllPoemFileNames();
-
-
-//  получение списка пользователей, поставивших лайки стихотворению
-    @Query("from Poem p left join fetch p.likes where p.id = :id")
-    Poem getListOfLikes(@Param("id") long id);
 
 //  получение LikesPoemDto для конкретного пользователя
     @Query("select new ru.tphr.tphr.DTO.LikesPoemDto(p.id, p.header,p.fileName, p.releaseDate, p.poemPreview, p.author.email, p.author.firstName, p.author.lastName, p.author.pathToAvatar, p.likes.size, p.comments.size, " +

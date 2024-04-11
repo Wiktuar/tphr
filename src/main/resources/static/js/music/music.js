@@ -1,5 +1,5 @@
 //https://doka.guide/js/form-data/
-import {player} from "./player.js";
+import {player} from "./simplePlayer.js";
 import {toMinAndSec} from "./utils.js";
 import {album, single} from "./addHTML.js";
 import {addCanvas} from "./editCover.js";
@@ -175,6 +175,10 @@ function createMusicPlayersForAlbums(){
         playAndPause(pl, audio, playSong, pauseSong);
         workWithProgressAudio(pl, audio);
         audio.addEventListener("timeupdate", e => updateProgress(audio, progress));
+        audio.addEventListener("ended", ()=> {
+            progress.style.width = "0%";
+            pauseSong(pl.querySelector(".img_src"), audio);
+        })
     })
 }
 

@@ -8,6 +8,7 @@ import ru.tphr.tphr.entities.music.Album;
 import ru.tphr.tphr.entities.music.Song;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.music.AlbumService;
+import ru.tphr.tphr.services.music.SongService;
 import ru.tphr.tphr.utils.Utils;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -17,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,6 +31,7 @@ public class MusicController {
 
     private AuthorService authorService;
     private AlbumService albumService;
+    private SongService songService;
 
     @Autowired
     public void setAuthorService(AuthorService authorService) {
@@ -42,7 +43,12 @@ public class MusicController {
         this.albumService = albumService;
     }
 
-//  метод, сохраняющий альбом и песни
+    @Autowired
+    public void setSongService(SongService songService) {
+        this.songService = songService;
+    }
+
+    //  метод, сохраняющий альбом и песни
     @PostMapping("/savemusic")
     public String saveMusic(@RequestParam("albumName") String albumName,
                             @RequestParam("cover") String coverImage,
@@ -95,11 +101,10 @@ public class MusicController {
     }
 
 //  метод, возвращающий альбомм со всеми песнямми
-    @GetMapping("/cabinet/album/{id}")
-    public String getSingleAlbum(@PathVariable long id){
-        Album album = albumService.getAlbumWithSongs(id);
-        List<Song> songs = album.getSongs();
+    @GetMapping("/cabinet/songs/{id}")
+    public Set<Song> getSongsByAlbumId(@PathVariable long id){
+        Set<Song> songs = songService.getAllSongsByAlbumId(id);
         songs.forEach(s -> System.out.println(s.getHeader()));
-        return "ok";
+        return songs;
     }
 }

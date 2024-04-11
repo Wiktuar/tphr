@@ -10,10 +10,7 @@ import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.entities.poem.Content;
 import ru.tphr.tphr.entities.poem.Poem;
 import ru.tphr.tphr.entities.security.Author;
-import ru.tphr.tphr.services.AuthorService;
-import ru.tphr.tphr.services.CommentService;
-import ru.tphr.tphr.services.ContentService;
-import ru.tphr.tphr.services.PoemService;
+import ru.tphr.tphr.services.*;
 import ru.tphr.tphr.utils.Utils;
 
 import java.io.File;
@@ -41,6 +38,7 @@ public class CabinetController {
     private AuthorService authorService;
     private CommentService commentService;
     private ContentService contentService;
+    private ComposeService composeService;
 
     @Autowired
     public void setAuthorService(AuthorService authorService) {
@@ -62,7 +60,11 @@ public class CabinetController {
         this.contentService = contentService;
     }
 
-//  получение всех стихотворений одного автора
+    public void setComposeService(ComposeService composeService) {
+        this.composeService = composeService;
+    }
+
+    //  получение всех стихотворений одного автора
     @GetMapping("/cabinet/poems")
     public String getAllLikesPoemDto(Model model,
                                      Principal principal){

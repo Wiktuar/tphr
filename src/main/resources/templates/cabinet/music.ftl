@@ -1,103 +1,75 @@
 <#import "../common.ftl" as c>
+<#assign known = SPRING_SECURITY_CONTEXT??>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../../static/css/music.css">
+    <link rel="stylesheet" href="../../static/css/common/likesAndComments.css">
     <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
-    <title>Save Music</title>
+    <title>Музыкальный альбом</title>
 </head>
 <body>
 <div class="container">
     <@c.cabinetButtons></@c.cabinetButtons>
     <div class="right-sb">
-        <div class="choose-music">
-            <div class="create-single">
-                <img class="add_music_img" src="../../static/img/music/cd_disk.png" alt="создать сингл">
-                <h3 class="create_music_header">Создать сингл</h3>
-            </div>
-            <div class="create-album">
-                <img class="add_music_img" src="../../static/img/music/album.png" alt="создать сингл">
-                <h3 class="create_music_header">Создать альбом</h3>
-            </div>
-        </div>
-
-<#--    здесь через JS будут размещаться формы для добавления музыки    -->
-        <div class="form_container">
-
-        </div>
-
-        <div class="albums-container">
-            <#if albums?has_content>
-                <#list albums as album>
-                    <div class="album_box">
-                        <div class="album_box_header">
-                            <div class="album_header">
-                            <#-- .inner_album_header испльзуется в js коде для поиска элемента.  -->
-                            <#-- .ah отвечает непосредственно за стиль заголовка.  -->
-                                <div class="inner_album_header${album.id} ah">${album.header}</div>
-                            </div>
-                            <div class="author_block">
-                                <img src="../../static/img${album.authorDTO.pathToAvatar}" class="avatar" alt="аватар автора">
-                                <h2 class="author-name">${album.authorDTO.firstName} ${album.authorDTO.lastName}</h2>
-                            </div>
-                        </div>
-
-
-                        <div class="album_box_body">
-                            <img src="/img/${album.fileName}" class="album-image" alt="тематическая картинка">
-                            <div class="album_content">
-                                <#list album.songs as song>
-                                    <div class="player">
-                                        <div class="title">${song.header}</span></div>
-                                        <div class="meta-data">
-                                            <div class="current_time">00:00</div>
-                                            <audio class="audio" src="/music/${album.songPreview}" preload="metadata" data-status="pause"></audio>
-                                            <div class="buttons">
-                                                <div class="btn play"><img class="img_src" src="../../static/img/musicButtons/play.png" alt="play png"></div>
-                                            </div>
-                                            <div class="duration">${song.duration}</div>
-                                        </div>
-                                        <div class="progress_container">
-                                            <div class="progress"></div>
-                                        </div>
-                                    </div>
-                                </#list>
-                            </div>
-                            <a href="/cabinet/album/${album.id}">
-                                <div class="fool_reading">слушать полностью</div>
-                            </a>
-                        </div>
-
-                        <div class="album_box_footer">
-                            <div class="like_comment">
-<#--                                <#if poem.meLiked>-->
-                                    <i class="fa-solid fa-heart" style="color: #e60f0f;"></i>
-<#--                                <#else>-->
-<#--                                    <i class="fa-regular fa-heart" style="color: #e60f0f;"></i>-->
-<#--                                </#if>-->
-<#--                                <span class="digit">${poem.likes}</span>-->
-                                    <img src="../../static/img/comments.png" class="comment" alt="комментарий">
-<#--                                <span class="digit">${poem.comments}</span>-->
-                            </div>
-                            <div class="time-stamp">
-                                ${album.releaseDate?truncate(11, "")}
-                            </div>
-                        </div>
-                        <div class="footer_buttons">
-                            <span class="update_link ${album.id}" >Обновить</span>
-                            <span class="delete_link ${album.id}" >Удалить</span>
-                        </div>
+        <#if album.firstName??>
+            <img src="../../static/img${album.pathToAvatar}">
+            <div class="author">${album.firstName} ${album.lastName}</div>
+        </#if>
+        <div class="wrapper">
+            <div class="player">
+                <div class="cover"><img src="/img/${album.fileName}" class="cover_img" alt="картинка песни"></div>
+                <div class="meta-data">
+                    <div class="title_time">
+                        <div class="title">Smoke on thw water</div>
+                        <div class="time"><span class="current_time">02:38</span> / <span class="full_time">05:35</span></div>
                     </div>
-                </#list>
-            <#else>
-                <div class="empty_list">
-                    Здесь пока ничего нет. <br> Ждем Вашего творчества!
+                    <audio class="audio" preload="metadata"></audio>
+                    <div class="progress_container">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="buttons">
+                        <div class="btn prev"><img class="img_src" src="../../static/img/music/buttons/previous.png" alt="prev png"></div>
+                        <div class="btn play"><img class="img_src playing" src="../../static/img/music/buttons/play.png" alt="play png"></div>
+                        <div class="btn next"><img class="img_src" src="../../static/img/music/buttons/next.png" alt="next png"></div>
+                    </div>
                 </div>
-            </#if>
+            </div>
+            <div class="song_list">
+                <!--    Сюда будет приходить контент из js       -->
+            </div>
         </div>
+        <div class="like_comment">
+            <span class="like_btn"></span>
+            <span class="p_digit_l">${album.likes}</span>
+            <img src="../../static/img/comments.png" class="p_comment" alt="комментарии">
+            <span class="p_digit_c">${album.comments}</span>
+        </div>
+        <img src="../../static/img/vin.png" class="vignette" alt="виньетка">
+        <div class="comments_container">
+            <#--Здесь загружаются комментарии из JavaScript -->
+        </div>
+
+        <#if known>
+            <div class="new_comment">
+                <input type="hidden" id="comment_input">
+                <textarea placeholder="Ваш комментарий" maxlength="700" rows="8" id="text_area"></textarea>
+                <a href="#" class="send_comment_btn"><img src="../../static/img/send_message.png" class="send_comment_img" alt="Отправка сообщения"></a>
+            </div>
+        <#else>
+            Пожалуйста, зарегистрируйтесь!
+        </#if>
     </div>
 </div>
-<script type="module" src="../../static/js/music/music.js"></script>
+    <#--Необходимо для получения ID стихотворения для запроса комментариев -->
+    <script>
+        let compID = ${album.id};
+        let meLiked = ${album.meLiked?string("1", "0")};
+        let knownUser = ${known?string('1', '0')};
+    </script>
+    <script type="module" src="../../static/js/music/albumPlayer.js"></script>
+    <script src="../../static/js/comments.js"></script>
+    <script src="../../static/js/likes.js"></script>
 </body>
 </html>

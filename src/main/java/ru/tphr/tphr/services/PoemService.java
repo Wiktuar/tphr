@@ -41,12 +41,7 @@ public class PoemService {
         return poemRepo.getPoemWithLikesAndComments(email, id);
     }
 
-//  метод, возвращающий список пользователей, лайкнувших стихотворение
-    public Poem getListOfLikes(long id){
-        return poemRepo.getListOfLikes(id);
-    }
-
-//  метод, позволяющий получить все Poem с количеством лайков и комментариев
+//  метод, позволяющий получить все Poem конкретного пользователя с количеством лайков и комментариев
     @Transactional
     public List<LikesPoemDto> getPoemsByUser(String enail1, String email2){
         return poemRepo.getPoemsByUser(enail1, email2);

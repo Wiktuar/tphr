@@ -5,46 +5,19 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LikesPoemDto {
-    private long id;
-    private String header;
-    private String fileName;
-    private String releaseDate;
+public class LikesPoemDto extends CompositionDTO {
+
     private String poemPreview;
     private String content;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String pathToAvatar;
-    private int likes;
-    private int comments;
-    private boolean meLiked;
-
 
     public LikesPoemDto(long id, String header, String fileName, String releaseDate, String poemPreview,
                         String email, String firstName, String lastname, String pathToAvatar,
                         int likes, int comments, boolean meLiked) {
-        this.id = id;
-        this.header = header;
-        this.fileName = fileName;
-        this.releaseDate = releaseDate;
+        super(id, header, fileName, releaseDate, email, firstName, lastname, pathToAvatar, likes, comments, meLiked);
         this.poemPreview = poemPreview;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastname;
-        this.pathToAvatar = pathToAvatar;
-        this.likes = likes;
-        this.comments = comments;
-        this.meLiked = meLiked;
     }
 
     public LikesPoemDto(long id, String header, String fileName, String releaseDate, int likes, int comments, boolean meLiked) {
-        this.id = id;
-        this.header = header;
-        this.fileName = fileName;
-        this.releaseDate = releaseDate;
-        this.likes = likes;
-        this.comments = comments;
-        this.meLiked = meLiked;
+        super(id, header, fileName, releaseDate, likes, comments, meLiked);
     }
 }

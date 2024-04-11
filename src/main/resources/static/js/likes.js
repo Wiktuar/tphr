@@ -16,7 +16,7 @@ function isMeLiked(isNeLiked){
 }
 
 // функция добавления или удаления лайков
-async function addOrRemoveLike(id){
+async function addOrRemoveLike(id, knownUser){
     if(knownUser === 0){
         const attention = document.querySelector(".enter_for_like");
         attention.classList.toggle("visible");
@@ -37,8 +37,8 @@ async function addOrRemoveLike(id){
 }
 
 
-likeBtn.addEventListener("click", () => addOrRemoveLike(poemID));
+likeBtn.addEventListener("click", () => addOrRemoveLike(compID, knownUser));
 
-
+console.log(compID);
 
 

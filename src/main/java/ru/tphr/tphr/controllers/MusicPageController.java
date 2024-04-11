@@ -4,16 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.tphr.tphr.DTO.AuthorDTO;
+import org.springframework.web.bind.annotation.PathVariable;
+import ru.tphr.tphr.DTO.LikesAlbumDto;
 import ru.tphr.tphr.entities.music.Album;
-import ru.tphr.tphr.entities.music.Song;
-import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.music.AlbumService;
-import ru.tphr.tphr.utils.ConvertEntityToDTO;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -31,12 +28,25 @@ public class MusicPageController {
         this.authorService = authorService;
     }
 
-    //метод получения всех альомов автора
+//  метод получения всех альбомов автора
     @GetMapping("/cabinet/music")
     public String getAllAlbums(Principal principal,
                                Model model){
-        Set<Album> albums = albumService.getAllAlbumsByAuthorId(principal);
+        Set<LikesAlbumDto> albums = albumService.getAlbumsByUser(principal.getName());
         model.addAttribute("albums", albums);
+        return "cabinet/musics";
+    }
+
+//  метод получения отдельного альбома по его ID
+    @GetMapping("/cabinet/music/{id}")
+    public String getAllAlbums(@PathVariable("id") long id,
+                               Principal principal,
+                               Model model){
+        LikesAlbumDto album = albumService.getLikesAlbumDto(principal.getName(), id);
+        album.setFirstName("Виктор");
+        album.setLastName("Гусев");
+        album.setPathToAvatar("\\wiktuar@yandex.ru\\avatar.jpg");
+        model.addAttribute("album", album);
         return "cabinet/music";
     }
 }

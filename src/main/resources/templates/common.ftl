@@ -17,9 +17,9 @@
                  </button>
                 <div class="dropdown-box">
                     <a href="/cabinet">Личные данные</a>
-                      <a href="/cabinet/poems">Мои стихи</a>
+                    <a href="/cabinet/poems">Мои стихи</a>
                     <a href="#">Моя проза</a>
-                    <a href="#">Моя музыка</a>
+                    <a href="/cabinet/music">Моя музыка</a>
                     <a href="#">Мои рисунки</a>
                     <a href="/logout">Выйти</a>
                 </div>
@@ -33,13 +33,6 @@
     </header>
 </#macro>
 
-<#--макрос футера сайта-->
-<#macro footer>
-    <footer>
-
-    </footer>
-</#macro>
-
 <#macro cabinetButtons>
     <div class="left-sb">
         <ul>
@@ -50,4 +43,11 @@
             <li class="menu-item"><a href="/cabinet/draws">Мои рисунки</a></li>
         </ul>
     </div>
+</#macro>
+
+<#--макрос футера сайта-->
+<#macro footer>
+    <footer>
+
+    </footer>
 </#macro>

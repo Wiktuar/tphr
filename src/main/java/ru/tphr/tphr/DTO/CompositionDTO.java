@@ -1,0 +1,32 @@
+package ru.tphr.tphr.DTO;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Getter
+@Setter
+public class CompositionDTO {
+    private long id;
+    private String header;
+    private String fileName;
+    private String releaseDate;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String pathToAvatar;
+    private int likes;
+    private int comments;
+    private boolean meLiked;
+
+    public CompositionDTO(long id, String header, String fileName, String releaseDate, int likes, int comments, boolean meLiked) {
+        this.id = id;
+        this.header = header;
+        this.fileName = fileName;
+        this.releaseDate = releaseDate;
+        this.likes = likes;
+        this.comments = comments;
+        this.meLiked = meLiked;
+    }
+}

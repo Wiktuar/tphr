@@ -27,6 +27,6 @@ public class Comment {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @Column(name = "poem_id")
+    @Column(name = "comp_id")
     private long poemId;
 }

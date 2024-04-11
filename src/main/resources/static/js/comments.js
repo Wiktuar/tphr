@@ -8,11 +8,11 @@ const countOfComments = document.querySelector(".p_digit_c");
 const commentsContainer = document.querySelector(".comments_container");
 
 // таким приемом можно передавать аргументы в функцию, которая вешается на событие
-window.addEventListener("DOMContentLoaded", () => getAllComments(poemID));
+window.addEventListener("DOMContentLoaded", () => getAllComments(compID));
 
 // метод отправки комментария по нажатию Enter и перехода на новую строку при нажатии Shift + Enter
 if(sendCommentBtn !== null){
-    sendCommentBtn.addEventListener("click",   async e => saveOrUpdate(e, poemID));
+    sendCommentBtn.addEventListener("click",   async e => saveOrUpdate(e, compID));
     textArea.addEventListener("keydown", e => {
         if(e.shiftKey && e.key === "Enter"){
             // здесь ничего нет, потому что он сам в текстовой области переводит на новую строку.
@@ -30,7 +30,7 @@ async function saveOrUpdate(e){
     const textArea = document.getElementById("text_area");
     let id = Number(input.value);
     let text = textArea.value;
-    let poemId = poemID;
+    let poemId = compID;
 
     //если ID не равно 0, это значит, что мы обновляем комментарий
     // у вновь созданного комментария ID равно 0
@@ -113,7 +113,7 @@ commentsContainer.addEventListener("click", e => {
     if(e.target.classList.length === 2){
         if(e.target.classList[0] === "close_cross"){
             // Решить роблему! из метода возвращается промис, который игнорируется.
-            deleteCommentById(Number(e.target.classList[1]), poemID)
+            deleteCommentById(Number(e.target.classList[1]), compID)
         }
 
         if(e.target.classList[0] === "edit_pencil"){
@@ -125,8 +125,8 @@ commentsContainer.addEventListener("click", e => {
 
 
 // функция, удаляющая комментарий. Без ассинхронности не работает
- async function deleteCommentById(id, poemId){
-    const res = await fetch(`/deletecomment/${id}/${poemId}`, {
+ async function deleteCommentById(id, compId){
+    const res = await fetch(`/deletecomment/${id}/${compId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'

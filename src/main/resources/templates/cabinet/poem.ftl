@@ -1,6 +1,7 @@
 <#--https://stackoverflow.com/questions/28347589/checking-spring-security-roles-and-logged-username-in-freemarker-template-->
 <#--https://stackoverflow.com/questions/47637166/spring-security-taglib-loading-error-in-freemarker-page-->
 <#--https://vorba.ch/2018/spring-boot-freemarker-security-jsp-taglib.html-->
+<#import "../common.ftl" as c>
 <#assign known = SPRING_SECURITY_CONTEXT??>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,20 +9,13 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../../static/css/reset.css">
     <link rel="stylesheet" href="../../static/css/poems.css">
+    <link rel="stylesheet" href="../../static/css/common/likesAndComments.css">
     <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
     <title>Редактирование стихотворения</title>
 </head>
 <body>
 <div class="container">
-    <div class="left-sb">
-        <ul>
-            <li class="menu-item"><a href="/person">Личные данные</a></li>
-            <li class="menu-item"><a href="/poems">Мои стихи</a></li>
-            <li class="menu-item"><a href="/tails">Моя проза</a></li>
-            <li class="menu-item"><a href="/music">Моя музыка</a></li>
-            <li class="menu-item"><a href="/draws">Мои рисунки</a></li>
-        </ul>
-    </div>
+    <@c.cabinetButtons></@c.cabinetButtons>
 
     <div class="right-sb">
        <h3>${poem.header}</h3>
@@ -58,8 +52,9 @@
 </div>
 <#--Необходимо для получения ID стихотворения для запроса комментариев -->
 <script>
-    let poemID = ${poem.id};
+    let compID = ${poem.id};
     let meLiked = ${poem.meLiked?string("1", "0")};
+    let knownUser = ${known?string('1', '0')};
 </script>
 <script src="../../static/js/comments.js"></script>
 <script src="../../static/js/likes.js"></script>

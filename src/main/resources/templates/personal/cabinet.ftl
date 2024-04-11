@@ -48,6 +48,5 @@
         </div>
     </div>
 </div>
-<script src="../../static/js/cabinet.js"></script>
 </body>
 </html>

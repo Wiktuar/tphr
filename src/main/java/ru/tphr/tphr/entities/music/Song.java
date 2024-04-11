@@ -1,5 +1,6 @@
 package ru.tphr.tphr.entities.music;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class Song {
     @Column(name = "duration")
     private String duration;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,
                 cascade = CascadeType.DETACH)
     @JoinColumn(name = "album_id")

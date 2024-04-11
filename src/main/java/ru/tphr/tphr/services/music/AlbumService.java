@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tphr.tphr.DTO.AuthorDTO;
+import ru.tphr.tphr.DTO.LikesAlbumDto;
 import ru.tphr.tphr.entities.music.Album;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.repository.music.AlbumRepo;
@@ -36,20 +37,15 @@ public class AlbumService {
         albumRepo.save(album);
     }
 
-//  метод, возвращающий все альбоы одного пользователя с превью песней
+//  метод, возвращающий все альбоы одного пользователя с превью-песней, лайками и комментариями
     @Transactional
-    public Set<Album> getAllAlbumsByAuthorId(Principal principal){
-        Author author = authorService.getAuthorByEmail(principal.getName());
-        AuthorDTO authorDTO =  new ConvertEntityToDTO().convertToAuthorDto(author);
-        Set<Album> albums =  albumRepo.getAllAlbumsByAuthorId(author.getId());
-        albums.forEach(a -> {
-            a.setAuthorDTO(authorDTO);
-        });
+    public Set<LikesAlbumDto> getAlbumsByUser(String email){
+        Set<LikesAlbumDto> albums = albumRepo.getAlbumsByUser(email);
         return albums;
     }
 
-//  метод, возвращающий альбомм со всемми песнями
-    public Album getAlbumWithSongs(long id){
-        return albumRepo.getAlbumWithSongs(id);
+//  метод получения одного LikeAlbumDto по его ID
+    public LikesAlbumDto getLikesAlbumDto(String email, long id){
+        return albumRepo.getAlbumDto(email, id);
     }
 }
