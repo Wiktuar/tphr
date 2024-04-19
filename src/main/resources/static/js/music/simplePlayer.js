@@ -1,8 +1,7 @@
 // возвращает экземпляр плеера
 export const player =
     `<div class="player">
-<!--    <div class="title">Smoke on thw water <span class="duration">04:54</span></div>-->
-    <div class="meta-data">
+        <div class="meta-data">
          <div class="buttons">
              <div class="btn play"><img class="img_src" src="../static/img/musicButtons/play.png" alt="play png"></div>
          </div>

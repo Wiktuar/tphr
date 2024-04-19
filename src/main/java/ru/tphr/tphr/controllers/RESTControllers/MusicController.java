@@ -1,12 +1,19 @@
 package ru.tphr.tphr.controllers.RESTControllers;
 
+import javassist.expr.Cast;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.tphr.tphr.DTO.AllComposeDTO;
+import ru.tphr.tphr.entities.AllCompose;
+import ru.tphr.tphr.entities.Composition;
 import ru.tphr.tphr.entities.music.Album;
 import ru.tphr.tphr.entities.music.Song;
+import ru.tphr.tphr.entities.poem.Poem;
+import ru.tphr.tphr.services.AllComposeService;
 import ru.tphr.tphr.services.AuthorService;
+import ru.tphr.tphr.services.ComposeService;
 import ru.tphr.tphr.services.music.AlbumService;
 import ru.tphr.tphr.services.music.SongService;
 import ru.tphr.tphr.utils.Utils;
@@ -18,8 +25,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @RestController
 public class MusicController {
@@ -32,6 +42,8 @@ public class MusicController {
     private AuthorService authorService;
     private AlbumService albumService;
     private SongService songService;
+    private ComposeService composeService;
+    private AllComposeService allComposeService;
 
     @Autowired
     public void setAuthorService(AuthorService authorService) {
@@ -46,6 +58,16 @@ public class MusicController {
     @Autowired
     public void setSongService(SongService songService) {
         this.songService = songService;
+    }
+
+    @Autowired
+    public void setComposeService(ComposeService composeService) {
+        this.composeService = composeService;
+    }
+
+    @Autowired
+    public void setAllComposeService(AllComposeService allComposeService) {
+        this.allComposeService = allComposeService;
     }
 
     //  метод, сохраняющий альбом и песни
@@ -106,5 +128,17 @@ public class MusicController {
         Set<Song> songs = songService.getAllSongsByAlbumId(id);
         songs.forEach(s -> System.out.println(s.getHeader()));
         return songs;
+    }
+
+    @GetMapping("/test")
+    public List<AllComposeDTO> test(Principal principal){
+
+        List<AllComposeDTO> ac = allComposeService.getAllCompose(principal.getName());
+//        ac.forEach(a -> System.out.println(a.getTextPreview()));
+//        List<Composition> comp = composeService.findAll();
+//        comp.forEach(c -> {
+//            System.out.println(c.getClass());
+//        });
+        return ac;
     }
 }

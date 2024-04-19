@@ -40,6 +40,7 @@ public class ConvertEntityToDTO {
         return commentDTO;
     }
 
+
     //  метод преобразующий список сущностей в DTO. Он принимает список и функцию для конвертации.
     public <R, E> List<R> convertList(List<E> list, Function<E, R> converter) {
         return list.stream().map(e -> converter.apply(e)).collect(Collectors.toList());

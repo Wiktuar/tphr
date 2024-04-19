@@ -7,12 +7,10 @@ create table compositions (
       release_date    varchar(20)  not null,
       file_name       varchar(255) not null,
       author_id       bigint       not null,
-#     первое четверостишие
+#     первое четверостишие или краткая аннотация к видео или прозе
       poem_preview    text         null,
 #     ссылка на файл заглавной песни
       song_preview    varchar(255) null,
-#     краткая аннотация к видео или прозе
-      description     text         null,
 #     дискриминатор для наследования hibernate
       comp_type       int          not null,
       constraint cmp_auth_id_fk1

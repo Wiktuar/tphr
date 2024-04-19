@@ -18,10 +18,8 @@
 
     cabinetBtn.addEventListener("click", function () {
         if(+dropDownBox.style.maxHeight === 0) {
-            console.log(dropDownBox);
             dropDownBox.style.maxHeight = (dropDownBox.scrollHeight + 300) + 'px';
         } else {
-            console.log(2);
             dropDownBox.style.maxHeight = "";
         }
     });

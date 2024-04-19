@@ -43,13 +43,13 @@ public interface PoemRepo extends CrudRepository<Poem, Long> {
     Set<String> getAllPoemFileNames();
 
 //  получение LikesPoemDto для конкретного пользователя
-    @Query("select new ru.tphr.tphr.DTO.LikesPoemDto(p.id, p.header,p.fileName, p.releaseDate, p.poemPreview, p.author.email, p.author.firstName, p.author.lastName, p.author.pathToAvatar, p.likes.size, p.comments.size, " +
+    @Query("select new ru.tphr.tphr.DTO.LikesPoemDto(p.id, p.header,p.fileName, p.releaseDate, p.poemPreview, p.author.email, p.author.firstName, p.author.lastName, p.author.pathToAvatar, size(p.likes) , size(p.comments) , " +
             "sum(case when pl.email = :email then 1 else 0 end) > 0 ) " +
             "from Poem p left join p.likes pl group by p having p.author.email = :em")
     List<LikesPoemDto> getPoemsByUser(@Param("email") String email, @Param("em") String em);
 
 //  получение всех стихов всех авторов
-    @Query("select new ru.tphr.tphr.DTO.LikesPoemDto(p.id, p.header,p.fileName, p.releaseDate, p.poemPreview, p.author.email, p.author.firstName, p.author.lastName, p.author.pathToAvatar, p.likes.size, p.comments.size, " +
+    @Query("select new ru.tphr.tphr.DTO.LikesPoemDto(p.id, p.header,p.fileName, p.releaseDate, p.poemPreview, p.author.email, p.author.firstName, p.author.lastName, p.author.pathToAvatar, size(p.likes) , size(p.comments) , " +
             "sum(case when pl.email = :email then 1 else 0 end) > 0 ) " +
             "from Poem p left join p.likes pl group by p")
     List<LikesPoemDto> getAllPoem(@Param("email") String email);

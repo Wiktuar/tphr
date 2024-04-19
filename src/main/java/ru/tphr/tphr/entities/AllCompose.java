@@ -1,5 +1,6 @@
 package ru.tphr.tphr.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,17 +9,15 @@ import ru.tphr.tphr.entities.security.Author;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="comp_type",   discriminatorType = DiscriminatorType.INTEGER)
-@Table(name = "compositions")
 @Entity
-public class Composition {
+@Table(name = "compositions")
+public class AllCompose {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -53,19 +52,11 @@ public class Composition {
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private Set<Author> likes = new HashSet<>();
-
-    //  equals and hashCode
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Composition comp = (Composition) o;
-        return id == comp.id && header.equals(comp.header) && releaseDate.equals(comp.releaseDate) && fileName.equals(comp.fileName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, header, releaseDate, fileName);
-    }
-
+    @Column(name = "text_preview")
+    private String textPreview;
+    @Column(name = "link_preview")
+    private String linkPreview;
+//  поскольку данное поле находится под управлением hibernate, то его необходимо сделать неизменяемым
+    @Column(name = "comp_type", insertable = false, updatable = false )
+    private int compType;
 }

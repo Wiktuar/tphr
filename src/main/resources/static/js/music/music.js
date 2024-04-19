@@ -118,9 +118,6 @@ function addForm(button, html){
     })
 }
 
-addForm(document.querySelector(".create-single"), single);
-addForm(document.querySelector(".create-album"), album);
-
 // метод отправки формы на сервер
 function sendForm(){
    let hasMistakes = checkCompletionForm(document.querySelectorAll(".add_song"));
@@ -166,9 +163,9 @@ function checkCompletionForm(element){
 }
 
 // функции для работы с карточками уже имеющихся альбомов
-function createMusicPlayersForAlbums(){
-    const container = document.querySelector(".albums-container");
+export function createMusicPlayersForAlbums(container){
     const players = container.querySelectorAll(".player");
+    console.log(players.length);
     players.forEach( pl => {
         const progress = pl.querySelector(".progress")
         const audio = pl.querySelector(".audio");
@@ -182,5 +179,13 @@ function createMusicPlayersForAlbums(){
     })
 }
 
-createMusicPlayersForAlbums();
+function runFunction(){
+    if(window.location.href === "http://localhost:8070/cabinet/music"){
+        createMusicPlayersForAlbums(document.querySelector(".albums-container"));
+        addForm(document.querySelector(".create-single"), single);
+        addForm(document.querySelector(".create-album"), album);
+    }
+}
+
+runFunction();
 

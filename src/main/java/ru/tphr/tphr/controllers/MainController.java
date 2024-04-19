@@ -7,8 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+import ru.tphr.tphr.DTO.AllComposeDTO;
 import ru.tphr.tphr.DTO.AuthorDTO;
 import ru.tphr.tphr.DTO.LikesPoemDto;
+import ru.tphr.tphr.services.AllComposeService;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.ContentService;
 import ru.tphr.tphr.services.PoemService;
@@ -23,6 +25,7 @@ public class MainController {
     private PoemService poemService;
     private AuthorService authorService;
     private ContentService contentService;
+    private AllComposeService allComposeService;
 
     @Autowired
     public void setPoemService(PoemService poemService) {
@@ -39,6 +42,11 @@ public class MainController {
         this.contentService = contentService;
     }
 
+    @Autowired
+    public void setAllComposeService(AllComposeService allComposeService) {
+        this.allComposeService = allComposeService;
+    }
+
     //  метод получения стихотворений на индексной странице
     @GetMapping("/")
     public String getMainPage(Model model, Principal principal){
@@ -50,9 +58,9 @@ public class MainController {
         } else {
             principalName = "default";
         }
-        List<LikesPoemDto> lpd =  poemService.getAllPoems(principalName);
+        List<AllComposeDTO> acd = allComposeService.getAllCompose(principalName);
         model.addAttribute("authorDTO", authorDTO);
-        model.addAttribute("poems", lpd);
+        model.addAttribute("allComposDTO", acd);
         return "index";
     }
 
@@ -78,6 +86,7 @@ public class MainController {
         model.addAttribute("poem", likesPoemDto);
         return "single/singlePoem";
     }
+
 
 //    @PostMapping("/fail")
 //    public RedirectView getLoginPage(@RequestParam String username,

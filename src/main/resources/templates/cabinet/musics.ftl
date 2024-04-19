@@ -47,22 +47,20 @@
                         <div class="album_box_body">
                             <img src="/img/${album.fileName}" class="album-image" alt="тематическая картинка">
                             <div class="album_content">
-                                <#list album.songs as song>
-                                    <div class="player">
-                                        <div class="title">${song.header}</span></div>
-                                        <div class="meta-data">
-                                            <div class="current_time">00:00</div>
-                                            <audio class="audio" src="/music/${album.songPreview}" preload="metadata" data-status="pause"></audio>
-                                            <div class="buttons">
-                                                <div class="btn play"><img class="img_src" src="../../static/img/musicButtons/play.png" alt="play png"></div>
-                                            </div>
-                                            <div class="duration">${song.duration}</div>
+                               <div class="player">
+                                    <div class="title">${album.song.header}</span></div>
+                                    <div class="meta-data">
+                                        <div class="current_time">00:00</div>
+                                        <audio class="audio" src="/music/${album.song.urlToMusicFile}" preload="metadata" data-status="pause"></audio>
+                                        <div class="buttons">
+                                            <div class="btn play"><img class="img_src" src="../../static/img/musicButtons/play.png" alt="play png"></div>
                                         </div>
-                                        <div class="progress_container">
-                                            <div class="progress"></div>
-                                        </div>
+                                        <div class="duration">${album.song.duration}</div>
                                     </div>
-                                </#list>
+                                    <div class="progress_container">
+                                        <div class="progress"></div>
+                                    </div>
+                                </div>
                             </div>
                             <a href="/cabinet/music/${album.id}">
                                 <div class="fool_reading">слушать полностью</div>

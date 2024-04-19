@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+//класс наследуется сущностями DTO непосредственно произведений, к примеру LikesPoemDTO
 @AllArgsConstructor
 @Getter
 @Setter
@@ -20,6 +21,7 @@ public class CompositionDTO {
     private int comments;
     private boolean meLiked;
 
+//  этот вариант конструктора может пригодиться для личного кабинета автора. где в превью авторские поля не нужны.
     public CompositionDTO(long id, String header, String fileName, String releaseDate, int likes, int comments, boolean meLiked) {
         this.id = id;
         this.header = header;

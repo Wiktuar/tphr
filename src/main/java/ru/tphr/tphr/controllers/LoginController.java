@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,8 +40,6 @@ public class LoginController {
     public String getRegistrationPage(){
         return "personal/registration";
     }
-
-    //  метод получения страницы личного кабинета
     @GetMapping("/cabinet")
     public String getCabinet(Principal principal, Model model){
         Author authorFromDb = authorService.getAuthorByEmail(principal.getName());
@@ -57,6 +56,8 @@ public class LoginController {
         model.addAttribute("author", author);
         return "personal/cabinet";
     }
+    //  метод получения страницы личного кабинета
+
 
     // активация аакаунта автора
     @GetMapping("/activate/{code}")
