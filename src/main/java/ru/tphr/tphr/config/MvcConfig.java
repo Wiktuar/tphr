@@ -6,15 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableAsync
 public class MvcConfig implements WebMvcConfigurer {
-    @Value("${upload.path2}")
+    @Value("${upload.path}")
     private String uploadPath;
 
 //    метод задает контроллеры по-умолчанию, для которых не нужны проверки и
@@ -25,14 +22,18 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("classpath:/static/js/");
+
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/static/css/");
+
         registry.addResourceHandler("/img/**")
-                .addResourceLocations("file://" + uploadPath + "/");
+                .addResourceLocations("classpath:/static/img/");
 
-        registry.addResourceHandler(("/music/**"))
+        registry.addResourceHandler(("/upload/**"))
                 .addResourceLocations("file://" + uploadPath + "/");
-
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
     }
 
     //  бин для преобразования сущностейй в DTO

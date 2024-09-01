@@ -149,6 +149,7 @@ $.modal = function (options){
 
         setHandLer(){
             let buttons = Array.from(document.querySelectorAll(".btn"));
+            console.log(`размер массива ${buttons.length}`);
             buttons[1].onclick = function(){
                 attentionWindow.close();
                 document.location = "/cabinet";

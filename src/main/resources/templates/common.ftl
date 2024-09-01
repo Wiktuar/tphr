@@ -2,34 +2,38 @@
 <#macro header>
     <#assign known = SPRING_SECURITY_CONTEXT??>
     <header>
-        <div class="logo-block">
-            <img src="../static/img/logo.jpg" class="logo" alt="Логотип">
-            <h2>Творчество православных христиан</h2>
-        </div>
-        <div class="search-block">
-            <a href="#" class="authors">Авторы</a>
-            <span class="search">Поиск по сайту</span>
-        </div>
-        <#if known>
-            <div class="user-data">
-                <button type="button" class="cabinet-button">
-                      <img src="../static/img${authorDTO.pathToAvatar}" class="user-pic" alt="аватар пользователя"> ${authorDTO.firstName}
-                 </button>
-                <div class="dropdown-box">
-                    <a href="/cabinet">Личные данные</a>
-                    <a href="/cabinet/poems">Мои стихи</a>
-                    <a href="#">Моя проза</a>
-                    <a href="/cabinet/music">Моя музыка</a>
-                    <a href="#">Мои рисунки</a>
-                    <a href="/logout">Выйти</a>
+        <div class="header_container">
+            <div class="logo-block">
+                <a href="/">
+                    <img src="/img/logo.jpg" class="logo" alt="Логотип">
+                    <h2 class="logo_text">Творчество православных христиан</h2>
+                </a>
+            </div>
+            <div class="search-block">
+                <a href="#" class="authors">Авторы</a>
+                <span class="search">Поиск по сайту</span>
+            </div>
+            <#if known>
+                <div class="user-data">
+                    <button type="button" class="cabinet-button">
+                        <img src="/upload/${authorDTO.pathToAvatar}" class="user-pic" alt="аватар пользователя"> ${authorDTO.firstName}
+                    </button>
+                    <div class="dropdown-box">
+                        <a href="/cabinet">Личные данные</a>
+                        <a href="/cabinet/poems">Мои стихи</a>
+                        <a href="#">Моя проза</a>
+                        <a href="/cabinet/music">Моя музыка</a>
+                        <a href="#">Мои рисунки</a>
+                        <a href="/logout">Выйти</a>
+                    </div>
                 </div>
-            </div>
-        <#else>
-            <div class="login-block">
-                <a href="/login" class="enter">Вход</a>
-                <a href="/registration" class="registration">Регистрация</a>
-            </div>
-        </#if>
+            <#else>
+                <div class="login-block">
+                    <a href="/login" class="enter">Вход</a>
+                    <a href="/registration" class="registration">Регистрация</a>
+                </div>
+            </#if>
+        </div>
     </header>
 </#macro>
 

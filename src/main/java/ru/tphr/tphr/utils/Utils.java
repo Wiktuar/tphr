@@ -3,6 +3,8 @@ package ru.tphr.tphr.utils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
+import ru.tphr.tphr.entities.Composition;
+import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.entities.security.Role;
 
 import javax.imageio.ImageIO;
@@ -21,6 +23,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -65,13 +69,13 @@ public class Utils {
         return Arrays.stream(data).limit(4).collect(Collectors.joining("<br>"));
     }
 
-//  метод, берущий стихотворение и добавляющий к его строфам тег переноса строки
-    public static String editPoem(String[] data){
+//  метод, берущий текст и добавляющий к его строфам тег переноса строки
+    public static String addBrTag(String[] data){
         return Arrays.stream(data).collect(Collectors.joining("<br>"));
     }
 
-//  метод, берущий стихотворение и удаляющий из строк тег переноса строки
-    public static String editPoem(String data){
+//  метод, берущий текст и удаляющий из строк тег переноса строки
+    public static String removeBrTag(String data){
         String[] arr = data.split("<br>");
         return Arrays.stream(arr).collect(Collectors.joining());
     }
@@ -92,5 +96,19 @@ public class Utils {
         } else {
             throw new UnsupportedAudioFileException(String.format("Файл %s не поддерживается", fileName));
         }
+    }
+
+//  установление социаьным сетям автора параметр null, если с формы пришла пустая строка
+    public static void changeSocialNets(Author author){
+        if(author.getVk().isEmpty())author.setVk(null);
+        if(author.getYt().isEmpty())author.setYt(null);
+        if(author.getTg().isEmpty())author.setTg(null);
+        if(author.getRt().isEmpty())author.setRt(null);
+    }
+
+//  функцияб изменяющая пути к файлу у Сomposition если пользоваель поменял почту
+    public static void changeFileName(Composition c, Pattern p, String email ){
+        Matcher m = p.matcher(c.getFileName());
+        c.setFileName(m.replaceFirst(email));
     }
 }

@@ -1,23 +1,4 @@
 /* основные стили */
-
-*{
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #d7e9e2;
-    font: 18px Arial, Helvetica, sans-serif;;
-    display: block;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-.container {
-    margin: 0 auto;
-    max-width: 1200px;
-    background-color: #ffe0b3;
-}
-
 h3 {
     text-align: center;
     font-size: 26px;
@@ -28,6 +9,7 @@ h3 {
 /* стили формы */
 form {
     margin: 0 auto;
+    font-size: 20px;
     min-height: 500px;
     font-style: italic;
 }
@@ -52,7 +34,7 @@ form {
     border-radius: 8px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
     font-size: 20px;
-    font-family: Tahoma;
+    font-family: Tahoma sans-serif;
 }
 
 input:focus {
@@ -132,16 +114,38 @@ input:focus {
     margin-bottom: 30px;
 }
 
+/*Добавление описания автора*/
+.additional {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .2s ease-out;
+}
+
+.about_me_header {
+    width: 70%;
+    margin: 10px auto;
+}
+
+textarea {
+    display: block;
+    width: 70%;
+    height: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
+    font-size: 1em;
+    font-family: Tahoma sans-serif;
+    background-color: white;
+}
+
 
 /* добавление слциальных сетей */
 /* https://qna.habr.com/q/585750  +  и  ~  в css    */
 
 .social-box {
     list-style-type: none;
-    /*отступы margin установливаются через js*/
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height .2s ease-out;
 }
 
 
@@ -160,7 +164,7 @@ input:focus {
     border-radius: 8px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
     font-size: 20px;
-    font-family: Tahoma,;
+    font-family: Tahoma,sans-serif;
 }
 
 .sc-block input:focus {
@@ -209,7 +213,7 @@ input:focus {
 
 /* Buttons */
 
-.btn, .socialNetsBtn, .regBtn {
+.btn, .additionalBtn, .regBtn {
     width: 300px;
     height: 45px;
     display: block;

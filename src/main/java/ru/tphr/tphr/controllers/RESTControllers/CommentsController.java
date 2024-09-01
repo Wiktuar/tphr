@@ -53,13 +53,14 @@ public class CommentsController {
         Author author = authorService.getAuthorByEmail(principal.getName());
 
         String[] massOfLines = comment.getText().split("\\n");;
-        comment.setText(Utils.editPoem(massOfLines));
+        comment.setText(Utils.addBrTag(massOfLines));
         comment.setAuthor(author);
         commentService.saveComment(comment);
         comment.setId(commentService.getCommentId(comment.getAuthor().getId(), comment.getTimeStamp()));;
         CommentDTO commentDTO = convertEntityToDTO.convertToCommentDTO(comment);
         commentDTO.setAuthorDTO(convertEntityToDTO.convertToAuthorDto(author));
         commentDTO.setCountOfComments(Integer.parseInt(commentService.getCountOfCommentsById(comment.getPoemId())));
+        commentDTO.setUpdated(true);
         return commentDTO;
     }
 
@@ -78,7 +79,7 @@ public class CommentsController {
                                     @RequestParam String text){
         String[] massOfLines = text.split("\\n");;
         Comment comment = commentService.getCommentById(id);
-        comment.setText(Utils.editPoem(massOfLines));
+        comment.setText(Utils.addBrTag(massOfLines));
         comment = commentService.saveComment(comment);
         CommentDTO commentDTO = convertEntityToDTO.convertToCommentDTO(comment);
         commentDTO.setAuthorDTO(convertEntityToDTO.convertToAuthorDto(comment.getAuthor()));
@@ -89,7 +90,7 @@ public class CommentsController {
     @GetMapping("/getcomment/{id}")
     public CommentDTO getCommentById(@PathVariable long id) throws JsonProcessingException {
         CommentDTO commentDTO = commentService.getTextCommentById(id);
-        commentDTO.setText(Utils.editPoem(commentDTO.getText()));
+        commentDTO.setText(Utils.removeBrTag(commentDTO.getText()));
         return commentDTO;
     }
 }

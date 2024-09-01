@@ -2,6 +2,7 @@ package ru.tphr.tphr.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,15 +10,27 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tphr.tphr.DTO.AuthorDTO;
+import ru.tphr.tphr.entities.AllCompose;
+import ru.tphr.tphr.entities.Composition;
 import ru.tphr.tphr.entities.security.*;
+import ru.tphr.tphr.exceptions.AuthorExistsException;
 import ru.tphr.tphr.exceptions.TokenExistsException;
 import ru.tphr.tphr.repository.security.AuthorRepo;
 import ru.tphr.tphr.repository.security.PasswordResetTokenRepo;
 import ru.tphr.tphr.utils.Utils;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -27,6 +40,7 @@ public class AuthorService implements UserDetailsService {
     private PasswordResetTokenRepo passwordResetTokenRepo;
     private PasswordEncoder passwordEncoder;
     private MailSenderService mailSenderService;
+    private ComposeService composeService;
 
     @Autowired
     public void setAuthorRepo(AuthorRepo authorRepo) {
@@ -46,6 +60,11 @@ public class AuthorService implements UserDetailsService {
     @Autowired
     public void setMailSenderService(MailSenderService mailSenderService) {
         this.mailSenderService = mailSenderService;
+    }
+
+    @Autowired
+    public void setComposeService(ComposeService composeService) {
+        this.composeService = composeService;
     }
 
     //метод преобразования автора в пользователя Spring Security
@@ -81,13 +100,47 @@ public class AuthorService implements UserDetailsService {
         return true;
     }
 
+//  метод сохранения отредактированного автора
+    @Transactional
+    public boolean saveEditAuthor(Author author){
+        authorRepo.editAuthor(author.getFirstName(),
+                              author.getLastName(),
+                              author.getPathToAvatar(),
+                              author.getDescription(),
+                              author.getTg(),
+                              author.getVk(),
+                              author.getYt(),
+                              author.getRt(),
+                              author.getId());
+        return true;
+    }
+
+//  метод обновляющий электронную почту автора
+    @Transactional
+    public void updateAuthorEmail(Author author){
+        if(this.getAuthorByEmail(author.getEmail()) != null ) throw new AuthorExistsException();
+
+//   изменение пути до аватарки
+        Pattern p = Pattern.compile("[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9_-]+");
+        Matcher m = p.matcher(author.getPathToAvatar());
+        author.setPathToAvatar(m.replaceFirst(author.getEmail()));
+
+//   изменение пути для адресов обложек произведений автора
+        List<Composition> allCompose = composeService.findAllByAuthorId(author.getId());
+        allCompose.forEach(c -> Utils.changeFileName(c, p, author.getEmail()));
+        composeService.saveAllCompositions(allCompose);
+
+        String code = UUID.randomUUID().toString();
+        authorRepo.updateAuthorEmail(author.getEmail(), author.getPathToAvatar(), code, Status.NO_ACTIVE, author.getId());
+        mailSenderService.sendConfirmEmail(author.getEmail(), author.getFirstName(), code);
+    }
+
 //  метод, обновляющий пароль пользователя по его ID
     @Transactional
     public void updateAuthorById(String password, long id) {
         password = passwordEncoder.encode(password);
         passwordResetTokenRepo.deleteByAuthorId(id);
         authorRepo.updateAuthor(password, id);
-
     }
 
     // активация пользователя по коду активации

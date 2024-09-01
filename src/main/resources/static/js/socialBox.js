@@ -1,16 +1,16 @@
 (function(){
-    const btn = document.querySelector(".socialNetsBtn");
-    const social_box = document.querySelector(".social-box");
+    const btn = document.querySelector(".additionalBtn");
+    const additional = document.querySelector(".additional");
 
     btn.addEventListener("click", function () {
-        if(+social_box.style.maxHeight === 0) {
-            social_box.style.maxHeight = social_box.scrollHeight + 'px';
-            social_box.style.marginTop = '45px';
-            social_box.style.marginBottom = '45px';
+        if(+additional.style.maxHeight === 0) {
+            additional.style.maxHeight = additional.scrollHeight + 'px';
+            additional.style.marginTop = '45px';
+            additional.style.marginBottom = '45px';
         } else {
-            social_box.style.maxHeight = "";
-            social_box.style.marginTop = '';
-            social_box.style.marginBottom = '';
+            additional.style.maxHeight = "";
+            additional.style.marginTop = '';
+            additional.style.marginBottom = '';
         }
     });
 })();

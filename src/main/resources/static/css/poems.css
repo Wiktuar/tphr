@@ -20,33 +20,17 @@
     font-style: normal;
 }
 
-
-
-*{
-    box-sizing: border-box;
-}
-
-.empty_list{
-    width: 100%;
-    margin-top: 50px;
-    padding-left: 20px;
-    font-size: 2em;
-    font-family: Arial, sans-serif;
-    text-align: left;
-}
-
-.container {
+.cabinet_container {
+    display: flex;
     margin: 0 auto;
-    max-width: 1200px;
-    height: 100%;
+    width: 1400px;
+    min-height: 100vh;
     background-color: #ffe0b3;
 }
 
 /*левый блок и его меню*/
 .left-sb {
-    float: left;
     width: 15%;
-    height: 1000px;
     background-color: white;
 }
 
@@ -74,24 +58,21 @@ ul {
     color: white;
 }
 
-/*Правый блок*/
+/*правый блок*/
 .right-sb {
-    float: right;
     width: 85%;
-    min-height: 800px;
-    max-height: fit-content;
-    background-color: #ffe0b3;
+    padding: 20px 0 20px;
 }
 
 /*стили кнопки добавления стихотворения*/
-.add_poem_btn {
+.add_poem_btn, .confirm_btn {
     width: 300px;
     height: 45px;
+    margin: 16px auto 30px;
+    padding: 8px 24px;
     display: block;
     font-size: 20px;
-    padding: 8px 24px;
     border-radius: 8px;
-    margin: 16px auto 0;
     border: none;
     background: #e74c3c;
     color: #f5f6fa;
@@ -136,14 +117,8 @@ form input {
     border-radius: 8px;
 }
 
-.fileInput input {
-    max-width: 1px;
-    max-height: 1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-    display: inline-block;
+#cover_input {
+    display: none;
 }
 
 .view_cover {
@@ -173,12 +148,11 @@ textarea {
 /*стили флекс контейнера и превью стихов*/
 
 .poems-container {
-    display: flex;
-    padding-left: 1%;
-    padding-right: 1%;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    height: 100%;
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(3, 285px);
+    justify-content: center;
+    margin: 0 auto 96px;
 }
 
 /*стиль превью-блока стихотворения*/
@@ -241,22 +215,23 @@ textarea {
 /* ширина картинки устанавливается скриптом JavaScript*/
 .poem-image {
     display: block;
+    width: 90%;
     margin: 2px auto;
 }
 
 /*стили превью-четверостишия*/
 .poem_content{
-    /*display:table-cell;*/
     margin-top: 3%;
     padding-left: 7%;
     height: 80px;
+    overflow: hidden;
     font-size: 0.5em;
     font-family: "Arsenal-Regular";
 }
 
 /*стили кнопки "читать полностью"*/
 .fool_reading {
-    margin: 5% 15%;
+    margin: 3% 15%;
     padding: 2%;
     font-size: 0.5em;
     font-weight: bold;
@@ -326,6 +301,11 @@ textarea {
     padding: 5px;
 }
 
+.delete_link.forbidden {
+    cursor: not-allowed;
+    opacity: .3;
+}
+
 /*стили формы добавления стиха*/
 .add_poem {
     width: 80%;
@@ -357,6 +337,13 @@ form input {
     background-color: #2f3640;
     color: #f5f6fa;
     border-radius: 8px;
+}
+
+.attention {
+    margin-top: 25px;
+    font-size: 22px;
+    font-family: Arial, Tahoma, sans-serif;
+    text-align: center;
 }
 
 /*стили, как и у тега Label выше, только убраны padding*/
@@ -441,7 +428,55 @@ h3 {
     margin-bottom: 20px;
     font-family: "Arsenal-Regular";
     font-size: 1.3em;
+    overflow: hidden;
 }
 
+/*стили для выбора и обрезки обложки альбома*/
+.edit_cover_container {
+    display: flex;
+    justify-content: space-evenly;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .2s ease-out;
+}
+
+.preview_cover {
+    position: relative;
+}
+
+.image {
+    display: inline-block;
+    max-width: 350px;
+}
+
+.canvas {
+    position: absolute;
+    border: 0;
+    border-radius: 15px;
+    cursor: move;
+}
+
+
+.resultAvatar {
+    min-width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.resultPhoto {
+    margin: 0 auto;
+}
+
+
+.empty_list{
+    width: 100%;
+    height: 70px;
+    margin: 50px auto;
+    padding-left: 20px;
+    font-size: 2em;
+    font-family: Arial, sans-serif;
+    text-align: left;
+}
 
 

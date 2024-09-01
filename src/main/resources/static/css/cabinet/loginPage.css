@@ -1,25 +1,9 @@
-/* основные стили */
-
-*{
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #d7e9e2;
-    font: 18px Arial, Helvetica, sans-serif;
-}
-
-.container {
-    margin: 0 auto;
-    padding-top: 50px;
-    max-width: 1200px;
-    min-height: 800px;
-    background-color: #ffe0b3;
-}
-
 /* стили формы логирования */
+.wrapLoginForm {
+    margin-top: 50px;
+}
 
-h2 {
+.greeting {
     margin-bottom: 50px;
     text-align: center;
     font-size: 26px;
@@ -62,7 +46,46 @@ input:focus {
     box-shadow: none;
 }
 
-button, a {
+.remember {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+
+/*стили для checkbox*/
+input[type="checkbox"] {
+    appearance: none;
+    background: #fff;
+    border: 2px solid #415674;
+    height: 1.5em;
+    width: 1.5em;
+    vertical-align: text-bottom;
+    position: relative;
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    top: 0;
+}
+
+input[type="checkbox"]:checked::before {
+    border-right: 5px solid #4b83fc;
+    border-bottom: 6px solid #4b83fc;
+    height: 90%;
+    width: 30%;
+    transform: rotate(50deg) translateY(-20%) translateX(-10%);
+}
+
+
+/*стили ссылок и кнопки*/
+#sendLoginForm, #updatePassport, .loginBtn, .remindBtn, .btn {
     display: block;
     margin: 30px auto 0;
     padding: 8px 24px;
@@ -72,14 +95,10 @@ button, a {
     color: #f5f6fa;
     border-radius: 8px;
     font-size: 20px;
-    cursor: pointer;
-}
-
-/* основные стили ссылки выше*/
-a {
     text-align: center;
     text-decoration: none;
     font-style: normal;
+    cursor: pointer;
 }
 
 /*стили появляющегося предупреждения о неверных данных*/
@@ -99,6 +118,7 @@ a {
     font-size: 22px;
     text-align: center;
 }
+
 
 /* блок напоминания пароля */
 .remindEmail {
@@ -141,14 +161,14 @@ a {
     width: 30px;
     height: 30px;
     border: none;
-    background-image: url("../img/eye.svg");
+    background-image: url("../../img/eye.svg");
     background-position: 0 0;
     background-repeat: no-repeat;
     cursor: pointer;
 }
 
 .showPassword.view {
-    background-image: url("../img/noEye.svg");
+    background-image: url("../../img/noEye.svg");
 }
 
 /*  у кнопки переопределяю стили, которые были заложены выше для тега button */

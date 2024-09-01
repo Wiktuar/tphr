@@ -56,6 +56,7 @@ function handleJsonResult(status, result){
     }
 }
 
+// функция отправки формы аутентификации на сервер
 async function loginUser(e){
     e.preventDefault();
     let username = document.getElementById("username");

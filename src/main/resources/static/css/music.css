@@ -27,7 +27,7 @@
     font-family: "Ubuntu", sans-serif;
 }
 
-.container {
+.cabinet_container {
     display: flex;
     margin: 0 auto;
     width: 1200px;

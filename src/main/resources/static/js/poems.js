@@ -1,40 +1,8 @@
-//расположение фотографии в зависимости от соотношения длины и ширины
-(function resizePoemImage(){
-    let poemImage = document.getElementsByClassName("poem-image");
+import{addCanvas} from "./music/editCover.js";
+import{removeAdditionalClass} from "./music/utils.js";
+import{getAttentionDiv} from "./music/utils.js";
 
-    for(let image of poemImage){
-        if(image.naturalWidth < image.naturalHeight){
-            image.style.width = '30%';
-        } else {
-            image.style.width = '60%';
-        }
-    }
-})();
-
-// отображение загруженной фотографии на обложку стиха
-const image = document.getElementById("image");
-const view_cover = document.querySelector(".view_cover");
-const default_cover = document.querySelector(".default_cover");
-
-document.getElementById('file')
-    .addEventListener('change', e => {
-        let files = e.target.files;
-        let fr = new FileReader();
-        fr.onloadend = function() {
-            image.src = fr.result;
-            image.addEventListener("load", resize);
-            default_cover.textContent = "";;
-        };
-        fr.readAsDataURL(files[0]);
-    });
-
-function resize(){
-    if(image.naturalWidth < image.naturalHeight){
-        image.style.width = '45%';
-    } else {
-        image.style.width = '60%';
-    }
-}
+addCanvas();
 
 //отображение формы добавления стихотворения
 (function(){
@@ -50,6 +18,38 @@ function resize(){
     });
 })();
 
+// метод сохранения стихотворения
+document.querySelector(".savePoem")
+    .addEventListener("click", e =>  {
+        e.preventDefault();
+        const form = document.getElementById("poem_form");
+        if(form.querySelector(".attention")){
+            form.querySelector(".attention").remove()
+        }
+        const sendBtn = form.querySelector(".savePoem");
+        if(checkMistakes().hasMistakes){
+            form.insertBefore(getAttentionDiv(checkMistakes().message), sendBtn);
+        }
+
+        const data = new FormData(form);
+
+        fetch("/cabinet/poems", {
+            method: "POST",
+            body: data,
+        }).then(response => {
+            console.log(response.status);
+            if(response.status === 200)
+                document.location = "/cabinet/poems";
+            else if(response.status === 422){
+                form.insertBefore(getAttentionDiv("Стихотворение с таким названием уже существует"), sendBtn);
+            } else {
+                form.insertBefore(getAttentionDiv("Проищошла непревиденная ошибка"), sendBtn);
+            }
+        });
+
+    })
+
+
 //функция подтверждающая удаление стихотворения
 function deletePoem(id){
     const poemHeader = document.querySelector(`.inner_poem_header${id}`);
@@ -61,8 +61,6 @@ function deletePoem(id){
         document.location = `/cabinet/delete/poem/${id}`;
     })
 }
-
-
 
 // обновление и удаление стихотворений. Событие клика мышки вешается на контейнер
 const poemsContainer = document.querySelector(".poems-container");
@@ -87,9 +85,14 @@ async function updatePoem(id){
     const releaseDate = document.querySelector(".add_poem_box input[type=hidden].release_date_input");
     const inputHeader = document.querySelector(".add_poem_box input[type=text]");
     const inputContent = document.querySelector(".add_poem_box textarea");
-    const poemImage = document.getElementById("image");
+    const poemImage = document.querySelector(".cover");
     const default_cover = document.querySelector(".default_cover");
     const addPoemBtn = document.querySelector(".add_poem_btn");
+
+
+    removeAdditionalClass("delete_link", id);
+    const deleteBtn = document.getElementsByClassName(`delete_link ${id}`)[0];;
+    deleteBtn.classList.add("forbidden");
 
     const res = await fetch(`/cabinet/updatete/poem/${id}`, {
         method: 'GET',
@@ -104,7 +107,7 @@ async function updatePoem(id){
          releaseDate.value = poem.releaseDate;
          inputHeader.value = poem.header;
          inputContent.value = poem.content;
-         poemImage.src = `/img/${poem.fileName}`;
+         poemImage.src = `/upload/${poem.fileName}`;
          addPoemBtn.textContent = "Обновить стихотворение";
          default_cover.textContent = "";
      });
@@ -117,5 +120,51 @@ async function updatePoem(id){
 
     addPoemBox.style.maxHeight = (addPoemBox.scrollHeight + 300) + 'px';
 }
+
+function checkMistakes(form){
+    const error = {
+        hasMistakes: false,
+        message: ""
+    };
+
+    const headerText = document.getElementById("text");
+    const content = document.getElementById("content");
+    if(!headerText.value) {
+        error.hasMistakes = true;
+        error.message = "Вы не заполнили заглавие стиховторения";
+    }
+
+    if(!content.value) {
+        error.hasMistakes = true;
+        error.message = "Вы не заполнили содержание стиховторения";
+    }
+
+    return error;
+}
+
+// отображение загруженной фотографии на обложку стиха
+// const image = document.getElementById("image");
+// const view_cover = document.querySelector(".view_cover");
+// const default_cover = document.querySelector(".default_cover");
+//
+// document.getElementById('file')
+//     .addEventListener('change', e => {
+//         let files = e.target.files;
+//         let fr = new FileReader();
+//         fr.onloadend = function() {
+//             image.src = fr.result;
+//             image.addEventListener("load", resize);
+//             default_cover.textContent = "";;
+//         };
+//         fr.readAsDataURL(files[0]);
+//     });
+
+// function resize(){
+//     if(image.naturalWidth < image.naturalHeight){
+//         image.style.width = '45%';
+//     } else {
+//         image.style.width = '60%';
+//     }
+// }
 
 

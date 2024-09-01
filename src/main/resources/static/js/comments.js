@@ -50,11 +50,12 @@ async function saveOrUpdate(e){
         })
 
         res.json().then(comment => {
-            // let txt = comment.text.replaceAll("<br>", "\r\n");
-            // console.log(txt);
             document.querySelector(`#comment${comment.id} .comment_text`)
                 .innerHTML = comment.text;
         });
+
+        const closeCross = document.querySelector(`#comment${id} .close_cross`);
+        closeCross.classList.remove("forbidden");
 
     } else {
         const formData = new FormData();
@@ -94,11 +95,11 @@ function commentToHTML(comment){
     const commentsContainer = document.querySelector(".comments_container");
     commentsContainer.insertAdjacentHTML('beforeend', `
             <div id="comment${comment.id}" class="comment_block">
-                <img src="../../static/img${comment.author.pathToAvatar}" class="comment_author_avatar" alt="аватар автора">
+                <img src="/upload/${comment.author.pathToAvatar}" class="comment_author_avatar" alt="аватар автора">
                 <div class="comment_body">
                     <h2 class="comment_author_name">${comment.author.firstName}  ${comment.author.lastName}</h2>
-                    <a href="#" class="update_comment_btn"><img src="../../static/img/edit.png" class="edit_pencil ${comment.id}" alt="Обновление комментария"></a>
-                    <a href="#" class="delete_comment_btn"><img src="../../static/img/close.png" class="close_cross ${comment.id}" alt="Удаление комментария"></a>
+                    <a href="" class="update_comment_btn"><img src="/img/edit.png" class="edit_pencil ${comment.id}" alt="Обновление комментария"></a>
+                    <a href="" class="delete_comment_btn"><img src="/img/close.png" class="close_cross ${comment.id}" alt="Удаление комментария"></a>
                     <div class="comment_text" style="text-align: justify">
                         ${comment.text}
                     </div>
@@ -143,6 +144,8 @@ commentsContainer.addEventListener("click", e => {
 async function updateCommentById(id){
     const input = document.getElementById("comment_input");
     const textArea = document.getElementById("text_area");
+    const closeCross = document.querySelector(`#comment${id} .close_cross`);
+    closeCross.classList.add("forbidden");
 
     const res = await fetch(`/getcomment/${id}`, {
         method: 'GET',
@@ -156,3 +159,17 @@ async function updateCommentById(id){
         textArea.value = comment.text;
     })
 }
+
+function cancel(e){
+    e.preventDefault();
+    console.log("cancel pressed");
+    const input = document.getElementById("comment_input");
+    const textArea = document.getElementById("text_area");
+    input.value = "";
+    textArea.value = "";
+}
+
+const cancelBtn = document.querySelector(".reset_btn");
+cancelBtn.addEventListener("click", cancel);
+
+

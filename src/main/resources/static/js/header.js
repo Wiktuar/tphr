@@ -1,15 +1,16 @@
 //расположение фотографии в зависимости от соотношения длины и ширины
-(function resizePoemImage(){
-    let poemImage = document.getElementsByClassName("poem-image");
-
-    for(let image of poemImage){
-        if(image.naturalWidth < image.naturalHeight){
-            image.style.width = '30%';
-        } else {
-            image.style.width = '60%';
-        }
-    }
-})();
+// на данный момент больше не актуальна
+// function resizePoemImage(){
+//     let poemImage = document.getElementsByClassName("poem-image");
+//
+//     for(let image of poemImage){
+//         if(image.naturalWidth < image.naturalHeight){
+//             image.style.width = '30%';
+//         } else {
+//             image.style.width = '60%';
+//         }
+//     }
+// }
 
 //выпадающий список меню личного кабинета
 (function(){

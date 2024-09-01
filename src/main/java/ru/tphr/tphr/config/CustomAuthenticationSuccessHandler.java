@@ -3,8 +3,13 @@ package ru.tphr.tphr.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.scenario.effect.impl.sw.java.JSWBlend_SRC_OUTPeer;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+import ru.tphr.tphr.services.AuthorService;
+import ru.tphr.tphr.utils.HeaderMenuUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,7 +32,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         } else {
             targetUrl = "http://localhost:8070/";
         }
-        System.out.println(targetUrl);
+
+        //  Получаем бины из контекста и обновляем бин со session scope
+        AuthorService authorService = SpringContext.getBean(AuthorService.class);
+        HeaderMenuUtil hmu = SpringContext.getBean(HeaderMenuUtil.class);
+        hmu.setAuthorService(authorService);
+        hmu.setPrincipalName(SecurityContextHolder.getContext().getAuthentication().getName());
+
         httpServletResponse.setStatus(200);
         httpServletResponse.getOutputStream()
                 .println(objectMapper.writeValueAsString(targetUrl));

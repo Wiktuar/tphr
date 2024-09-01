@@ -30,4 +30,12 @@ public class ComposeService {
     public List<Composition> findAll(){
         return compositionRepo.findAll();
     }
+
+    public List<Composition> findAllByAuthorId(long id){
+        return compositionRepo.findAllByAuthorId(id);
+    }
+
+    public void saveAllCompositions(List<Composition> composeList){
+        compositionRepo.saveAllAndFlush(composeList);
+    }
 }

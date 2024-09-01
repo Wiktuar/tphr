@@ -11,7 +11,7 @@ const modalWindow = $.modal( {
         <div class="resultAvatar">
             <h3>Ваша аватарка</h3>
             <div class="resultPhoto">
-                <canvas id="myCanvas" width="200" height="200">
+                <canvas id="myCanvas" width="300" height="300">
                     Your browser does not support JS or HTML5!
                 </canvas>
             </div>
@@ -34,25 +34,9 @@ const modalWindow = $.modal( {
                 const file = document.getElementById("file");
                 file.value = null;
                 modalWindow.close();
-                modalWindow.destroy();
             }
         }
     ]
 });
-
-const attentionWindow = $.modal({
-    title: "Ошибка заполнения формы",
-    closeable: true,
-    width: "450px",
-    footerButtons: [
-        {
-            text: "Хорошо!",
-            handler() {
-                attentionWindow.close();
-            }
-        }
-    ]
-});
-
 
 

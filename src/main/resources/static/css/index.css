@@ -1,0 +1,8 @@
+.compose_container {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(4, 285px);
+    justify-content: center;
+    width: 1400px;
+    margin: 0 auto 96px;
+}

@@ -53,5 +53,9 @@ public interface PoemRepo extends CrudRepository<Poem, Long> {
             "sum(case when pl.email = :email then 1 else 0 end) > 0 ) " +
             "from Poem p left join p.likes pl group by p")
     List<LikesPoemDto> getAllPoem(@Param("email") String email);
+
+    //  метод проверяет, создавал ли пользователь стих с таким названием или еще нет
+    @Query("SELECT p.id FROM Poem p WHERE p.header = :header AND p.author.email = :email")
+    String getPoemId(@Param("header") String header, @Param("email") String email);
 }
 

@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "compositions")
 @DiscriminatorValue("2")
 public class Album extends Composition {
 

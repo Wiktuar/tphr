@@ -14,6 +14,7 @@ import ru.tphr.tphr.services.AllComposeService;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.ContentService;
 import ru.tphr.tphr.services.PoemService;
+import ru.tphr.tphr.utils.HeaderMenuUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -26,6 +27,7 @@ public class MainController {
     private AuthorService authorService;
     private ContentService contentService;
     private AllComposeService allComposeService;
+    private HeaderMenuUtil headerMenuUtil;
 
     @Autowired
     public void setPoemService(PoemService poemService) {
@@ -47,19 +49,16 @@ public class MainController {
         this.allComposeService = allComposeService;
     }
 
+    @Autowired
+    public void setHeaderMenuUtil(HeaderMenuUtil headerMenuUtil) {
+        this.headerMenuUtil = headerMenuUtil;
+    }
+
     //  метод получения стихотворений на индексной странице
     @GetMapping("/")
-    public String getMainPage(Model model, Principal principal){
-        AuthorDTO authorDTO = null;
-        String principalName = null;
-        if(principal != null){
-            principalName = principal.getName();
-            authorDTO = authorService.getAuthorDTOByEmail(principalName);
-        } else {
-            principalName = "default";
-        }
-        List<AllComposeDTO> acd = allComposeService.getAllCompose(principalName);
-        model.addAttribute("authorDTO", authorDTO);
+    public String getMainPage(Model model){
+        List<AllComposeDTO> acd = allComposeService.getAllCompose(headerMenuUtil.getPrincipalName());
+        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         model.addAttribute("allComposDTO", acd);
         return "index";
     }
@@ -68,23 +67,19 @@ public class MainController {
     //  метод, возвращающий стихотворение с его лайками и комментариями
     @GetMapping("/main/poem/{id}")
     public String getPoemById(@PathVariable long id,
-                              Principal principal,
                               Model model){
-        AuthorDTO authorDTO = null;
-        String userName = null;
-        if(principal != null){
-            userName = principal.getName();
-            authorDTO = authorService.getAuthorDTOByEmail(userName);
-            model.addAttribute("authorDTO", authorDTO);
-        } else {
-            userName = "default";
-        }
-
-        LikesPoemDto likesPoemDto = poemService.getPoemDtoWithLikesAndComments(userName, id);
+        LikesPoemDto likesPoemDto = poemService.getPoemDtoWithLikesAndComments(headerMenuUtil.getPrincipalName(), id);
         String content = contentService.findById(id).getContent();
         likesPoemDto.setContent(content);
+        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         model.addAttribute("poem", likesPoemDto);
         return "single/singlePoem";
+    }
+
+    @GetMapping("/target/poem/{id}")
+    public String getLoginPoem(@PathVariable String id){
+        String targetString = "/main/poem/" + id;
+        return "redirect:" + targetString;
     }
 
 

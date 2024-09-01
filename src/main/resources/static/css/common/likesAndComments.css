@@ -73,6 +73,11 @@
     opacity: .3;
 }
 
+.close_cross.forbidden {
+    cursor: not-allowed;
+    opacity: .3;
+}
+
 .close_cross:hover, .edit_pencil:hover {
     opacity: 1;
 }
@@ -82,7 +87,6 @@
 }
 
 .new_comment {
-    position: relative;
     width: 90%;
     margin-top: 10px;
     margin-left: 20px;
@@ -102,11 +106,33 @@
     box-shadow: none;
 }
 
-.send_comment_img {
-    position: absolute;
-    left: 94%;
-    top: 80%;
-    width: 6%;
+.comments_footer {
+    padding-right: 40px;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 30px;
+}
+
+.reset_btn {
+    width: 10%;
+    font-size: 1em;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    background-color: royalblue;
+    padding: 5px;
+}
+
+.send_comment_btn {
+    width: 10%;
+    font-size: 1em;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    background-color: darkred;;
+    padding: 5px;
 }
 
 /*картинка виньетки после стихотворения*/

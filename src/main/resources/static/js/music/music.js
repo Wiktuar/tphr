@@ -1,6 +1,6 @@
 //https://doka.guide/js/form-data/
 import {player} from "./simplePlayer.js";
-import {toMinAndSec} from "./utils.js";
+import {toMinAndSec, getAttentionDiv} from "./utils.js";
 import {album, single} from "./addHTML.js";
 import {addCanvas} from "./editCover.js";
 
@@ -66,14 +66,14 @@ function playSong(imgSrc, audio, pauseSong){
          pauseSong(audio1.parentNode.querySelector(".img_src"), audio1);
       }
    }
-   imgSrc.src = "../static/img/musicButtons/pause.png";
+   imgSrc.src = "/img/musicButtons/pause.png";
    audio.play();
 }
 
 //pause
 function pauseSong(imgSrc, audio){
    audio.dataset.status = "pause";
-   imgSrc.src = "../static/img/musicButtons/play.png";
+   imgSrc.src = "/img/musicButtons/play.png";
    audio.pause();
 }
 
@@ -121,30 +121,53 @@ function addForm(button, html){
 // метод отправки формы на сервер
 function sendForm(){
    let hasMistakes = checkCompletionForm(document.querySelectorAll(".add_song"));
-
-   console.log(hasMistakes);
-
    if(hasMistakes) return;
-
+   console.log("Форма отправлена на сохранение");
+    
    const formData = new FormData(document.getElementById("music_form"));
-
    fetch("/savemusic", {
        method: "POST",
        body: formData
    })
-       .then(response => console.log(response))
-       .catch(error => console.log(error));
+       .then(response => {
+            if(response.status === 200) window.location.reload();
+            else if(response.status === 422){
+                let form = document.getElementById("music_form");
+                const sendBtn = document.querySelector(".send_audio_btn");
+                form.insertBefore(getAttentionDiv("Вы eже ранее создавали альбом с таким названием!"), sendBtn);
+            }
+            else console.log("Не удалось сохранить альбом");
+       }).catch(error => console.log(error));
 
 }
 
 //функция проверки запонения форммы на сайте
 function checkCompletionForm(element){
+    let form = document.getElementById("music_form");
+    const sendBtn = document.querySelector(".send_audio_btn");
+    const headerText = document.querySelector(".header_image input[type=text]");
     let hasMistakes = false;
+    let emptyForm = true;
+    let emptySong = false;
+
+    // удаление имеющихся предупреждений
+    let attentionList = document.getElementsByClassName("attention");
+    Array.from(attentionList)
+        .forEach(el => el.remove());
+
+    //проверка заголовка на заполнение
+    if(!headerText.value){
+        form.insertBefore(getAttentionDiv("Вы не добавили заголовок для альбома"), sendBtn);
+        hasMistakes = true;
+        return hasMistakes;
+    }
+
     Array.from(element)
         .forEach(el => {
             const text = el.querySelector("input[type=text]");
             const file = el.querySelector("input[type=file]");
 
+            // удаление имеющихся предупреждений
             if(el.firstChild.classList !== undefined){
                 el.removeChild(el.firstChild);
             }
@@ -153,19 +176,32 @@ function checkCompletionForm(element){
                 if(el.firstChild.classList === undefined){
                     const div = document.createElement('div');
                     div.className = "alert";
-                    div.innerHTML = "<strong>Всем привет!</strong> Вы прочитали важное сообщение.";
+                    div.innerHTML = `<img src="/img/music/attention.png" class="alert_img" alt="Восклицательный знак">`;
                     el.prepend(div);
+                    emptySong = true;
                     hasMistakes = true;
                 }
             }
+
+            if(text.value || file.files.length) emptyForm = false;
         });
+
+    if(emptyForm) {
+        form.insertBefore(getAttentionDiv("Вы не добавили ни одной песни в альбом!"), sendBtn);
+        hasMistakes = true;
+    }
+
+    if(emptySong) {
+        form.insertBefore(getAttentionDiv("Вы где-то забыли добавить название песни или сам трек!"), sendBtn);
+        hasMistakes = true;
+    }
+
     return hasMistakes;
 }
 
 // функции для работы с карточками уже имеющихся альбомов
 export function createMusicPlayersForAlbums(container){
     const players = container.querySelectorAll(".player");
-    console.log(players.length);
     players.forEach( pl => {
         const progress = pl.querySelector(".progress")
         const audio = pl.querySelector(".audio");

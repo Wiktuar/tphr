@@ -54,7 +54,8 @@ public class ContentService {
     public void deletePoemById(long id) {
         String poemFileNameUrl = poemService.getPoemFileName(id);
         try {
-            Files.delete(Paths.get(deletePath + poemFileNameUrl));
+            if(!poemFileNameUrl.contains("poemCover.jpg"))
+                Files.delete(Paths.get(deletePath + poemFileNameUrl));
             contentRepo.deleteById(id);
         } catch (IOException e) {
             System.out.println("не удалось удалить обложку стихотворения");

@@ -18,6 +18,7 @@ create table authors
     vk              varchar(255) null,
     tg              varchar(255) null,
     yt              varchar(255) null,
+    rt              varchar(255) null,
     constraint email
         unique (email)
 );

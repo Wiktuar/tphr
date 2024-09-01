@@ -87,6 +87,25 @@ public class MailSenderService {
         mailSender.send(mimeMessage);
     }
 
+//  метод отправки сообщений о необходимости повторной активации аккаунта
+//  после обновления адреса электронной почты
+    @Async
+    public void sendConfirmEmail(String email, String name, String activationCode){
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+
+        try{
+            helper.setSubject("Подтверждение почты на сайте tphr.ru");
+            helper.setTo(email);
+            String emailContent = getEmailContent("confirmChangeEmail.ftl", name, activationCode);
+            helper.setText(emailContent, true);
+        } catch (MessagingException ex){
+            System.out.println("Ошибка при указании темы письма, адреса адресата или получения текста письма");
+        }
+
+        mailSender.send(mimeMessage);
+    }
+
 //  метод, который получает шаблон и внедряет в него данные из карты
     String getEmailContent(String template, String name, String code) {
         StringWriter stringWriter = new StringWriter();

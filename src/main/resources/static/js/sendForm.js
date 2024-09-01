@@ -8,10 +8,11 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirm_password");
 const imageAva = document.getElementById("inp_img");
-// const reCaptcha = document.getElementById("g-recaptcha-response");
+const reCaptcha = document.getElementById("g-recaptcha-response");
 const vk = document.getElementById("vk");
 const tg = document.getElementById("tg");
 const yt = document.getElementById("yt");
+const rt = document.getElementById("rt");
 
 //метод, который вызывается при получении ошибки
 function mistakeMethod(mistake) {
@@ -29,7 +30,7 @@ function _checkFormFields(){
 
     let recaptcha = grecaptcha.getResponse();
     if(recaptcha.length === 0){
-        mistakeMethod("Пожалуйста, подтвердите, что Вы человек");
+        mistakeMethod("Пожалуйста, подтвердите, что Вы не робот");
         return true;
     }
 
@@ -103,7 +104,7 @@ $regBtn.addEventListener("click", e => {
     e.preventDefault();
     if(_checkFormFields())return;
 
-    const endPoint = "/check";
+    const endPoint = "/saveauthor";
     const formData = new FormData();
     formData.append("firstName", firstName.value);
     formData.append("lastName", lastName.value);
@@ -114,7 +115,9 @@ $regBtn.addEventListener("click", e => {
     formData.append("vk", vk.value);
     formData.append("tg", tg.value);
     formData.append("yt", yt.value);
+    formData.append("rt", rt.value);
 
+    console.log(formData.get("email"));
     fetch(endPoint, {
         method: "post",
         body: formData

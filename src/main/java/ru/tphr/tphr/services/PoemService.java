@@ -61,4 +61,9 @@ public class PoemService {
     public Set<String> getAllPoemFileNames(){
         return poemRepo.getAllPoemFileNames();
     }
+
+    //  метод проверки существует ли музыкальный альбом с таким названием или нет
+    public boolean checkPoemNotExists(String header, String email){
+        return poemRepo.getPoemId(header, email) == null;
+    }
 }

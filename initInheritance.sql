@@ -2,19 +2,16 @@ use tphr;
 
 # таблица основной сущности, от которой будут наследоваться все остальные (стихи, музыкальные альбомы и т.д.)
 create table compositions (
-      id              bigint auto_increment primary key,
-      header          varchar(40)  not null,
-      release_date    varchar(20)  not null,
-      file_name       varchar(255) not null,
-      author_id       bigint       not null,
-#     первое четверостишие или краткая аннотация к видео или прозе
-      poem_preview    text         null,
-#     ссылка на файл заглавной песни
-      song_preview    varchar(255) null,
-#     дискриминатор для наследования hibernate
-      comp_type       int          not null,
-      constraint cmp_auth_id_fk1
-          foreign key (author_id) references authors (id)
+    id           bigint auto_increment primary key,
+    header       varchar(40)  not null,
+    release_date varchar(20)  not null,
+    file_name    varchar(255) not null,
+    author_id    bigint       not null,
+    text_preview text         null,
+    link_preview varchar(255) null,
+    comp_type    int          not null,
+    constraint cmp_auth_id_fk1
+        foreign key (author_id) references authors (id)
 );
 
 # таблица содержания стихотворения

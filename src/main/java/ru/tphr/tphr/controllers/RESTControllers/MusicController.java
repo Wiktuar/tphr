@@ -1,16 +1,14 @@
 package ru.tphr.tphr.controllers.RESTControllers;
 
-import javassist.expr.Cast;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.tphr.tphr.DTO.AllComposeDTO;
-import ru.tphr.tphr.entities.AllCompose;
-import ru.tphr.tphr.entities.Composition;
 import ru.tphr.tphr.entities.music.Album;
 import ru.tphr.tphr.entities.music.Song;
-import ru.tphr.tphr.entities.poem.Poem;
+import ru.tphr.tphr.exceptions.ComposeExistsException;
 import ru.tphr.tphr.services.AllComposeService;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.ComposeService;
@@ -25,11 +23,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Stream;
 
 @RestController
 public class MusicController {
@@ -72,30 +67,29 @@ public class MusicController {
 
     //  метод, сохраняющий альбом и песни
     @PostMapping("/savemusic")
-    public String saveMusic(@RequestParam("albumName") String albumName,
-                            @RequestParam("cover") String coverImage,
-                            @RequestParam("header") String[] headers,
-                            @RequestParam("file") MultipartFile[] files,
-                            Principal principal) throws IOException {
+    public HttpStatus saveMusic(@RequestParam("albumHeader") String albumHeader,
+                                @RequestParam("cover") String coverImage,
+                                @RequestParam("header") String[] headers,
+                                @RequestParam("file") MultipartFile[] files,
+                                Principal principal) throws IOException {
+
+        if(!albumService.checkAlbumNotExists(albumHeader, principal.getName())) throw new ComposeExistsException();
 
         Album album = new Album();
-        album.setHeader(albumName);
+        album.setHeader(albumHeader);
         album.setReleaseDate(Utils.convertTimeToString());
         album.setAuthor(authorService.getAuthorByEmail(principal.getName()));
 
-        Path targetPath = Paths.get(uploadPath + principal.getName() + "\\music\\" + albumName);
+        Path targetPath = Paths.get(uploadPath + principal.getName() + "\\music\\" + albumHeader);
 
-        if (Files.exists(targetPath)) {
-            targetPath = Paths.get(uploadPath + principal.getName() + "\\music\\" + UUID.randomUUID() + albumName);
-        }
         Files.createDirectories(targetPath);
 
         if(coverImage.equals("defaultCover.png")){
             Files.copy(Paths.get(albumCoverPath), Paths.get(targetPath.toString() + "\\defaultCover.png"));
-            album.setFileName(principal.getName() + "/music/" + albumName + "/defaultCover.png");
+            album.setFileName(principal.getName() + "/music/" + albumHeader + "/defaultCover.png");
         } else {
             Utils.saveCircumcisedImage(targetPath.toString(), coverImage, "\\albumCover.jpg");
-            album.setFileName(principal.getName() + "/music/" + albumName + "/albumCover.jpg");
+            album.setFileName(principal.getName() + "/music/" + albumHeader + "/albumCover.jpg");
         }
 
         for (int i = 0; i < headers.length; i++) {
@@ -110,16 +104,17 @@ public class MusicController {
             } catch (UnsupportedAudioFileException e) {
                 System.out.println(e.getMessage());
             }
-            song.setUrlToMusicFile(principal.getName() + "/music/" + albumName + "/" + files[i].getOriginalFilename());
+            song.setUrlToMusicFile(principal.getName() + "/music/" + albumHeader + "/" + files[i].getOriginalFilename());
            if(i == 0 ){
-               album.setSongPreview(principal.getName() + "/music/" + albumName + "/" + files[i].getOriginalFilename());
+               album.setSongPreview(principal.getName() + "/music/" + albumHeader + "/" + files[i].getOriginalFilename());
            }
            album.addSong(song);
         }
 
-        albumService.saveAlbum(album);
+        Album savedAlbum = albumService.saveAlbum(album);
 
-        return "ok";
+        if (savedAlbum != null)  return HttpStatus.OK;
+            else return HttpStatus.BAD_REQUEST;
     }
 
 //  метод, возвращающий альбомм со всеми песнямми

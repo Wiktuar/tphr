@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "compositions")
 @DiscriminatorValue("1")
 public class Poem extends Composition {
 

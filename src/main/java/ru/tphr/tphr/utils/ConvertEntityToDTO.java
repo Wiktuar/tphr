@@ -4,6 +4,7 @@ package ru.tphr.tphr.utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.tphr.tphr.DTO.AuthorCabinetDTO;
 import ru.tphr.tphr.DTO.AuthorDTO;
 import ru.tphr.tphr.DTO.CommentDTO;
 import ru.tphr.tphr.entities.Comment;
@@ -31,6 +32,11 @@ public class ConvertEntityToDTO {
 //  метод, преобразующий Author в AuthorDTO
     public AuthorDTO convertToAuthorDto(Author author) {
         return modelMapper.map(author, AuthorDTO.class);
+    }
+
+//  метод, преобразующий Author в AuthorCabinetDTO
+    public static AuthorCabinetDTO convertToAuthorCabinetDto(Author author) {
+        return modelMapper.map(author, AuthorCabinetDTO.class);
     }
 
 //  метод, который будет использоваться в преобразовании списка записей

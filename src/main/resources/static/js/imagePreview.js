@@ -9,7 +9,7 @@ document.getElementById('file')
             modalWindow.open();
             setTimeout(() =>{
                 init();
-            }, 400 );
+            }, 1000 );
         };
         fr.readAsDataURL(files[0]);
     });
@@ -41,8 +41,8 @@ function init() {
     rect = {
         startX: 80,
         startY: 80,
-        w: 150,
-        h: 150
+        w: 200,
+        h: 200
     }
 
     draw();
@@ -210,6 +210,6 @@ function drawImage(image, rect){
         cropLeft, cropTop,
         cropWidth, cropHeight,
         0, 0,
-        200, 200);
+        300, 300);
 }
 

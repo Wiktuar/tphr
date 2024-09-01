@@ -74,18 +74,18 @@ const audioPlayer = {
         this.state.current = this.state.songs.find(song => song.id === +id);
         this.setCurrentSong(this.state.current);
         this.progress.style.width = "0%";
-        this.imgPlayPause.src = "../../static/img/music/buttons/pause.png";
+        this.imgPlayPause.src = "/img/music/buttons/pause.png";
         this.audio.play();
     },
 
     playAndPause(){
         if(!this.state.isPlaying){
             this.audio.play();
-            this.imgPlayPause.src = "../../static/img/music/buttons/pause.png";
+            this.imgPlayPause.src = "/img/music/buttons/pause.png";
             this.state.isPlaying = true;
         } else {
             this.audio.pause();
-            this.imgPlayPause.src = "../../static/img/music/buttons/play.png";
+            this.imgPlayPause.src = "/img/music/buttons/play.png";
             this.state.isPlaying = false;
         }
     },
@@ -112,14 +112,14 @@ const audioPlayer = {
         if(!id) id = e.target.parentNode.dataset.id;
         if(+id === this.state.current.id && this.state.isPlaying){
             this.state.isPlaying = false;
-            this.imgPlayPause.src = "../../static/img/music/buttons/play.png";
+            this.imgPlayPause.src = "/img/music/buttons/play.png";
             this.audio.pause();
             return;
         }
 
         if(+id === this.state.current.id && !this.state.isPlaying){
             this.state.isPlaying = true;
-            this.imgPlayPause.src = "../../static/img/music/buttons/pause.png";
+            this.imgPlayPause.src = "/img/music/buttons/pause.png";
             this.audio.play();
             return;
         }

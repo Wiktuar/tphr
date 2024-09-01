@@ -78,6 +78,7 @@ public class Author {
     private String vk;
     private String tg;
     private String yt;
+    private String rt;
 
     public Author() {
 

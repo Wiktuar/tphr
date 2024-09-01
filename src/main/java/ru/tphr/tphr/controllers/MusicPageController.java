@@ -6,9 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.tphr.tphr.DTO.LikesAlbumDto;
-import ru.tphr.tphr.entities.music.Album;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.music.AlbumService;
+import ru.tphr.tphr.utils.HeaderMenuUtil;
 
 import java.security.Principal;
 import java.util.Set;
@@ -17,6 +17,7 @@ import java.util.Set;
 public class MusicPageController {
     private AlbumService albumService;
     private AuthorService authorService;
+    private HeaderMenuUtil headerMenuUtil;
 
     @Autowired
     public void setAlbumService(AlbumService albumService) {
@@ -28,12 +29,18 @@ public class MusicPageController {
         this.authorService = authorService;
     }
 
-//  метод получения всех альбомов автора
+    @Autowired
+    public void setHeaderMenuUtil(HeaderMenuUtil headerMenuUtil) {
+        this.headerMenuUtil = headerMenuUtil;
+    }
+
+    //  метод получения всех альбомов автора
     @GetMapping("/cabinet/music")
     public String getAllAlbums(Principal principal,
                                Model model){
         Set<LikesAlbumDto> albums = albumService.getAlbumsByUser(principal.getName());
         model.addAttribute("albums", albums);
+        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return "cabinet/musics";
     }
 
@@ -47,6 +54,7 @@ public class MusicPageController {
         album.setLastName("Гусев");
         album.setPathToAvatar("\\wiktuar@yandex.ru\\avatar.jpg");
         model.addAttribute("album", album);
+        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return "cabinet/music";
     }
 }

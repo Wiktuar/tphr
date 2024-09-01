@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.RequestContextUtils;
+import ru.tphr.tphr.DTO.AuthorCabinetDTO;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.entities.security.PasswordResetToken;
 import ru.tphr.tphr.exceptions.TokenExistsException;
 import ru.tphr.tphr.services.AuthorService;
+import ru.tphr.tphr.utils.ConvertEntityToDTO;
+import ru.tphr.tphr.utils.HeaderMenuUtil;
+import ru.tphr.tphr.utils.Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -29,42 +33,60 @@ public class LoginController {
     private String pathToAvatar;
 
     private AuthorService authorService;
+    private HeaderMenuUtil headerMenuUtil;
 
     @Autowired
     public void setAuthorService(AuthorService authorService) {
         this.authorService = authorService;
     }
 
+    @Autowired
+    public void setHeaderMenuUtil(HeaderMenuUtil headerMenuUtil) {
+        this.headerMenuUtil = headerMenuUtil;
+    }
+
+
     // получение страницы регистрации автора
     @GetMapping("/registration")
     public String getRegistrationPage(){
         return "personal/registration";
     }
+
+//  метод получения страницы личного кабинета
     @GetMapping("/cabinet")
     public String getCabinet(Principal principal, Model model){
         Author authorFromDb = authorService.getAuthorByEmail(principal.getName());
-        Author author = new Author();
-        author.setFirstName(authorFromDb.getFirstName());
-        author.setLastName(authorFromDb.getLastName());
-        author.setEmail(authorFromDb.getEmail());
-        author.setActivationCode(authorFromDb.getActivationCode());
-        System.out.println(authorFromDb.getPathToAvatar());
-        author.setPathToAvatar(authorFromDb.getPathToAvatar());
-        author.setVk("Виктор");
-        author.setTg("Виктор");
-        author.setYt("Виктор");
+
+        AuthorCabinetDTO author =
+                ConvertEntityToDTO.convertToAuthorCabinetDto(authorFromDb);
+
         model.addAttribute("author", author);
+        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return "personal/cabinet";
     }
-    //  метод получения страницы личного кабинета
 
+    //метод редактирования персонаьных анных пользователя
+    @GetMapping("/cabinet/editauthor")
+    public String getEditAuthorPage(Principal principal, Model model){
+        Author authorFromDb = authorService.getAuthorByEmail(principal.getName());
+
+        AuthorCabinetDTO author =
+                ConvertEntityToDTO.convertToAuthorCabinetDto(authorFromDb);
+
+        author.setDescription(Utils.removeBrTag(author.getDescription()));
+
+        model.addAttribute("author", author);
+        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
+        return "personal/editAuthor";
+    }
 
     // активация аакаунта автора
     @GetMapping("/activate/{code}")
     public String activateUser(@PathVariable("code") String code,
                                Model model){
         boolean isActivated = authorService.activateAuthor(code);
-        if(isActivated)model.addAttribute("activate", "Поздравляем! Ваш аккаунт успешно активирован.");
+        System.out.println(isActivated);
+        if(isActivated)model.addAttribute("activate", "Поздравляем! Ваш аккаунт успешно активирован. Электронная почта подтверждена.");
         else model.addAttribute("activate", "Активировать аккаунт не получилось. Возможно, он уже активирован." +
                 "Попробуйте перейти в личный кабинет или обратитесь в <a href=\"mailto:tech@tphr.ru\" class=\"support\">Техническую поддержку.</a>");
         return "personal/activation";
@@ -86,7 +108,6 @@ public class LoginController {
         model.addAttribute("author_id", prt.getAuthor().getId());
         return "personal/resetPassword";
     }
-
 
 //    метод, помогающий обраотать случай, когда пользователь аутентифицировался, перешел куда, и ему нужно нажать "Назад"
 //    и при этом не попасть снова на форму логирования

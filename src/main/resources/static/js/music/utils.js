@@ -21,6 +21,13 @@ export function removeAdditionalClass(commonClass, uniqueClass){
    if(item) item.classList.remove(uniqueClass);
 }
 
+// функция, создающая блок для вывода сообщений при ошибках заполнения формы отправки песен
+export function getAttentionDiv(text){
+    const attentionDiv = document.createElement("div");
+    attentionDiv.className = 'attention';
+    if (!attentionDiv.textContent) attentionDiv.textContent = text;
+    return attentionDiv;
+}
 
 
 

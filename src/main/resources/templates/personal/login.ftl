@@ -1,3 +1,4 @@
+<#import "../common.ftl" as c>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -5,17 +6,20 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../../static/css/reset.css">
-    <link rel="stylesheet" href="../../static/css/loginPage.css"">
-    <link rel="stylesheet" href="../../static/css/modal.css">
-    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/cabinet/loginPage.css"">
+    <link rel="stylesheet" href="/css/modal.css">
     <title>Вход на сайт</title>
 </head>
 <body>
+    <#--pаголовок сайта-->
+    <@c.header></@c.header>
+
     <div class="container">
         <#-- Форма логирования в личном кабинете    -->
         <div class="wrapLoginForm">
-            <H2>Добро пожаловать!</H2>
+            <H2 class="greeting">Добро пожаловать!</H2>
             <div class="authenticationWarning">
                 <p class="authMessage"></p>
                 <div class="repeatBtn">Отправить письмо повторно</div>
@@ -30,10 +34,10 @@
                     <input type="password" id="password" name="password" value="${password?has_content?then(password, "")}"/>
                     <span class="showPassword" data-target="password"></span>
                 </div>
-                <p>
+                <div class="remember">
                     <input id="remember" type="checkbox" name="remember-me">
                     <label for="remember">Запомнить меня</label>
-                </p>
+                </div>
                 <button type="submit" id="sendLoginForm">Войти на сайт</button>
              </form>
         </div> <#-- end wrapLoginForm -->
@@ -48,15 +52,21 @@
         </div><#-- end remindEmmail -->
         <#--атрибут "href" удален, поскольку при пустом его значении не отображается окно напоминания пароля -->
         <a class="loginBtn">Я забыл(-а) пароль</a>
-        <#-- @тот блок появляется в сообщении authenticationWarning, когда пользователь не активировал аккаунт        -->
+        <#-- этот блок появляется в сообщении authenticationWarning, когда пользователь не активировал аккаунт        -->
+    </div>
+
+    <#--блок добавления футера-->
+    <@c.footer></@c.footer>
+
 <#-- Скрипты, относящиеся к модальному окну -->
-<script src="../../static/js/modal/base.js"></script>
-<script src="../../static/js/modal/plugins/modal.js"></script>
-<script src="../../static/js/modal/index.js"></script>
+<script src="/js/modal/base.js"></script>
+<script src="/js/modal/plugins/modal.js"></script>
+<script src="/js/modal/index.js"></script>
+<script src="/js/modal/attention.js"></script>
 
 <#-- Скрипты, относящиеся к отправке запроса на восстановление пароля   -->
-<script src="../../static/js/loginPage/loginPage.js"></script>
-<script src="../../static/js/loginPage/remindPassword.js"></script>
-<script src="../../static/js/loginPage/repeatActivationCode.js"></script>
+<script src="/js/loginPage/loginPage.js"></script>
+<script src="/js/loginPage/remindPassword.js"></script>
+<script src="/js/loginPage/repeatActivationCode.js"></script>
 </body>
 </html>
