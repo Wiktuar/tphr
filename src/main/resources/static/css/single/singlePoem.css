@@ -12,8 +12,13 @@
     font-style: normal;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 h1 {
-    text-align: center;
     padding-top: 20px;
     margin-bottom: 20px;
     font-size: 40px;
@@ -23,51 +28,22 @@ h1 {
 .poem_fool_image {
     height: 350px;
     display: block;
-    margin: 0 auto 20px;
+    margin-bottom: 20px;
     border-radius: 5%;
 }
 
-.poem_content_container {
-    display: flex;
-    justify-content: center;
-}
-
 .poem_fool_content {
+    width: fit-content;
     margin-top: 20px;
     margin-bottom: 20px;
     font-family: "Arsenal-Regular";
     font-size: 25px;
 }
 
-.vignette {
-    display: block;
-    margin: 0 auto;
-}
 
 /*сили лайков и количества комментариев*/
-.like_btn {
-    cursor: pointer;
-}
 
-.p_comment {
-    width: 4%;
-}
 
-.like_comment {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 500px;
-    margin: 20px auto;
-    padding-left: 2%;
-}
-
-.p_digit_l, .p_digit_c {
-    display: block;
-    margin-left: 1%;
-    margin-right: 2%;
-    font-size: 1.5em;
-}
 
 /*эти стили используются, если пользователь не авторизован*/
 .enter_for_like {
@@ -77,18 +53,14 @@ h1 {
 .enter_for_like.visible {
     display: block;
     position: absolute;
-    top: -280px;
+    top: -270px;
     left: 10px;
-    max-width: 500px;
+    width: 500px;
     min-height: 250px;
     background-color: white;
     padding: 20px 15px 10px 25px;
     color: gray;
     box-shadow: 0 10px 10px #57541D;
-}
-
-.enter_for_like {
-    display: none;
 }
 
 .enter_for_like h3 {
@@ -191,7 +163,3 @@ h1 {
     top: 80%;
     width: 6%;
 }
-
-
-
-

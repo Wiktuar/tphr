@@ -26,7 +26,7 @@ public class PoemService {
         return poemRepo.save(poem);
     }
 
-//  получение всех стихотворений по id их автора
+//  получение всех стихотворений по email их автора
     public List<Poem> getAllPoemsByAuthorEmail(String email){
         return poemRepo.getAllPoemsByAuthorEmail(email);
     }
@@ -43,8 +43,15 @@ public class PoemService {
 
 //  метод, позволяющий получить все Poem конкретного пользователя с количеством лайков и комментариев
     @Transactional
-    public List<LikesPoemDto> getPoemsByUser(String enail1, String email2){
-        return poemRepo.getPoemsByUser(enail1, email2);
+    public List<LikesPoemDto> getPoemsByUser(String email1, String email2){
+        return poemRepo.getPoemsByUser(email1, email2);
+    }
+
+//  метод, позволяющий получить все Poem конкретного пользователя с количеством лайков и комментариев
+//  по его ID
+    @Transactional
+    public List<LikesPoemDto> getPoemsByAuthorID(String email, long id){
+        return poemRepo.getPoemsByAuthorID(email, id);
     }
 
 //  метод, возвращающий список всех стихотворений.
@@ -62,7 +69,7 @@ public class PoemService {
         return poemRepo.getAllPoemFileNames();
     }
 
-    //  метод проверки существует ли музыкальный альбом с таким названием или нет
+    //  метод проверки существует ли стихотворение с таким названием или нет
     public boolean checkPoemNotExists(String header, String email){
         return poemRepo.getPoemId(header, email) == null;
     }

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.tphr.tphr.DTO.CompositionDTO;
 import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.entities.AllCompose;
 import ru.tphr.tphr.entities.Composition;
@@ -21,4 +22,10 @@ public interface CompositionRepo extends JpaRepository<Composition, Long> {
     List<Composition> findAll();
 
     List<Composition> findAllByAuthorId(long id);
+
+    @Query("select new ru.tphr.tphr.DTO.CompositionDTO(c.id, c.header, c.fileName, c.releaseDate, c.author.email, c.author.firstName, " +
+            "c.author.lastName, c.author.pathToAvatar, size(c.likes) , size(c.comments) , " +
+            "sum(case when cl.email = :email then 1 else 0 end) > 0 ) " +
+            "from Composition c left join c.likes cl group by c having c.id = :id" )
+    CompositionDTO getCompositionDTO(@Param("email") String email, @Param("id") long id);
 }

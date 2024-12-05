@@ -8,44 +8,60 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/poems.css">
+    <link rel="stylesheet" href="/css/common/common.css">
+    <link rel="stylesheet" href="/css/poem.css">
     <link rel="stylesheet" href="/css/common/likesAndComments.css">
     <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
     <title>Редактирование стихотворения</title>
 </head>
 <body>
-<div class="cabinet_container">
-    <@c.cabinetButtons></@c.cabinetButtons>
+<div class="wrapper">
+    <#--pаголовок сайта-->
+    <@c.header></@c.header>
 
-    <div class="right-sb">
-       <h3>${poem.header}</h3>
-        <div>
-            <img src="/upload/${poem.fileName}" class="poem_fool_image" alt="тематическая картинка">
-            <div class="poem_content_container">
+    <div class="cabinet_container">
+        <@c.cabinetButtons></@c.cabinetButtons>
+
+        <div class="right-sb">
+           <h3>${poem.header}</h3>
+            <div>
+                <img src="/upload/${poem.fileName}" class="poem_fool_image" alt="тематическая картинка">
                 <div class="poem_fool_content">
                     ${poem.content}
                 </div>
             </div>
-        </div>
-        <div class="like_comment">
-            <span class="like_btn"></span>
-            <span class="p_digit_l">${poem.likes}</span>
-            <img src="/img/comments.png" class="p_comment" alt="комментарии">
-            <span class="p_digit_c">${poem.comments}</span>
-        </div>
-        <img src="/img/vin.png" class="vignette" alt="виньетка">
-        <div class="comments_container">
-            <#--Здесь загружаются комментарии из JavaScript -->
-        </div>
-        <div class="new_comment">
-            <input type="hidden" id="comment_input">
-            <textarea placeholder="Ваш комментарий" maxlength="700" rows="8" id="text_area"></textarea>
-            <div class="comments_footer">
-                <a href="" class="reset_btn"> Отмена </a>
-                <a href="" class="send_comment_btn"> Отправить </a>
+
+            <div class="meta">
+                <div class="like_comment">
+                    <span class="like_btn"></span>
+                    <span class="p_digit_l">${poem.likes}</span>
+                    <img src="/img/comments.png" class="p_comment" alt="комментарии">
+                    <span class="p_digit_c">${poem.comments}</span>
+                </div>
+                <div class="releaseDate">${poem.releaseDate?truncate(11, "")}</div>
             </div>
+
+            <img src="/img/vin.png" class="vignette" alt="виньетка">
+            <div class="comments_container">
+                <#--Здесь загружаются комментарии из JavaScript -->
+            </div>
+
+            <#if known>
+                <div class="new_comment">
+                    <input type="hidden" id="comment_input">
+                    <textarea placeholder="Ваш комментарий" maxlength="700" rows="8" id="text_area"></textarea>
+                    <div class="comments_footer">
+                        <a href="" class="reset_btn"> Отмена </a>
+                        <a href="" class="send_comment_btn"> Отправить </a>
+                    </div>
+                </div>
+            <#else>
+                Пожалуйста, зарегистрируйтесь!
+            </#if>
         </div>
     </div>
+    <#--блок добавления футера-->
+    <@c.footer></@c.footer>
 </div>
 <#--Необходимо для получения ID стихотворения для запроса комментариев -->
 <script>
@@ -53,6 +69,7 @@
     let meLiked = ${poem.meLiked?string("1", "0")};
     let knownUser = ${known?string('1', '0')};
 </script>
+<script src="/js/header.js"></script>
 <script src="/js/comments.js"></script>
 <script src="/js/likes.js"></script>
 </body>

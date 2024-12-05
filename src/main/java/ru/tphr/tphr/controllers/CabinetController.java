@@ -69,6 +69,7 @@ public class CabinetController {
         String content = contentService.findById(id).getContent();
         likesPoemDto.setContent(content);
         model.addAttribute("poem", likesPoemDto);
+        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return "cabinet/poem";
     }
 

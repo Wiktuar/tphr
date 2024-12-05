@@ -10,7 +10,7 @@
                 </a>
             </div>
             <div class="search-block">
-                <a href="#" class="authors">Авторы</a>
+                <a href="/authors" class="authors">Авторы</a>
                 <span class="search">Поиск по сайту</span>
             </div>
             <#if known>

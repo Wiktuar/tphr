@@ -5,28 +5,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import ru.tphr.tphr.DTO.CompositionDTO;
 import ru.tphr.tphr.DTO.LikesAlbumDto;
-import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.music.AlbumService;
 import ru.tphr.tphr.utils.HeaderMenuUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Set;
 
 @Controller
 public class MusicPageController {
     private AlbumService albumService;
-    private AuthorService authorService;
     private HeaderMenuUtil headerMenuUtil;
 
     @Autowired
     public void setAlbumService(AlbumService albumService) {
         this.albumService = albumService;
-    }
-
-    @Autowired
-    public void setAuthorService(AuthorService authorService) {
-        this.authorService = authorService;
     }
 
     @Autowired
@@ -45,16 +40,15 @@ public class MusicPageController {
     }
 
 //  метод получения отдельного альбома по его ID
-    @GetMapping("/cabinet/music/{id}")
+    @GetMapping(value = {"/cabinet/music/{id}", "/main/music/{id}"})
     public String getAllAlbums(@PathVariable("id") long id,
+                               HttpServletRequest request,
                                Principal principal,
                                Model model){
-        LikesAlbumDto album = albumService.getLikesAlbumDto(principal.getName(), id);
-        album.setFirstName("Виктор");
-        album.setLastName("Гусев");
-        album.setPathToAvatar("\\wiktuar@yandex.ru\\avatar.jpg");
-        model.addAttribute("album", album);
+        System.out.println();
+        CompositionDTO cDto = albumService.getLikesAlbumDto(principal.getName(), id);
+        model.addAttribute("album", cDto);
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
-        return "cabinet/music";
+        return (request.getRequestURL().toString().contains("/main/music")) ? "single/singlePlayer" : "cabinet/music";
     }
 }

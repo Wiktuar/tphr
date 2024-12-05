@@ -20,4 +20,16 @@ public class AuthorCabinetDTO {
     private String tg;
     private String yt;
     private String rt;
+
+    public AuthorCabinetDTO(long id, String firstName, String lastName, String pathToAvatar, String description, String vk, String tg, String yt, String rt) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pathToAvatar = pathToAvatar;
+        this.description = description;
+        this.vk = vk;
+        this.tg = tg;
+        this.yt = yt;
+        this.rt = rt;
+    }
 }

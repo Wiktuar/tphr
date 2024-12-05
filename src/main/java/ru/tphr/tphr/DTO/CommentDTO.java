@@ -10,8 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class
-CommentDTO {
+public class CommentDTO {
     private long id;
     private String text;
     private String timeStamp;
@@ -23,6 +22,7 @@ CommentDTO {
     private AuthorDTO authorDTO;
 
     private boolean updated = false;
+    private boolean deleted = false;
 
     public CommentDTO(long id, String text){
         this.id = id;

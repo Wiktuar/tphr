@@ -65,7 +65,7 @@ public class LoginController {
         return "personal/cabinet";
     }
 
-    //метод редактирования персонаьных анных пользователя
+    //метод редактирования персонаьных данных пользователя
     @GetMapping("/cabinet/editauthor")
     public String getEditAuthorPage(Principal principal, Model model){
         Author authorFromDb = authorService.getAuthorByEmail(principal.getName());
@@ -73,8 +73,7 @@ public class LoginController {
         AuthorCabinetDTO author =
                 ConvertEntityToDTO.convertToAuthorCabinetDto(authorFromDb);
 
-        author.setDescription(Utils.removeBrTag(author.getDescription()));
-
+        author.setDescription(Utils.removeBrTagDescription(author.getDescription()));
         model.addAttribute("author", author);
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return "personal/editAuthor";
@@ -85,7 +84,6 @@ public class LoginController {
     public String activateUser(@PathVariable("code") String code,
                                Model model){
         boolean isActivated = authorService.activateAuthor(code);
-        System.out.println(isActivated);
         if(isActivated)model.addAttribute("activate", "Поздравляем! Ваш аккаунт успешно активирован. Электронная почта подтверждена.");
         else model.addAttribute("activate", "Активировать аккаунт не получилось. Возможно, он уже активирован." +
                 "Попробуйте перейти в личный кабинет или обратитесь в <a href=\"mailto:tech@tphr.ru\" class=\"support\">Техническую поддержку.</a>");

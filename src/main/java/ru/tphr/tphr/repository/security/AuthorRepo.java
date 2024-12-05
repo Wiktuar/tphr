@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.tphr.tphr.DTO.AuthorCabinetDTO;
 import ru.tphr.tphr.DTO.AuthorDTO;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.entities.security.Status;
+
+import java.util.List;
 
 
 @Repository
@@ -15,9 +18,19 @@ public interface AuthorRepo extends CrudRepository<Author, Long> {
     Author findByEmail(String email);
     Author findByActivationCode(String code);
 
+//  метод получения всех авторов
+    @Query("select new ru.tphr.tphr.DTO.AuthorDTO(a.id, a.firstName, a.lastName, a.pathToAvatar) from Author a")
+    List<AuthorDTO> getAllAuthors();
+
     @Query("select new ru.tphr.tphr.DTO.AuthorDTO(a.firstName, a.lastName, a.pathToAvatar) " +
             "from Author a WHERE a.email = :email")
     AuthorDTO getAuthorDTOByEmail(@Param("email") String email);
+
+//  метод полуxения cabinetAuthorDTO для общедоступной страницы автора
+    @Query("select new ru.tphr.tphr.DTO.AuthorCabinetDTO(a.id, a.firstName, a.lastName, a.pathToAvatar, " +
+            "a.description, a.vk, a.tg, a.yt, a.rt) " +
+            "from Author a WHERE a.id = :id")
+    AuthorCabinetDTO getAuthorDTOById(@Param("id") long id);
 
     @Query("SELECT a.id from Author a WHERE a.email = :email")
     long getAuthorId(@Param("email") String email);
@@ -41,7 +54,7 @@ public interface AuthorRepo extends CrudRepository<Author, Long> {
                     @Param("rt") String rt,
                     @Param("id") long id);
 
-    //  обновление почты, кода акивации и блокировка личного кабинета при изменении адреса почты
+    //  обновление почты, кода активации и блокировка личного кабинета при изменении адреса почты
     @Modifying
     @Query("UPDATE Author a SET a.email = :email, a.pathToAvatar = :pathToAvatar, a.activationCode = :activationCode, " +
             "a.status = :status WHERE a.id = :id")

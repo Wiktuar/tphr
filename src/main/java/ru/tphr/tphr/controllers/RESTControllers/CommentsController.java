@@ -39,10 +39,12 @@ public class CommentsController {
 
 //  метод получения всех комментариев
     @GetMapping("/getComments/{id}")
-    public List<CommentDTO> getAllComments(@PathVariable long id){
+    public List<CommentDTO> getAllComments(@RequestHeader("referer") String referer,
+                                           @PathVariable long id, Principal principal){
+        boolean deleteeAll = referer.contains("cabinet");
         List<Comment> comments = commentService.getListOfCommentsByPoemId(id);
-        List<CommentDTO> commentDtoes = convertEntityToDTO.convertList(comments, c -> convertEntityToDTO.convertToCommentDtoForList(c));
-        return commentDtoes;
+        String email = (principal != null) ? principal.getName() : "email";
+        return convertEntityToDTO.convertList(comments, c -> convertEntityToDTO.convertToCommentDtoForList(c, email, deleteeAll));
     }
 
 //  метод сохранения комментария в БД
@@ -61,6 +63,7 @@ public class CommentsController {
         commentDTO.setAuthorDTO(convertEntityToDTO.convertToAuthorDto(author));
         commentDTO.setCountOfComments(Integer.parseInt(commentService.getCountOfCommentsById(comment.getPoemId())));
         commentDTO.setUpdated(true);
+        commentDTO.setDeleted(true);
         return commentDTO;
     }
 

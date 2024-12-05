@@ -3,8 +3,10 @@ package ru.tphr.tphr.controllers.RESTControllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tphr.tphr.DTO.EditPoemDTO;
+import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.entities.poem.Content;
 import ru.tphr.tphr.entities.poem.Poem;
 import ru.tphr.tphr.entities.security.Author;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 public class PoemController {
@@ -59,9 +62,6 @@ public class PoemController {
                                @RequestParam("cover") String coverImage,
                                @RequestParam("oldFileName") String oldFileName,
                                Principal principal) throws IOException {
-
-        System.out.println("path for cover " + coverImage);
-        System.out.println("old cover path " + oldFileName);
 
         if(poem.getId() == 0){
             if(!poemService.checkPoemNotExists(poem.getHeader(), principal.getName())) throw new ComposeExistsException();
@@ -120,5 +120,16 @@ public class PoemController {
         String content = contentService.findById(id).getContent();
         editPoemDTO.setContent(Utils.removeBrTag(content));
         return editPoemDTO;
+    }
+
+//  метод, возвращающий превью стихотворений для конкретного автора
+    @GetMapping("/authors/{id}/poems")
+    public ResponseEntity<List<LikesPoemDto>> getPoemsByAuthorId(
+            @PathVariable long id,
+            Principal principal){
+        List<LikesPoemDto> lpd =  poemService.getPoemsByAuthorID(principal.getName(), id);
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(lpd.size()))
+                .body(lpd);
     }
 }

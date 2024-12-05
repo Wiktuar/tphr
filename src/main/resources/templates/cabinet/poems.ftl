@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/poems.css">
-    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/common/common.css">
     <link rel="stylesheet" href="/css/modal.css">
     <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
     <title>Мои стихи</title>
@@ -68,7 +68,7 @@
                                 <div class="poem_content">
                                     ${poem.poemPreview}
                                 </div>
-                                   <a href="/cabinet/poem/${poem.id}"><div class="fool_reading">
+                                   <a href="/cabinet/poem/${poem.id}"><div class="full_reading">
                                     читать полностью
                                 </div></a>
                             </div>
@@ -112,6 +112,7 @@
 <script src="/js/modal/plugins/modal.js"></script>
 <script src="/js/modal/plugins/confirm.js"></script>
 <#-- Скрипт, относящийся непосредственно к странице-->
+<script src="/js/header.js"></script>
 <script type="module" src="/js/poems.js"></script>
 </body>
 </html>

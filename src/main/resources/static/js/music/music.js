@@ -7,11 +7,12 @@ import {addCanvas} from "./editCover.js";
 
 // по событию загрузки файла или его отмене происходит либо добавение аудиоплеера
 // или его удаление
-function createMusicPlayers(){
+export function createMusicPlayers(){
    const addSongBlock = document.querySelector(".add_songs_block");
    const files = addSongBlock.querySelectorAll("input[type=file]");
    files.forEach(file => {
       file.addEventListener("change", () => {
+          console.log("i working");
          // случай, когда файл добавляется
          if(file.files[0] !== undefined){
             // случай, когда в плеере уже есть файл и его надо обновить
@@ -46,7 +47,7 @@ function createMusicPlayers(){
 }
 
 // функция, запускающие проигрывание и остановку музыки.
-function playAndPause(element, audio, playSong, pauseSong){
+export function playAndPause(element, audio, playSong, pauseSong){
     const playBtn = element.querySelector(".btn");
     const imgSrc = element.querySelector(".img_src");
     playBtn.addEventListener("click", ()=>{
@@ -56,7 +57,7 @@ function playAndPause(element, audio, playSong, pauseSong){
 }
 
 //play
-function playSong(imgSrc, audio, pauseSong){
+export function playSong(imgSrc, audio, pauseSong){
    audio.dataset.status = "play";
    // со страницы получаются все имеющиеся теги audio, а потом
    // в цикле, у тех тегов, что не равны тому, на которомм происходит работв, останавливается звук
@@ -71,14 +72,14 @@ function playSong(imgSrc, audio, pauseSong){
 }
 
 //pause
-function pauseSong(imgSrc, audio){
+export function pauseSong(imgSrc, audio){
    audio.dataset.status = "pause";
    imgSrc.src = "/img/musicButtons/play.png";
    audio.pause();
 }
 
 
-function workWithProgressAudio(element, audio){
+export function workWithProgressAudio(element, audio){
    const progressContainer = element.querySelector(".progress_container");;
    progressContainer.addEventListener("click", e => setProgress(e, audio, progressContainer));
 }
@@ -92,7 +93,7 @@ function setProgress(e, audio, pc){
 }
 
 // функция дял отображения прогрееса звучания аудио
-function updateProgress(audio, progress){
+export function updateProgress(audio, progress){
    let duration = audio.duration;
    let currentTime = audio.currentTime;
    let progressPercent = (currentTime / duration) * 100;
@@ -119,11 +120,11 @@ function addForm(button, html){
 }
 
 // метод отправки формы на сервер
-function sendForm(){
+export function sendForm(){
    let hasMistakes = checkCompletionForm(document.querySelectorAll(".add_song"));
    if(hasMistakes) return;
-   console.log("Форма отправлена на сохранение");
-    
+
+   console.log("Jтправляется форма")
    const formData = new FormData(document.getElementById("music_form"));
    fetch("/savemusic", {
        method: "POST",
@@ -145,7 +146,10 @@ function sendForm(){
 function checkCompletionForm(element){
     let form = document.getElementById("music_form");
     const sendBtn = document.querySelector(".send_audio_btn");
+    // header of album
     const headerText = document.querySelector(".header_image input[type=text]");
+    // header of songs
+    const headers = document.querySelectorAll("input[name=header]");
     let hasMistakes = false;
     let emptyForm = true;
     let emptySong = false;
@@ -196,23 +200,38 @@ function checkCompletionForm(element){
         hasMistakes = true;
     }
 
+    if(headers.length > 1){
+        outer: for (let i = 0; i < Math.ceil(headers.length/2); i++) {
+            for (let j = i+1; j < headers.length; j++){
+                if(headers[i].value !== "" && headers[i].value === headers[j].value){
+                    form.insertBefore(getAttentionDiv("E вас есть одинаковые заголовки песен!"), sendBtn);
+                    hasMistakes = true;
+                    break outer;
+                }
+            }
+        }
+    }
+
     return hasMistakes;
 }
 
 // функции для работы с карточками уже имеющихся альбомов
 export function createMusicPlayersForAlbums(container){
-    const players = container.querySelectorAll(".player");
-    players.forEach( pl => {
-        const progress = pl.querySelector(".progress")
-        const audio = pl.querySelector(".audio");
-        playAndPause(pl, audio, playSong, pauseSong);
-        workWithProgressAudio(pl, audio);
-        audio.addEventListener("timeupdate", e => updateProgress(audio, progress));
-        audio.addEventListener("ended", ()=> {
-            progress.style.width = "0%";
-            pauseSong(pl.querySelector(".img_src"), audio);
+    if(container != null) {
+        console.log("player working");
+        const players = container.querySelectorAll(".player");
+        players.forEach( pl => {
+            const progress = pl.querySelector(".progress")
+            const audio = pl.querySelector(".audio");
+            playAndPause(pl, audio, playSong, pauseSong);
+            workWithProgressAudio(pl, audio);
+            audio.addEventListener("timeupdate", e => updateProgress(audio, progress));
+            audio.addEventListener("ended", ()=> {
+                progress.style.width = "0%";
+                pauseSong(pl.querySelector(".img_src"), audio);
+            })
         })
-    })
+    }
 }
 
 function runFunction(){

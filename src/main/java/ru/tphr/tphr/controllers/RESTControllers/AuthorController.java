@@ -20,7 +20,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 @RestController
 public class AuthorController {
@@ -83,8 +85,7 @@ public class AuthorController {
                                      @RequestParam("oldPath") String oldPath,
                                      Principal principal) throws IOException{
 
-        String[] massOfLines = author.getDescription().split("\\n");
-        author.setDescription(Utils.addBrTag(massOfLines));
+        author.setDescription(Utils.addBrTagDescription(author.getDescription()));
 
         if(!author.getPathToAvatar().equals(oldPath)){
             Path targetPath = Paths.get(uploadPath + "/" + principal.getName() + "/avatars");
@@ -98,10 +99,8 @@ public class AuthorController {
             File dir = new File(uploadPath + "/" + principal.getName());
             boolean bool = dir.renameTo(new File(uploadPath + "/" + author.getEmail()));
             if(bool) authorService.updateAuthorEmail(author);
-            System.out.println(1);
             return ResponseEntity.accepted().build();
         }
-        System.out.println(2);
         return ResponseEntity.ok().build();
     }
 

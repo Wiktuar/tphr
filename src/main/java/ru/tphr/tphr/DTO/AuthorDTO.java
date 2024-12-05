@@ -10,7 +10,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorDTO {
+    private long id;
     private String firstName;
     private String lastName;
     private String pathToAvatar;
+
+    public AuthorDTO(String firstName, String lastName, String pathToAvatar) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pathToAvatar = pathToAvatar;
+    }
 }

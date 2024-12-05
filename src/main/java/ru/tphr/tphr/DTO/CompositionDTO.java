@@ -20,8 +20,23 @@ public class CompositionDTO {
     private int likes;
     private int comments;
     private boolean meLiked;
+    private long compAuthorID;
 
-//  этот вариант конструктора может пригодиться для личного кабинета автора. где в превью авторские поля не нужны.
+    public CompositionDTO(long id, String header, String fileName, String releaseDate, String email, String firstName, String lastName, String pathToAvatar, int likes, int comments, boolean meLiked) {
+        this.id = id;
+        this.header = header;
+        this.fileName = fileName;
+        this.releaseDate = releaseDate;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pathToAvatar = pathToAvatar;
+        this.likes = likes;
+        this.comments = comments;
+        this.meLiked = meLiked;
+    }
+
+    //  этот вариант конструктора может пригодиться для личного кабинета автора. где в превью авторские поля не нужны.
     public CompositionDTO(long id, String header, String fileName, String releaseDate, int likes, int comments, boolean meLiked) {
         this.id = id;
         this.header = header;
@@ -31,4 +46,6 @@ public class CompositionDTO {
         this.comments = comments;
         this.meLiked = meLiked;
     }
+
+
 }

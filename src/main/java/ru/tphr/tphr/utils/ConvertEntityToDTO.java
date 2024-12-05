@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import ru.tphr.tphr.DTO.AuthorCabinetDTO;
 import ru.tphr.tphr.DTO.AuthorDTO;
 import ru.tphr.tphr.DTO.CommentDTO;
+import ru.tphr.tphr.DTO.EditAlbumDTO;
 import ru.tphr.tphr.entities.Comment;
+import ru.tphr.tphr.entities.music.Album;
 import ru.tphr.tphr.entities.security.Author;
 
 import java.util.List;
@@ -40,10 +42,27 @@ public class ConvertEntityToDTO {
     }
 
 //  метод, который будет использоваться в преобразовании списка записей
-    public CommentDTO convertToCommentDtoForList(Comment comment) {
+    public CommentDTO convertToCommentDtoForList(Comment comment, String email, boolean deleteAll) {
         CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
         commentDTO.setAuthorDTO(convertToAuthorDto(comment.getAuthor()));
+        if(deleteAll) {
+            commentDTO.setDeleted(true);
+            if(comment.getAuthor().getEmail().equals(email)){
+                commentDTO.setUpdated(true);
+            }
+        } else {
+            if(comment.getAuthor().getEmail().equals(email)){
+                commentDTO.setUpdated(true);
+                commentDTO.setDeleted(true);
+            }
+        }
+
         return commentDTO;
+    }
+
+    //  метод, преобразующий Author в AuthorCabinetDTO
+    public static EditAlbumDTO convertToEditAlbumDTO(Album album) {
+        return modelMapper.map(album, EditAlbumDTO.class);
     }
 
 

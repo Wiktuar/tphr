@@ -93,7 +93,8 @@ async function getAllComments(id){
 //функция внедряющая сомментарий в HTML разметку.
 function commentToHTML(comment){
     const commentsContainer = document.querySelector(".comments_container");
-    commentsContainer.insertAdjacentHTML('beforeend', `
+    if(comment.updated && comment.deleted) {
+        commentsContainer.insertAdjacentHTML('beforeend', `
             <div id="comment${comment.id}" class="comment_block">
                 <img src="/upload/${comment.author.pathToAvatar}" class="comment_author_avatar" alt="аватар автора">
                 <div class="comment_body">
@@ -106,6 +107,34 @@ function commentToHTML(comment){
                     <span class="time_stamp">${comment.timeStamp.substr(0, 16)}</span>
                 </div>
             </div>`);
+    } else if (!comment.updated && comment.deleted) {
+        commentsContainer.insertAdjacentHTML('beforeend', `
+            <div id="comment${comment.id}" class="comment_block">
+                <img src="/upload/${comment.author.pathToAvatar}" class="comment_author_avatar" alt="аватар автора">
+                <div class="comment_body">
+                    <h2 class="comment_author_name">${comment.author.firstName}  ${comment.author.lastName}</h2>
+                    <a href="" class="delete_comment_btn"><img src="/img/close.png" class="close_cross ${comment.id}" alt="Удаление комментария"></a>
+                    <div class="comment_text" style="text-align: justify">
+                        ${comment.text}
+                    </div>
+                    <span class="time_stamp">${comment.timeStamp.substr(0, 16)}</span>
+                </div>
+            </div>`);
+    } else {
+        commentsContainer.insertAdjacentHTML('beforeend', `
+            <div id="comment${comment.id}" class="comment_block">
+                <img src="/upload/${comment.author.pathToAvatar}" class="comment_author_avatar" alt="аватар автора">
+                <div class="comment_body">
+                    <h2 class="comment_author_name">${comment.author.firstName}  ${comment.author.lastName}</h2>
+                    <div class="comment_text" style="text-align: justify">
+                        ${comment.text}
+                    </div>
+                    <span class="time_stamp">${comment.timeStamp.substr(0, 16)}</span>
+                </div>
+            </div>`);
+    }
+
+
 }
 
 // функция, делегирующая событие клика мышки от контейнера комментариев к конкретному блоку

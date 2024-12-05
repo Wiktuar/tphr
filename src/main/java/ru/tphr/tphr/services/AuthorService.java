@@ -2,15 +2,14 @@ package ru.tphr.tphr.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.tphr.tphr.DTO.AuthorCabinetDTO;
 import ru.tphr.tphr.DTO.AuthorDTO;
-import ru.tphr.tphr.entities.AllCompose;
 import ru.tphr.tphr.entities.Composition;
 import ru.tphr.tphr.entities.security.*;
 import ru.tphr.tphr.exceptions.AuthorExistsException;
@@ -20,17 +19,12 @@ import ru.tphr.tphr.repository.security.PasswordResetTokenRepo;
 import ru.tphr.tphr.utils.Utils;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -194,9 +188,27 @@ public class AuthorService implements UserDetailsService {
         return authorRepo.getAuthorId(email);
     }
 
+//  метод получения всех авторов
+    public List<AuthorDTO> getAllAuthors(){
+        List<AuthorDTO> allAuthors = authorRepo.getAllAuthors();
+        allAuthors.sort(new Comparator<AuthorDTO>() {
+            @Override
+            public int compare(AuthorDTO o1, AuthorDTO o2) {
+                return o1.getFirstName().compareTo(o2.getFirstName());
+            }
+        });
+
+        return allAuthors;
+    }
+
 //  метод получения AuthorDTO по его почте
     public AuthorDTO getAuthorDTOByEmail(String email){
         return authorRepo.getAuthorDTOByEmail(email);
+    }
+
+//  метод получения authorCabinetDTO lля общедоступной страницы автора
+    public AuthorCabinetDTO getAuthorCabinetDTO(long id){
+        return authorRepo.getAuthorDTOById(id);
     }
 
 //  метод удаления автора по его ID

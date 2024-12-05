@@ -63,7 +63,7 @@ const audioPlayer = {
     setCurrentSong(current){
        let {id, header, urlToMusicFile, duration} = current;
        this.title.textContent = header;
-       this.audio.src = `/music/${urlToMusicFile}`;
+       this.audio.src = `/upload/${urlToMusicFile}`;
        this.currentTime.textContent = "00:00";
        this.fullTime.textContent = duration;
        const currentSong = document.querySelector(`.item[data-id="${id}"]`);

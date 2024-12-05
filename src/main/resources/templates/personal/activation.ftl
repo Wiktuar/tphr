@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Страница активации</title>
     <link rel="stylesheet" href="/css/reset.css/css/cabinet/reset.css/css/reset.css">
-    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/common/common.css">
     <link rel="stylesheet" href="/css/activation.css">
 </head>
 <body>

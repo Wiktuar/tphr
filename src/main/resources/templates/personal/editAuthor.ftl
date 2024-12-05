@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/common/common.css">
     <link rel="stylesheet" href="/css/cabinet/editAuthor.css">
     <link rel="stylesheet" href="/css/modal.css">
     <title>Редактирование данных</title>
@@ -57,7 +57,7 @@
                 <div class="additional">
                     <div class="about_me">
                         <p class="about_me_header">Расскажите немного о себе. Где вы живете? Чем увлекаетесь? Что вдохновляет Вас на творчество? Что для Вас Православие? и т.д.</p>
-                        <textarea name="description" maxlength="2000" placeholder="Всего 2000 символов" spellcheck="true" wrap="hard">${author.description}</textarea>
+                        <textarea name="description" maxlength="2000" placeholder="Всего 2000 символов" spellcheck="true" wrap="soft">${author.description}</textarea>
                     </div>
                     <uL class="social-box">
                         <li class="sc-block">

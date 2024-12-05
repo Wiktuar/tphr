@@ -1,0 +1,40 @@
+@font-face {
+    font-family: 'Arsenal-Regular';
+    src: url('fonts/Arsenal-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.authors_container {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(4, 285px);
+    justify-content: center;
+    width: 1400px;
+    margin: 0 auto 96px;
+}
+
+h1 {
+    margin-bottom: 30px;
+    text-align: center;
+    font-family: Alexander;
+    font-size: 35px;
+    color: #2f3640;
+}
+
+.author_link {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    color: #2f3640;
+}
+
+.author_link:hover {
+    border: 2px solid #2f3640;
+}
+
+.avatar {
+    width: 70px;
+    border-radius: 50%;
+}

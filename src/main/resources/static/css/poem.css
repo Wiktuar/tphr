@@ -20,11 +20,18 @@
     font-style: normal;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif;
+}
+
 .cabinet_container {
     display: flex;
     margin: 0 auto;
     width: 1400px;
-    min-height: 90vh;
+    min-height: 100vh;
     background-color: #ffe0b3;
 }
 
@@ -58,9 +65,7 @@ ul {
     color: white;
 }
 
-/*правый блок*/
-.right-sb, .album_container {
-    margin: 0 auto;
+.right-sb {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -68,102 +73,27 @@ ul {
     padding: 20px 0 20px;
 }
 
-.author_avatar {
-    border-radius: 50%;
-    width: 120px;
-}
-
-.author_name {
-    width: 300px;
-    margin: 10px auto;
-    font-size: 24px;
-    text-align: center;
-}
-
+/*стили для страницы конкретного стихотворения*/
 h3 {
     margin-top: 20px;
     margin-bottom: 20px;
     font-family: "Alexander";
     font-size: 2em;
     color: darkred;
-    text-align: center;
 }
 
-/*стили плеера*/
-
-.player_wrapper {
-    width: 600px;
-    min-height: 400px;
-    margin: 0 auto 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-}
-
-.player {
-    display: flex;
-    background-color: #f3f153;
-    padding: 15px;
-}
-
-.cover {
-    margin-right: 30px;
-}
-
-.cover_img {
-    width: 200px;
-    border: 2px solid red;
-}
-
-.title_time {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 20px;
-}
-
-.progress_container {
+/*стили стихотворения*/
+.poem_fool_image {
     width: 300px;
-    height: 10px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 5%;
+}
+
+.poem_fool_content {
+    width: fit-content;
     margin: 20px auto;
-    background-color: white;
-    display: flex;
-    align-items: center;
-}
-
-.progress {
-    height: 6px;
-    background-color: black;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 40px;
-}
-
-.img_src {
-    width: 50px;
-}
-
-/*список песен*/
-.song_list {
-    width: 530px;
-    background-color: #f3f153;
-}
-
-.item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 25px;
-    border-bottom: 2px solid white;
-    padding: 10px;
-}
-
-.item.active {
-    background-color: #72392b;
+    font-family: "Arsenal-Regular";
+    font-size: 1.3em;
+    overflow: hidden;
 }

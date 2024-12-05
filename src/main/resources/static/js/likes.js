@@ -1,6 +1,16 @@
 //значок лайка, который является кнопкой
 const likeBtn = document.querySelector(".like_btn");
 const countOfLikes = document.querySelector(".p_digit_l");
+const suggestAuthorDiv = document.querySelector(".enter_for_like")
+
+
+// функция, закрывающая окно предложения авторизации при лайке, если пользователь не авторизован
+document.addEventListener("click", e => {
+    if(e.target.classList.length !== 3){
+        suggestAuthorDiv.classList.remove("visible");
+    };
+})
+
 
 //переменная meLiked определена в разделе js в шаблоне ftl, она приходит оттуда в виле числа
 isMeLiked(Boolean(meLiked));
@@ -17,9 +27,10 @@ function isMeLiked(isNeLiked){
 
 // функция добавления или удаления лайков
 async function addOrRemoveLike(id, knownUser){
+    console.log("method works");
     if(knownUser === 0){
-        const attention = document.querySelector(".enter_for_like");
-        attention.classList.toggle("visible");
+        console.log("toggle works");
+        suggestAuthorDiv.classList.toggle("visible");
         return;
     }
 
@@ -38,7 +49,5 @@ async function addOrRemoveLike(id, knownUser){
 
 
 likeBtn.addEventListener("click", () => addOrRemoveLike(compID, knownUser));
-
-console.log(compID);
 
 

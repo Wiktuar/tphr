@@ -286,7 +286,7 @@ label {
     color: darkred;
 }
 
-.fool_reading {
+.full_learning {
     margin: 5% 15%;
     padding: 2%;
     font-size: 0.5em;
@@ -400,6 +400,14 @@ label {
 
 .progress_container {
     width: 98%;
+    height: 10px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+}
+
+.progress_container_simple {
+    width: 100px;
     height: 10px;
     background-color: white;
     display: flex;

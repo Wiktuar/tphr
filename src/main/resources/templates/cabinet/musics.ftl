@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/common/common.css">
     <link rel="stylesheet" href="/css/musics.css">
+    <link rel="stylesheet" href="/css/modal.css">
     <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
     <title>Save Music</title>
 </head>
@@ -71,7 +72,7 @@
                                         </div>
                                     </div>
                                     <a href="/cabinet/music/${album.id}">
-                                        <div class="fool_learning">слушать полностью</div>
+                                        <div class="full_learning">слушать полностью</div>
                                     </a>
                                 </div>
 
@@ -108,6 +109,12 @@
     <#--блок добавления футера-->
     <@c.footer></@c.footer>
 </div>
+<#-- Скрипты, относящиеся к модальному окну -->
+<script src="/js/modal/base.js"></script>
+<script src="/js/modal/plugins/modal.js"></script>
+<script src="/js/modal/plugins/confirm.js"></script>
+<#-- Скрипты, относящиеся к редактированию альбомов -->
+<script type="module" src="/js/music/editAlbums.js"></script>
 <script type="module" src="/js/music/music.js"></script>
 <script src="/js/header.js"></script>
 </body>

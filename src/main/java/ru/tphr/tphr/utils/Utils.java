@@ -31,7 +31,7 @@ public class Utils {
 
     //метод преобразования ролей в GrantedAuthority для Spring Security
     public static Collection<? extends GrantedAuthority> mapRoleToAuthority(Set<Role> roles) {
-        return roles .stream()
+        return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
@@ -78,6 +78,16 @@ public class Utils {
     public static String removeBrTag(String data){
         String[] arr = data.split("<br>");
         return Arrays.stream(arr).collect(Collectors.joining());
+    }
+
+//  метод, добавляющий тег переноса строки в описание автора
+    public static String addBrTagDescription(String data){
+        return data.replaceAll("\\r\\n", "<br><br>");
+    }
+
+//  метод, добавляющий вметс <br> символы переноса строки
+    public static String removeBrTagDescription(String data){
+        return data.replaceAll("<br><br>", "&#10");
     }
 
 //  метод, возвращающий времмя аудиотрека с минутаи и секундами

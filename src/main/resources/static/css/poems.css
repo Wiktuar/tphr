@@ -230,7 +230,7 @@ textarea {
 }
 
 /*стили кнопки "читать полностью"*/
-.fool_reading {
+.full_reading {
     margin: 3% 15%;
     padding: 2%;
     font-size: 0.5em;
@@ -251,7 +251,7 @@ textarea {
 }
 
 .like_comment {
-    display: flex;;
+    display: flex;
     align-items: center;
 }
 
@@ -399,37 +399,6 @@ textarea {
     background-color: white;
 }
 
-/*стили для страницы конкретного стихотворения*/
-h3 {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-family: "Alexander";
-    font-size: 2em;
-    color: darkred;
-    text-align: center;
-}
-
-/*стили стихотворения*/
-.poem_fool_image {
-    width: 40%;
-    display: block;
-    margin: 0 auto;
-    border-radius: 5%;
-}
-
-.poem_content_container {
-    display: flex;
-    justify-content: center;
-}
-
-.poem_fool_content {
-    width: 40%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-family: "Arsenal-Regular";
-    font-size: 1.3em;
-    overflow: hidden;
-}
 
 /*стили для выбора и обрезки обложки альбома*/
 .edit_cover_container {

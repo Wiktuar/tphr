@@ -19,7 +19,7 @@ export const addCanvas = function(){
                     canvasContainer.style.maxHeight = canvasContainer.scrollHeight + 'px';
                     canvasContainer.style.marginTop = '45px';
                     canvasContainer.style.marginBottom = '45px';
-                    if(addPoemBox !== undefined){
+                    if(addPoemBox){
                         let pHeight = addPoemBox.style.maxHeight.slice(0, -2);
                         let cHeight = canvasContainer.style.maxHeight.slice(0, -2);
                         addPoemBox.style.maxHeight = cHeight + pHeight + "px";

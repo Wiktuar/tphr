@@ -7,7 +7,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="/css/reset.css">
-  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/common/common.css">
   <link rel="stylesheet" href="/css/poems.css">
   <link rel="stylesheet" href="/css/musics.css">
   <link rel="stylesheet" href="/css/index.css">
@@ -42,7 +42,7 @@
                                 ${acd.textPreview}
                             </div>
                             <a href="/main/poem/${acd.id}">
-                                <div class="fool_reading">
+                                <div class="full_reading">
                                     читать полностью
                                 </div></a>
                         </div>
@@ -96,8 +96,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="/cabinet/music/${acd.id}">
-                                <div class="fool_reading">слушать полностью</div>
+                            <a href="/main/music/${acd.id}">
+                                <div class="full_learning">слушать полностью</div>
                             </a>
                         </div>
 
