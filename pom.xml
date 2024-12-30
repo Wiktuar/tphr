@@ -66,13 +66,6 @@
             <version>1.4</version>
         </dependency>
 
-        <!--тестовая библиотека -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- библиотека для преобразованияя сущностей в DTO      -->
         <dependency>
             <groupId>org.modelmapper</groupId>

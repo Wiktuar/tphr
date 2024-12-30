@@ -57,6 +57,7 @@ public class MailSenderService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 
         try{
+            helper.setFrom("tpchr.ru <wiktuar2@gmail.com>");
             helper.setSubject("Сброс пароля на сайте tphr.ru");
             helper.setTo(email);
             String emailContent = getEmailContent("changePasswordEmail.ftl", name, token);
@@ -69,13 +70,14 @@ public class MailSenderService {
 
     }
 
-//  метод отправки сообщений о необходимости активации аккаунта
+//  метод отправки сообщений о необходимости активации аккаунта после регистрации
     @Async
     public void sendEmail(String email, String name, String activationCode){
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 
         try{
+            helper.setFrom("tpchr.ru <wiktuar2@gmail.com>");
             helper.setSubject("Регистрация на сайте tphr.ru");
             helper.setTo(email);
             String emailContent = getEmailContent("email.ftl", name, activationCode);
@@ -95,6 +97,7 @@ public class MailSenderService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 
         try{
+            helper.setFrom("tpchr.ru <wiktuar2@gmail.com>");
             helper.setSubject("Подтверждение почты на сайте tphr.ru");
             helper.setTo(email);
             String emailContent = getEmailContent("confirmChangeEmail.ftl", name, activationCode);

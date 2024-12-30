@@ -1,8 +1,10 @@
 package ru.tphr.tphr.services.music;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileSystemUtils;
 import ru.tphr.tphr.DTO.CompositionDTO;
 import ru.tphr.tphr.DTO.EditAlbumDTO;
 import ru.tphr.tphr.DTO.LikesAlbumDto;
@@ -11,12 +13,17 @@ import ru.tphr.tphr.repository.CompositionRepo;
 import ru.tphr.tphr.repository.music.AlbumRepo;
 import ru.tphr.tphr.services.AuthorService;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 
 
 @Service
 public class AlbumService {
+
+    @Value("${source.path3}")
+    private String uploadPath;
+
     private CompositionRepo compositionRepo;
     private AlbumRepo albumRepo;
 
@@ -43,10 +50,9 @@ public class AlbumService {
         return albums;
     }
 
-//  Получение CompositionDTO, поскольку его содержание идентично AlbumDTO.
-//  Песни будут запрашиваться другим подзапросом через REST сервис.
-    public CompositionDTO getLikesAlbumDto(String email, long id){
-        return compositionRepo.getCompositionDTO(email, id);
+//  получение конкретного LikesAlbumDto по ID альбома
+    public LikesAlbumDto getLikesAlbumDto(String email, long id){
+        return albumRepo.getLikesAlbumDtoById(email, id);
     }
 
 //  метод проверки существует ли музыкальный альбом с таким названием или нет
@@ -62,5 +68,14 @@ public class AlbumService {
 //  метод получение LikesAlbumDto для конкретного пользователя по его ID
     public List<LikesAlbumDto> getAlbumsByUserID(String email, Long id){
         return albumRepo.getAlumsByAuthorID(email, id);
+    }
+
+//  метод удаления альбома  по его ID
+    public void deleteAlbumById(long id){
+        String filename = albumRepo.getAlbumFileName(id);
+        String pathToAlbumDirectory = filename.substring(0, filename.lastIndexOf("/"));
+        String deletePath = uploadPath + pathToAlbumDirectory;
+        boolean result = FileSystemUtils.deleteRecursively(new File(deletePath));
+        if(result) albumRepo.deleteById(id);
     }
 }

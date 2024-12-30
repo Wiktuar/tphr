@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.tphr.tphr.DTO.EditPoemDTO;
 import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.entities.poem.Poem;
-import ru.tphr.tphr.repository.security.PoemRepo;
+import ru.tphr.tphr.repository.PoemRepo;
 
 import javax.transaction.Transactional;
 import java.util.List;

@@ -140,8 +140,6 @@ const canvasCreator = {
     mouseDown(e) {
         this.mouseX = e.pageX - this.container.offsetLeft;
         this.mouseY = e.pageY - this.container.offsetTop;
-        // console.log(e.pageY);
-        console.log(this.canvas.offsetLeft);
 
         // 4 cases:
         // 1. top left
@@ -219,20 +217,20 @@ const canvasCreator = {
 
         if (this.dragTL) {
             this.rect.w += this.rect.startX - this.mouseX;
-            this.rect.h = this.rect.w;
+            this.rect.h = this.rect.w / 1.25;
             this.rect.startX = this.mouseX;
             this.rect.startY = this.mouseY;
         } else if (this.dragTR) {
             this.rect.w = Math.abs(this.rect.startX - this.mouseX);
-            this.rect.h = this.rect.w;
+            this.rect.h = this.rect.w / 1.25;
             this.rect.startY = this.mouseY;
         } else if (this.dragBL) {
             this.rect.w += this.rect.startX - this.mouseX;
-            this.rect.h = this.rect.w;
+            this.rect.h = this.rect.w / 1.25;
             this.rect.startX = this.mouseX;
         } else if (this.dragBR) {
             this.rect.w = Math.abs(this.rect.startX - this.mouseX);
-            this.rect.h = this.rect.w;
+            this.rect.h = this.rect.w / 1.25;
         } else if (this.mDown) {
             this.rect.startX = this.mouseX - this.rect.w / 2;
             this.rect.startY = this.mouseY - this.rect.h / 2;
@@ -285,7 +283,7 @@ const canvasCreator = {
     },
 
     drawImage(image, rect){
-    //переменные с новыми рассчетами в проценах.
+    //переменные с новыми расчетами в проценnах.
     // ширина по оси Х от нуля до начала прямоугольной области делится на ширину холста и умножатся на реальную ширину картинки
     let cropLeft = (this.rect.startX / this.canvas.width) * this.image.naturalWidth;
     // ширина по оси Y от нуля до начала прямоугольной области делится на высоту холста и умножатся на реальную высоту картинки

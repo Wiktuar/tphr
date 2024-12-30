@@ -60,7 +60,7 @@ public class Utils {
 //  метод, переводящий в строку текущее время. (в базе данных время хранится в виде строки)
     public static String convertTimeToString(){
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-//  k - 24- часовой форват времени, h- 12-ти часовой формат времени
+//  k - 24- часовой формат времени, h- 12-ти часовой формат времени
         return new SimpleDateFormat("dd-MM-yyyy kk:mm:ss").format(timestamp);
     }
 

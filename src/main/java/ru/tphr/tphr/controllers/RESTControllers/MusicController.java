@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -83,108 +84,109 @@ public class MusicController {
                                 @RequestParam("duration") String[] durations,
                                 @RequestParam("file") MultipartFile[] files,
                                 Principal principal) throws IOException {
-
-        if(id == 0){
-            if(!albumService.checkAlbumNotExists(albumHeader, principal.getName())) throw new ComposeExistsException();
-        }
-
-        Album album = new Album();
-        if(id != 0) {
-            album.setId(id);
-            album.setReleaseDate(releaseDate);
-        } else{
-            album.setReleaseDate(Utils.convertTimeToString());
-        }
-        album.setHeader(albumHeader);
-        album.setAuthor(authorService.getAuthorByEmail(principal.getName()));
-
-        Path uploadFolder = Paths.get(uploadPath + principal.getName() + "\\music\\" + albumHeader);
-
-        if(!oldAlbumHeader.isEmpty() && !oldAlbumHeader.equals(albumHeader)){
-            boolean result = new File(uploadPath + principal.getName() + "\\music\\" + oldAlbumHeader)
-                    .renameTo(new File(uploadFolder.toString()));
-            if (!result) System.out.println("Не удалось переименовать файл");
-        }
-
-
-        if(!Files.exists(uploadFolder)){
-            try {
-                Files.createDirectories(uploadFolder);
-            } catch (IOException e) {
-                System.out.println("Не удается создать альбом " + uploadFolder.toString());
-            }
-        }
-
-        if(coverImage.equals("defaultCover.png")){
-            try {
-                Files.copy(Paths.get(albumCoverPath), Paths.get(uploadFolder.toString() + "\\defaultCover.jpg"));
-            } catch (IOException e) {
-                System.out.println("Не удается скопировать дефолтную обложку");
-            }
-            album.setFileName(principal.getName() + "/music/" + albumHeader + "/defaultCover.jpg");
-        } else if (coverImage.contains("/music/") && coverImage.contains("defaultCover.jpg")){
-            album.setFileName(principal.getName() + "/music/" + albumHeader + "/defaultCover.jpg");
-        } else if (coverImage.contains("/music/") && coverImage.contains("albumCover.jpg")){
-            album.setFileName(principal.getName() + "/music/" + albumHeader + "/albumCover.jpg");
-        }
-        else {
-            Utils.saveCircumcisedImage(uploadFolder.toString(), coverImage, "\\albumCover.jpg");
-            album.setFileName(principal.getName() + "/music/" + albumHeader + "/albumCover.jpg");
-        }
-
-
-        for (int i = 0; i < headers.length; i++) {
-           if(headers[i].equals(""))continue;
-           Song song = new Song();
-           if(ides[i] != 0) song.setId(ides[i]);
-           song.setHeader(headers[i]);
-
-//         если тип файла text/plain, значит файл остался прежний, максимум, он был переименован
-           if(files[i].getContentType().equals("text/plain")){
-//             если альбом не был переименован
-               if(albumHeader.equals(oldAlbumHeader)){
-                   song.setUrlToMusicFile(files[i].getOriginalFilename());
-                   song.setDuration(durations[i]);
-               }
-
-//             если альбом был переименован
-               if(!oldAlbumHeader.isEmpty() && !oldAlbumHeader.equals(albumHeader)){
-                   String fileHeader = Objects.requireNonNull(files[i].getOriginalFilename())
-                           .substring(Objects.requireNonNull(files[i].getOriginalFilename()).lastIndexOf("/") + 1);
-                   song.setUrlToMusicFile(principal.getName() + "/music/" + albumHeader + "/" + fileHeader);
-                   song.setDuration(durations[i]);
-               }
-//               если была изменена песня
-           } else {
-               if(!oldSongUrls[i].equals("")) {
-                   Files.deleteIfExists(Paths.get(uploadPath + oldSongUrls[i]));
-               }
-               files[i].transferTo(new File(uploadPath + principal.getName() + "/music/" + albumHeader + "/" + files[i].getOriginalFilename()));
-               song.setUrlToMusicFile(principal.getName() + "/music/" + albumHeader + "/" + files[i].getOriginalFilename());
-               song.setDuration(durations[i]);
-               try {
-                   song.setDuration(Utils.getMusicFileDuration(uploadPath + principal.getName() + "/music/" + albumHeader + "/" + files[i].getOriginalFilename()));
-               } catch (UnsupportedAudioFileException e) {
-                   System.out.println("Can not define duration of music file");
-               }
-           }
-
-           if(i == 0 ){
-               album.setSongPreview(song.getUrlToMusicFile());
-               System.out.println("address of preview " + album.getSongPreview());
-           }
-           album.addSong(song);
-        }
-
-        Album savedAlbum = albumService.saveAlbum(album);
-
-        if (savedAlbum != null)  return HttpStatus.OK;
-            else return HttpStatus.BAD_REQUEST;
-//        return HttpStatus.BAD_REQUEST;
+        System.out.println(albumHeader);
+        if(albumHeader.equals("first")) throw new ComposeExistsException();
+//        if(id == 0){
+//            if(!albumService.checkAlbumNotExists(albumHeader, principal.getName())) throw new ComposeExistsException();
+//        }
+//
+//        Album album = new Album();
+//        if(id != 0) {
+//            album.setId(id);
+//            album.setReleaseDate(releaseDate);
+//        } else{
+//            album.setReleaseDate(Utils.convertTimeToString());
+//        }
+//        album.setHeader(albumHeader);
+//        album.setAuthor(authorService.getAuthorByEmail(principal.getName()));
+//
+//        Path uploadFolder = Paths.get(uploadPath + principal.getName() + "\\music\\" + albumHeader);
+//
+//        if(!oldAlbumHeader.isEmpty() && !oldAlbumHeader.equals(albumHeader)){
+//            boolean result = new File(uploadPath + principal.getName() + "\\music\\" + oldAlbumHeader)
+//                    .renameTo(new File(uploadFolder.toString()));
+//            if (!result) System.out.println("Не удалось переименовать файл");
+//        }
+//
+//
+//        if(!Files.exists(uploadFolder)){
+//            try {
+//                Files.createDirectories(uploadFolder);
+//            } catch (IOException e) {
+//                System.out.println("Не удается создать альбом " + uploadFolder.toString());
+//            }
+//        }
+//
+//        if(coverImage.equals("defaultCover.png")){
+//            try {
+//                Files.copy(Paths.get(albumCoverPath), Paths.get(uploadFolder.toString() + "\\defaultCover.jpg"));
+//            } catch (IOException e) {
+//                System.out.println("Не удается скопировать дефолтную обложку");
+//            }
+//            album.setFileName(principal.getName() + "/music/" + albumHeader + "/defaultCover.jpg");
+//        } else if (coverImage.contains("/music/") && coverImage.contains("defaultCover.jpg")){
+//            album.setFileName(principal.getName() + "/music/" + albumHeader + "/defaultCover.jpg");
+//        } else if (coverImage.contains("/music/") && coverImage.contains("albumCover.jpg")){
+//            album.setFileName(principal.getName() + "/music/" + albumHeader + "/albumCover.jpg");
+//        }
+//        else {
+//            Utils.saveCircumcisedImage(uploadFolder.toString(), coverImage, "\\albumCover.jpg");
+//            album.setFileName(principal.getName() + "/music/" + albumHeader + "/albumCover.jpg");
+//        }
+//
+//
+//        for (int i = 0; i < headers.length; i++) {
+//           if(headers[i].isEmpty())continue;
+//           Song song = new Song();
+//           if(ides[i] != 0) song.setId(ides[i]);
+//           song.setHeader(headers[i]);
+//
+////         если тип файла text/plain, значит файл остался прежний, максимум, он был переименован
+//           if(files[i].getContentType().equals("text/plain")){
+////             если альбом не был переименован
+//               if(albumHeader.equals(oldAlbumHeader)){
+//                   song.setUrlToMusicFile(files[i].getOriginalFilename());
+//                   song.setDuration(durations[i]);
+//               }
+//
+////             если альбом был переименован
+//               if(!oldAlbumHeader.isEmpty() && !oldAlbumHeader.equals(albumHeader)){
+//                   String fileHeader = Objects.requireNonNull(files[i].getOriginalFilename())
+//                           .substring(Objects.requireNonNull(files[i].getOriginalFilename()).lastIndexOf("/") + 1);
+//                   song.setUrlToMusicFile(principal.getName() + "/music/" + albumHeader + "/" + fileHeader);
+//                   song.setDuration(durations[i]);
+//               }
+////               если была изменена песня
+//           } else {
+//               if(!oldSongUrls[i].isEmpty()) {
+//                   Files.deleteIfExists(Paths.get(uploadPath + oldSongUrls[i]));
+//               }
+//               files[i].transferTo(new File(uploadPath + principal.getName() + "/music/" + albumHeader + "/" + files[i].getOriginalFilename()));
+//               song.setUrlToMusicFile(principal.getName() + "/music/" + albumHeader + "/" + files[i].getOriginalFilename());
+//               song.setDuration(durations[i]);
+//               try {
+//                   song.setDuration(Utils.getMusicFileDuration(uploadPath + principal.getName() + "/music/" + albumHeader + "/" + files[i].getOriginalFilename()));
+//               } catch (UnsupportedAudioFileException e) {
+//                   System.out.println("Can not define duration of music file");
+//               }
+//           }
+//
+//           if(i == 0 ){
+//               album.setSongPreview(song.getUrlToMusicFile());
+//               System.out.println("address of preview " + album.getSongPreview());
+//           }
+//           album.addSong(song);
+//        }
+//
+//        Album savedAlbum = albumService.saveAlbum(album);
+//
+//        if (savedAlbum != null)  return HttpStatus.OK;
+//            else return HttpStatus.BAD_REQUEST;
+        return HttpStatus.OK;
     }
 
 //  метод, возвращающий альбомм со всеми песнямми
-    @GetMapping("/cabinet/songs/{id}")
+    @GetMapping("/main/songs/{id}")
     public Set<Song> getSongsByAlbumId(@PathVariable long id){
         Set<Song> songs = songService.getAllSongsByAlbumId(id);
         return songs;

@@ -37,7 +37,6 @@ public class AuthorController {
     @Value("${google.recaptcha.key.secret}")
     private String secret;
 
-    private PoemService poemService;
     private RestTemplate restTemplate;
     private AuthorService authorService;
 
@@ -47,17 +46,12 @@ public class AuthorController {
     }
 
     @Autowired
-    public void setPoemService(PoemService poemService) {
-        this.poemService = poemService;
-    }
-
-    @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    //    метод сначала проверяет есть ли польователь в базе с таким email,
-    //    а птом сохраняет
+    //    метод сначала проверяет есть ли пользователь в базе с таким email,
+    //    а потом сохраняет
     @PostMapping("/saveauthor")
     public ResponseEntity saveAuthorIfNotExists(@ModelAttribute Author author,
                                                 @RequestParam("recaptcha-response") String captchaResponse) throws IOException {
@@ -66,7 +60,7 @@ public class AuthorController {
         CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
         if(!response.isSuccess()) return new ResponseEntity(HttpStatus.UNAUTHORIZED);
 
-      if(authorService.getAuthorByEmail(author.getEmail()) != null ) throw new AuthorExistsException();
+       if(authorService.getAuthorByEmail(author.getEmail()) != null ) throw new AuthorExistsException();
       // создаем папку автора, куда будет сохранен его аватар
         Path targetPath = Paths.get(uploadPath + "/" + author.getEmail() + "/avatars");
         Files.createDirectories(targetPath);
@@ -75,7 +69,7 @@ public class AuthorController {
 
         Utils.changeSocialNets(author);
 
-        authorService.saveAuthor(author);;
+        authorService.saveAuthor(author);
         return ResponseEntity.ok().build();
     }
 

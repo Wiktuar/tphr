@@ -9,7 +9,7 @@ document.getElementById('file')
             modalWindow.open();
             setTimeout(() =>{
                 init();
-            }, 1000 );
+            }, 2500 );
         };
         fr.readAsDataURL(files[0]);
     });

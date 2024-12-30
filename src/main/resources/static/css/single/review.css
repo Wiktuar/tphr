@@ -1,0 +1,102 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h3 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    padding: 10px;
+}
+
+/*стили формы отправки отзыва*/
+form {
+    margin: 0 auto;
+    font-size: 20px;
+    font-style: italic;
+}
+
+.fName {
+    min-width: 500px;
+    min-height: 60px;
+    margin-top: 35px;
+    margin-left: 15px;
+    position: relative;
+}
+
+.fName label {
+    display: block;
+    padding-left: 30px;
+}
+
+.fName input {
+    min-width: 400px;
+    min-height: 40px;
+    margin-top: 10px;
+    padding-left: 15px;
+    display: block;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
+    font-size: 20px;
+    font-family: Tahoma sans-serif;
+}
+
+input:focus {
+    box-shadow: none;
+    border: 5px solid #2f3640;
+}
+
+textarea {
+    display: block;
+    width: 70%;
+    height: 400px;
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
+    font-size: 1em;
+    font-family: Tahoma sans-serif;
+    background-color: white;
+}
+
+.review_btn {
+    width: 300px;
+    height: 45px;
+    display: block;
+    font-size: 20px;
+    padding: 8px 24px;
+    border-radius: 8px;
+    margin-top: 35px;
+    margin-left: 200px;
+    border: none;
+    background: #e74c3c;
+    color: #f5f6fa;
+    cursor: pointer;
+}
+
+.btn {
+    width: 300px;
+    height: 45px;
+    display: block;
+    font-size: 20px;
+    padding: 8px 24px;
+    border-radius: 8px;
+    margin: 16px auto 0;
+    border: none;
+    background: #e74c3c;
+    color: #f5f6fa;
+    cursor: pointer;
+}
+
+/*стили вывода ошибки заполнения формы*/
+.attention {
+    margin-top: 35px;
+    margin-left: 180px;
+    font-size: 18px;
+    font-family: Arial, Tahoma, sans-serif;
+    text-align: left;
+}

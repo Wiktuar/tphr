@@ -25,3 +25,11 @@
         }
     });
 })();
+
+// функция, закрывающая окно меню личного кабинете при клике вне
+document.addEventListener("click", e => {
+    if(!e.target.classList.contains("cabinet-button")){
+        const dropDownBox = document.querySelector(".dropdown-box");
+        dropDownBox.style.maxHeight = "";
+    }
+})

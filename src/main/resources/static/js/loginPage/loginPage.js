@@ -36,11 +36,11 @@ function handleJsonResult(status, result){
     if(status === 401){
         if(result.includes("Bad credentials")){
             authenticationWarning.style.display = 'block';
-            authMessage.textContent = "Неыерпный пароль";
+            authMessage.textContent = "Неверный пароль";
         }
         else if(result.includes("not exists")){
             authenticationWarning.style.display = 'block';
-            authMessage.textContent ="Пользователь с таким логином не найллен";
+            authMessage.textContent ="Пользователь с таким логином не найден";
         }
         else if(result.includes("is disabled")){
             authenticationWarning.style.display = 'block';

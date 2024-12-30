@@ -1,4 +1,4 @@
-package ru.tphr.tphr.repository.security;
+package ru.tphr.tphr.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

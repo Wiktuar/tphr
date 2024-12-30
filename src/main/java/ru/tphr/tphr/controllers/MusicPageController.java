@@ -32,23 +32,28 @@ public class MusicPageController {
     //  метод получения всех альбомов автора
     @GetMapping("/cabinet/music")
     public String getAllAlbums(Principal principal,
-                               Model model){
+                               Model model) {
         Set<LikesAlbumDto> albums = albumService.getAlbumsByUser(principal.getName());
         model.addAttribute("albums", albums);
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return "cabinet/musics";
     }
 
-//  метод получения отдельного альбома по его ID
+    //  метод получения отдельного альбома по его ID
     @GetMapping(value = {"/cabinet/music/{id}", "/main/music/{id}"})
-    public String getAllAlbums(@PathVariable("id") long id,
+    public String getAlbumByID(@PathVariable("id") long id,
                                HttpServletRequest request,
-                               Principal principal,
-                               Model model){
-        System.out.println();
-        CompositionDTO cDto = albumService.getLikesAlbumDto(principal.getName(), id);
-        model.addAttribute("album", cDto);
+                               Model model) {
+        LikesAlbumDto lDto = albumService.getLikesAlbumDto(headerMenuUtil.getPrincipalName(), id);
+        model.addAttribute("album", lDto);
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return (request.getRequestURL().toString().contains("/main/music")) ? "single/singlePlayer" : "cabinet/music";
+    }
+
+//  метод удаления стихотворения по его ID
+    @GetMapping("/cabinet/delete/album/{id}")
+    public String deleteAlbumById(@PathVariable long id){
+        albumService.deleteAlbumById(id);
+        return"redirect:/cabinet/music";
     }
 }

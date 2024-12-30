@@ -1,6 +1,6 @@
 //https://doka.guide/js/form-data/
 import {player} from "./simplePlayer.js";
-import {toMinAndSec, getAttentionDiv} from "./utils.js";
+import {toMinAndSec, getAttentionDiv, addTrimListeners} from "./utils.js";
 import {album, single} from "./addHTML.js";
 import {addCanvas} from "./editCover.js";
 
@@ -12,7 +12,6 @@ export function createMusicPlayers(){
    const files = addSongBlock.querySelectorAll("input[type=file]");
    files.forEach(file => {
       file.addEventListener("change", () => {
-          console.log("i working");
          // случай, когда файл добавляется
          if(file.files[0] !== undefined){
             // случай, когда в плеере уже есть файл и его надо обновить
@@ -78,9 +77,11 @@ export function pauseSong(imgSrc, audio){
    audio.pause();
 }
 
-
+// bз-за правки css прогресс контейнеры имеют два класса, поэтому приходится писать
+// костыль для проверки наличия второго класса.
 export function workWithProgressAudio(element, audio){
-   const progressContainer = element.querySelector(".progress_container");;
+   let progressContainer = element.querySelector(".progress_container");
+   if(!progressContainer) progressContainer = element.querySelector(".progress_container_simple");
    progressContainer.addEventListener("click", e => setProgress(e, audio, progressContainer));
 }
 
@@ -114,6 +115,8 @@ function addForm(button, html){
       fc.insertAdjacentHTML("beforeend", html);
       createMusicPlayers();
       addCanvas();
+      addTrimListeners();
+      addFileListener();
       document.querySelector(".send_audio_btn")
           .addEventListener("click", sendForm);
     })
@@ -121,25 +124,20 @@ function addForm(button, html){
 
 // метод отправки формы на сервер
 export function sendForm(){
-   let hasMistakes = checkCompletionForm(document.querySelectorAll(".add_song"));
-   if(hasMistakes) return;
+    let hasMistakes = checkCompletionForm(document.querySelectorAll(".add_song"));
+    if(hasMistakes) return;
 
-   console.log("Jтправляется форма")
-   const formData = new FormData(document.getElementById("music_form"));
-   fetch("/savemusic", {
-       method: "POST",
-       body: formData
-   })
-       .then(response => {
-            if(response.status === 200) window.location.reload();
-            else if(response.status === 422){
-                let form = document.getElementById("music_form");
-                const sendBtn = document.querySelector(".send_audio_btn");
-                form.insertBefore(getAttentionDiv("Вы eже ранее создавали альбом с таким названием!"), sendBtn);
-            }
-            else console.log("Не удалось сохранить альбом");
-       }).catch(error => console.log(error));
+    const progressBar = document.querySelector(".upload_bar");
+    const progress = document.querySelector(".progress_upload");
+    const formData = new FormData(document.getElementById("music_form"));
+    const xhr = new XMLHttpRequest()
 
+    xhr.upload.addEventListener('progress', (evt) => progressHandler(evt, progressBar, progress), false)
+    xhr.addEventListener('load', ()=>loadHandler(xhr.status, progressBar, progress), false)
+    xhr.addEventListener('error', errorHandler);
+    xhr.open('POST', '/savemusic')
+
+    xhr.send(formData);
 }
 
 //функция проверки запонения форммы на сайте
@@ -150,6 +148,11 @@ function checkCompletionForm(element){
     const headerText = document.querySelector(".header_image input[type=text]");
     // header of songs
     const headers = document.querySelectorAll("input[name=header]");
+
+    // list of all textInputs
+    const textInputList = document.querySelectorAll('input[type=text]');
+    const checkAlbumsPattern = /^[А-Яа-яЁёA-Za-z0-9\s-]+$/;
+
     let hasMistakes = false;
     let emptyForm = true;
     let emptySong = false;
@@ -159,7 +162,7 @@ function checkCompletionForm(element){
     Array.from(attentionList)
         .forEach(el => el.remove());
 
-    //проверка заголовка на заполнение
+    // проверка заголовка на заполнение
     if(!headerText.value){
         form.insertBefore(getAttentionDiv("Вы не добавили заголовок для альбома"), sendBtn);
         hasMistakes = true;
@@ -204,7 +207,7 @@ function checkCompletionForm(element){
         outer: for (let i = 0; i < Math.ceil(headers.length/2); i++) {
             for (let j = i+1; j < headers.length; j++){
                 if(headers[i].value !== "" && headers[i].value === headers[j].value){
-                    form.insertBefore(getAttentionDiv("E вас есть одинаковые заголовки песен!"), sendBtn);
+                    form.insertBefore(getAttentionDiv("У вас есть одинаковые заголовки песен!"), sendBtn);
                     hasMistakes = true;
                     break outer;
                 }
@@ -212,13 +215,21 @@ function checkCompletionForm(element){
         }
     }
 
+    textInputList.forEach(input => {
+      if(input.value){
+          if(!checkAlbumsPattern.test(input.value)){
+              form.insertBefore(getAttentionDiv("В названии альбома или песен есть недопустимые символы!"), sendBtn);
+              hasMistakes = true;
+          }
+        }
+    })
+
     return hasMistakes;
 }
 
 // функции для работы с карточками уже имеющихся альбомов
 export function createMusicPlayersForAlbums(container){
     if(container != null) {
-        console.log("player working");
         const players = container.querySelectorAll(".player");
         players.forEach( pl => {
             const progress = pl.querySelector(".progress")
@@ -243,4 +254,62 @@ function runFunction(){
 }
 
 runFunction();
+
+// функция выбирает со страницы все файловые инпуты и вешает на них слушатели событий
+// Эти события будут отслеживать размер файла, который добавляется через файловый инпут
+function addFileListener(){
+    const fileList = document.querySelectorAll('input[type=file]');
+    fileList.forEach(file => file.addEventListener("change", getFileSize))
+}
+
+// функция отслеживащая общий вес файлов, добавленных через файловый инпут.
+function getFileSize(){
+    const sendBtn = document.querySelector(".send_audio_btn");
+    const fileList = document.querySelectorAll('input[type=file]');
+    const warning = document.querySelector(".sizeofFiles");
+
+    let totalCount = 0;
+    fileList.forEach(file => {
+        if(file.files[0] === undefined) totalCount += 0;
+        else totalCount += file.files[0].size;
+    });
+    sendBtn.disabled = totalCount / 1000000 > 75;
+    // если превышен объем отправляемых файлов, то кнопка блокируется и
+    // на экране пользователь видит предупреждение
+    if(sendBtn.disabled){
+        sendBtn.style.cursor = "not-allowed";
+        warning.textContent = `Размер загруженных файлов ${(totalCount/1000000).toFixed(2)} из 75мб 
+                Превышен допустимый разер файлов`;
+    } else {
+        sendBtn.style.cursor = "pointer";
+        warning.textContent = `Размер загруженных файлов ${(totalCount/1000000).toFixed(2)} из 75мб`;
+    }
+}
+
+// функция обрабатывает процесс загрузки файлов и отобраает ее прогресс
+function progressHandler(event, progressBar, progress) {
+    progressBar.classList.add("visible");
+    let progressPercent = (event.loaded / event.total) * 100;
+    progress.style.width = `${progressPercent}%`;
+}
+
+// функция реализует поведение программы при получение результата загрузки файлов на сервер
+function loadHandler(status, progressBar, progress){
+    if(status === 200) window.location.reload();
+    if(status === 422){
+        let form = document.getElementById("music_form");
+        const sendBtn = document.querySelector(".send_audio_btn");
+        form.insertBefore(getAttentionDiv("Вы eже ранее создавали альбом с таким названием!"), sendBtn);
+        progress.style.width = "0%";
+        progressBar.classList.remove("visible");
+    }
+}
+
+// функция выдает сообщение, если отправить фору не получилось.
+function errorHandler(){
+    const warning = document.querySelector(".sizeofFiles");
+    warning.textContent = "Отправить файлы не получилось. Повторите попытку позднее!";
+}
+
+
 

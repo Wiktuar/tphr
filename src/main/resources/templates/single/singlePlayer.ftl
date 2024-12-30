@@ -19,18 +19,16 @@
   <#--блок с основным контентом-->
   <div class="container">
     <div class="album_container">
-      <#if album.firstName??>
         <img src="/upload/${album.pathToAvatar}" class="author_avatar" alt="Аватар автора">
         <div class="author_name">${album.firstName} ${album.lastName}</div>
-      </#if>
       <h3>${album.header}</h3>
       <div class="player_wrapper">
         <div class="player">
-          <div class="cover"><img src="/upload/${album.fileName}" class="cover_img" alt="картинка песни"></div>
+          <div class="cover"><img src="/upload/${album.fileName}" class="cover_img" alt="картинка альбома"></div>
           <div class="meta-data">
             <div class="title_time">
-              <div class="title">Smoke on thw water</div>
-              <div class="time"><span class="current_time">02:38</span> / <span class="full_time">05:35</span></div>
+              <div class="title">${album.song.header}</div>
+              <div class="time"><span class="current_time">00:00</span> / <span class="full_time">${album.song.duration}</span></div>
             </div>
             <audio class="audio" preload="metadata"></audio>
             <div class="progress_container">

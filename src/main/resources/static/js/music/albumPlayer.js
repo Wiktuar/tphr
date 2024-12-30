@@ -3,7 +3,7 @@ import {toMinAndSec} from "./utils.js";
 import {removeAdditionalClass} from "./utils.js";
 
 async function getAllSongs(id){
-    const res = await fetch(`/cabinet/songs/${id}`);
+    const res = await fetch(`/main/songs/${id}`);
     return await res.json();
 }
 

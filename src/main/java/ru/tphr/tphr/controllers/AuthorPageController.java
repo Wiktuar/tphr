@@ -34,7 +34,7 @@ public class AuthorPageController {
     }
 
 //   метод получения всех авторов
-    @GetMapping("/authors")
+    @GetMapping("/main/authors")
     public String getAllAuthors(Model model){
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         model.addAttribute("authors", authorService.getAllAuthors());

@@ -60,7 +60,6 @@
 <#-- Скрипты, относящиеся к модальному окну -->
 <script src="/js/modal/base.js"></script>
 <script src="/js/modal/plugins/modal.js"></script>
-<script src="/js/modal/index.js"></script>
 <script src="/js/modal/attention.js"></script>
 
 <#-- Скрипты, относящиеся к отправке запроса на восстановление пароля   -->

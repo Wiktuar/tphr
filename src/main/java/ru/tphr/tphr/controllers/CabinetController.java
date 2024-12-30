@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.tphr.tphr.DTO.AuthorCabinetDTO;
 import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.services.*;
+import ru.tphr.tphr.utils.ConvertEntityToDTO;
 import ru.tphr.tphr.utils.HeaderMenuUtil;
 
 import java.security.Principal;
@@ -49,7 +51,20 @@ public class CabinetController {
         this.headerMenuUtil = headerMenuUtil;
     }
 
-    //  получение всех стихотворений одного автора
+//  метод получения страницы личного кабинета
+    @GetMapping("/cabinet")
+    public String getCabinet(Principal principal, Model model){
+        Author authorFromDb = authorService.getAuthorByEmail(principal.getName());
+
+        AuthorCabinetDTO author =
+                ConvertEntityToDTO.convertToAuthorCabinetDto(authorFromDb);
+
+        model.addAttribute("author", author);
+        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
+        return "personal/cabinet";
+    }
+
+//  получение всех стихотворений одного автора
     @GetMapping("/cabinet/poems")
     public String getAllLikesPoemDto(Model model,
                                      Principal principal){
@@ -60,7 +75,7 @@ public class CabinetController {
     }
 
 
-//  метод, возращающий стихотворение с его лайками и комментариями
+//  метод, возвращающий стихотворение с его лайками и комментариями
     @GetMapping("/cabinet/poem/{id}")
     public String getPoemById(@PathVariable long id,
                                Principal principal,
@@ -98,5 +113,12 @@ public class CabinetController {
     public String deleteAuthorById(){
         authorService.deleteAuthorById(7L);
         return "redirect:/logout";
+    }
+
+//  метод возвращает страницу заглушку для неразработанных разделов личного кабинета
+    @GetMapping("/cabinet/mock")
+    public String getMockPage(Model model){
+        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
+        return "cabinet/mockPage";
     }
 }

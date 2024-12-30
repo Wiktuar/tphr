@@ -32,6 +32,9 @@ async function saveOrUpdate(e){
     let text = textArea.value;
     let poemId = compID;
 
+    // tсли в комментарии нет текста, то он не отправится
+    if(!text) return;
+
     //если ID не равно 0, это значит, что мы обновляем комментарий
     // у вновь созданного комментария ID равно 0
     let res = null;

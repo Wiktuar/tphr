@@ -36,7 +36,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("file://" + uploadPath + "/");
     }
 
-    //  бин для преобразования сущностейй в DTO
+    //  бин для преобразования сущностей в DTO
     @Bean
     public ModelMapper getMapper() {
         return new ModelMapper();

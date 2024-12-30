@@ -17,16 +17,16 @@ const rt = document.getElementById("rt");
 //метод, который вызывается при получении ошибки
 function mistakeMethod(mistake) {
     attentionWindow.open();
-    attentionWindow.setTitle(" ")
+    attentionWindow.setTitle(" ");
     attentionWindow.setContent(`<p>${mistake}</p>`);
 }
 
 //метод, проверяющий различные поля формы
 function _checkFormFields(){
-    const checkPersonPattern = /[^А-Яа-яЁё]/;
-    const checkEmailPattern = /[^0-9A-Za-z@.]/;
+    const checkPersonPattern = /^[А-Яа-яЁёA-Za-z]+$/;
     const checkEmptyPattern = /^\s*$/;
-    // const checkSpacePattern = /[^\s]/;
+    const checkEmailPattern = /^[0-9A-Za-z@.]+$/;
+    const checkPasswordPattern = /^[^а-яА-ЯёЁ\s]+$/;
 
     let recaptcha = grecaptcha.getResponse();
     if(recaptcha.length === 0){
@@ -54,8 +54,8 @@ function _checkFormFields(){
         return true;
     }
 
-    if(checkPersonPattern.test(firstName.value.trim())){
-        mistakeMethod('В поле "Имя" присутствуют латинские символы или есть пробел');
+    if(!checkPersonPattern.test(firstName.value.trim())){
+        mistakeMethod('В поле "Имя" присутствуют недопустимые символы или есть пробел');
         return true;
     }
 
@@ -64,8 +64,8 @@ function _checkFormFields(){
         return true;
     }
 
-    if(checkPersonPattern.test(lastName.value.trim())){
-        mistakeMethod('В поле "Фамилия" присутствуют латинские символы или есть пробел');
+    if(!checkPersonPattern.test(lastName.value.trim())){
+        mistakeMethod('В поле "Фамилия" присутствуют недопустимые символы или есть пробел');
         return true;
     }
 
@@ -74,7 +74,7 @@ function _checkFormFields(){
         return true;
     }
 
-    if(checkEmailPattern.test(email.value.trim())){
+    if(!checkEmailPattern.test(email.value.trim())){
         mistakeMethod('В поле "Почта" присутствуют недопустимые символы или есть пробел');
         return true;
     }
@@ -84,7 +84,7 @@ function _checkFormFields(){
         return true;
     }
 
-    if(!checkPersonPattern.test(password.value) || password.value.includes(" ")){
+    if(!checkPasswordPattern.test(password.value)){
         mistakeMethod('В поле "Пароль" присутствуют русские символы или есть пробел');
         return true;
     }
@@ -104,7 +104,7 @@ $regBtn.addEventListener("click", e => {
     e.preventDefault();
     if(_checkFormFields())return;
 
-    const endPoint = "/saveauthor";
+    // const endPoint = "/saveauthor";
     const formData = new FormData();
     formData.append("firstName", firstName.value);
     formData.append("lastName", lastName.value);
@@ -117,25 +117,24 @@ $regBtn.addEventListener("click", e => {
     formData.append("yt", yt.value);
     formData.append("rt", rt.value);
 
-    console.log(formData.get("email"));
-    fetch(endPoint, {
-        method: "post",
-        body: formData
-    })
-        .then(response => {
-            if(response.status === 400) {
-                attentionWindow.open();
-                attentionWindow.setContent(`<p>Аккаунт с почтой <span style="red">${email.value}</span> уже занят</p>`);
-            } else if(response.status === 401){
-                attentionWindow.open();
-                attentionWindow.setContent(`<p>Ошибка валидации капчи. Попробуйте еще раз</p>`);
-            } else if (response.status === 200){
-                attentionWindow.open();
-                attentionWindow.setTitle(`<p style="text-align: center; font-size: 20px">Поздравляем!</p>`);
-                attentionWindow.setContent(`<p>Вы успешно зарегистрированы.
-                        На Ваш email мы направили письмо с ссылкой для активации Вашего аккаунта</p>`);
-                attentionWindow.setHandLer();
-            }
-        })
-        .catch(error => console.error(error));
+    // fetch(endPoint, {
+    //     method: "post",
+    //     body: formData
+    // })
+    //     .then(response => {
+    //         if(response.status === 400) {
+    //             attentionWindow.open();
+    //             attentionWindow.setContent(`<p>Аккаунт с почтой <span style="red">${email.value}</span> уже занят</p>`);
+    //         } else if(response.status === 401){
+    //             attentionWindow.open();
+    //             attentionWindow.setContent(`<p>Ошибка валидации капчи. Попробуйте еще раз</p>`);
+    //         } else if (response.status === 200){
+    //             attentionWindow.open();
+    //             attentionWindow.setTitle(`<p style="text-align: center; font-size: 20px">Поздравляем!</p>`);
+    //             attentionWindow.setContent(`<p>Вы успешно зарегистрированы.
+    //                     На Ваш email мы направили письмо с ссылкой для активации Вашего аккаунта</p>`);
+    //             attentionWindow.setHandLer();
+    //         }
+    //     })
+    //     .catch(error => console.error(error));
 })

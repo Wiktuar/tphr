@@ -29,7 +29,7 @@
 <#--        Поскольку картинка может измениться, на сервер перадаем и имя файла старой картинки, чтобы ее можно было удалить              -->
                         <input type="hidden" class="old_file_name" name="oldFileName">
                         <input type="hidden" class="release_date_input" name="releaseDate">
-                        <input type="text" id="text" name="header" placeholder="Введите назввание стихотворения" maxlength="28">
+                        <input type="text" id="text" name="header" placeholder="Введите название стихотворения" maxlength="33">
                         <textarea id="content" name="content" placeholder="Введите текст стихотворения"></textarea>
                         <div class="view_cover">
                             <img src="/img/poemCover.jpg" class="cover" alt="Картинка стихотворения">

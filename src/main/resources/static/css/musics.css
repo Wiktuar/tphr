@@ -449,3 +449,29 @@ label {
     background-color: #F3B353;
 }
 
+/*стили прогресса загрузки файлов*/
+.upload_bar {
+    display: none;
+    align-items: center;
+    width: 400px;
+    height: 10px;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.upload_bar.visible {
+    display: block;
+}
+
+.progress_upload {
+    display: block;
+    height: 6px;
+    background-color: #2f3640;
+}
+
+.sizeofFiles {
+    margin: 20px auto;
+    font-size: 16px;
+    text-align: center;
+}
+

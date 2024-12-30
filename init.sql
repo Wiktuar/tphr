@@ -147,6 +147,17 @@ create table poems_likes (
          foreign key (author_id) references authors(id)
 );
 
+drop table reviews;
+
+create table reviews (
+    id         bigint primary key auto_increment,
+    name       varchar(30) not null,
+    email      varchar(30) not null,
+    header     varchar(100) not null,
+    text       text not null,
+    date_time  varchar(50) not null
+);
+
 # скрипт получения из базы данных сущности стихов с лайками и комментариями
 SELECT
     p.id, p.header, p.file_name, p.release_date, IFNULL(l_count, 0), IFNULL(c_count, 0), status

@@ -10,7 +10,7 @@
                 </a>
             </div>
             <div class="search-block">
-                <a href="/authors" class="authors">Авторы</a>
+                <a href="/main/authors" class="authors">Авторы</a>
                 <span class="search">Поиск по сайту</span>
             </div>
             <#if known>
@@ -21,9 +21,9 @@
                     <div class="dropdown-box">
                         <a href="/cabinet">Личные данные</a>
                         <a href="/cabinet/poems">Мои стихи</a>
-                        <a href="#">Моя проза</a>
+                        <a href="/cabinet/mock">Моя проза</a>
                         <a href="/cabinet/music">Моя музыка</a>
-                        <a href="#">Мои рисунки</a>
+                        <a href="/cabinet/mock">Мои рисунки</a>
                         <a href="/logout">Выйти</a>
                     </div>
                 </div>
@@ -42,9 +42,9 @@
         <ul>
             <li class="menu-item"><a href="/cabinet">Личные данные</a></li>
             <li class="menu-item"><a href="/cabinet/poems">Мои стихи</a></li>
-            <li class="menu-item"><a href="/cabinet/tails">Моя проза</a></li>
+            <li class="menu-item"><a href="/cabinet/mock">Моя проза</a></li>
             <li class="menu-item"><a href="/cabinet/music">Моя музыка</a></li>
-            <li class="menu-item"><a href="/cabinet/draws">Мои рисунки</a></li>
+            <li class="menu-item"><a href="/cabinet/mock">Мои рисунки</a></li>
         </ul>
     </div>
 </#macro>

@@ -29,6 +29,15 @@ export function getAttentionDiv(text){
     return attentionDiv;
 }
 
+//  метод добавляющий удаление пробелов на концах строк в текстовые поля формы
+export function addTrimListeners(){
+    const textInputs = document.querySelectorAll("input[type=text]");
+    textInputs.forEach(t => t.addEventListener("change", ()=> {
+        t.value = t.value.trim();
+        t.value = t.value.replaceAll(/\s+/g, ' ');
+    }))
+}
+
 
 
 // function verticalApearElemenet(element, btn){

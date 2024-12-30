@@ -6,3 +6,43 @@
     width: 1400px;
     margin: 0 auto 96px;
 }
+
+/*блок автора сайта*/
+.author {
+    width: 1000px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin: 0 auto 40px;
+}
+
+.my-photo {
+    display: block;
+    width: 300px;
+    float: left;
+}
+
+.appeal {
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-style: italic;
+    color: #e74c3c;
+    text-align: center;
+}
+
+.about_author {
+    font-size: 20px;
+    text-align: justify;
+}
+
+.write_result {
+    display: block;
+    margin: 30px auto 0;
+    width: 45%;
+    font-size: 20px;
+    color: yellow;
+    text-align: center;
+    text-decoration: none;
+    background: #e74c3c;
+    padding: 5px;
+}

@@ -22,14 +22,14 @@ function mistakeMethod(mistake) {
 
 //метод, проверяющий различные поля формы
 function _checkFormFields(){
-    const checkPersonPattern = /[^А-Яа-яЁё]/;
+    const checkPasswordPattern = /^[^а-яА-ЯЁё\s]+$/;
 
-    if(!checkPersonPattern.test(password.value) || password.value.includes(" ")){
+    if(!checkPasswordPattern.test(password.value)){
         mistakeMethod('В поле "Пароль" присутствуют русские символы или есть пробел');
         return true;
     }
 
-    if(!checkPersonPattern.test(confirmPassword.value) || confirmPassword.value.includes(" ")){
+    if(!checkPasswordPattern.test(confirmPassword.value)){
         mistakeMethod('В поле "Повторите пароль" присутствуют русские символы или есть пробел');
         return true;
     }
@@ -61,6 +61,7 @@ submit.addEventListener("click", e=> {
         .then(response => {
            if (response.status === 200){
                 attentionWindow.open();
+                attentionWindow.setTitle(" ");
                 attentionWindow.setContent(`<p>Пароль успешно изменен</p>`);
                 attentionWindow.setHandLer();
             }

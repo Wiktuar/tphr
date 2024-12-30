@@ -149,10 +149,15 @@ $.modal = function (options){
 
         setHandLer(){
             let buttons = Array.from(document.querySelectorAll(".btn"));
-            console.log(`размер массива ${buttons.length}`);
-            buttons[1].onclick = function(){
-                attentionWindow.close();
-                document.location = "/cabinet";
+            buttons[0].onclick = function(){
+                const body = document.querySelector("[data-content]");
+                if (body.textContent === "Отзыв успешно отправлен!"){
+                    attentionWindow.close();
+                    document.location = "/";
+                } else {
+                    attentionWindow.close();
+                    document.location = "/cabinet";
+                }
             }
         }
     });

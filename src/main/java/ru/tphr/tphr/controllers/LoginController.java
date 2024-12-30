@@ -52,19 +52,6 @@ public class LoginController {
         return "personal/registration";
     }
 
-//  метод получения страницы личного кабинета
-    @GetMapping("/cabinet")
-    public String getCabinet(Principal principal, Model model){
-        Author authorFromDb = authorService.getAuthorByEmail(principal.getName());
-
-        AuthorCabinetDTO author =
-                ConvertEntityToDTO.convertToAuthorCabinetDto(authorFromDb);
-
-        model.addAttribute("author", author);
-        model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
-        return "personal/cabinet";
-    }
-
     //метод редактирования персонаьных данных пользователя
     @GetMapping("/cabinet/editauthor")
     public String getEditAuthorPage(Principal principal, Model model){
