@@ -25,7 +25,8 @@ public interface PoemRepo extends CrudRepository<Poem, Long> {
 
 //  получение PoemDTO вместе с количеством лайков и комментариев.
 //  определение лайкнул ли пользователь стихотворение или нет.
-    @Query("select new ru.tphr.tphr.DTO.LikesPoemDto(p.id, p.header,p.fileName, p.releaseDate, p.likes.size, p.comments.size, " +
+    @Query("select new ru.tphr.tphr.DTO.LikesPoemDto(p.id, p.header, p.fileName, p.releaseDate, p.author.email, " +
+            "p.author.firstName, p.author.lastName, p.author.pathToAvatar, p.likes.size, p.comments.size, " +
             "sum(case when pl.email = :email then 1 else 0 end) > 0 ) " +
             "from Poem p left join p.likes pl group by p having p.id = :id" )
     LikesPoemDto getPoemWithLikesAndComments(@Param("email") String email, @Param("id") long id);

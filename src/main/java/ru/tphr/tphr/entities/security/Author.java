@@ -1,9 +1,12 @@
+// работа с enum параетрами
+// https://sky.pro/wiki/sql/ispolzovanie-enum-parametra-v-jpa-repository-native-query/
 package ru.tphr.tphr.entities.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import ru.tphr.tphr.entities.Comment;
+import ru.tphr.tphr.entities.Composition;
 import ru.tphr.tphr.entities.poem.Content;
 import ru.tphr.tphr.entities.poem.Poem;
 
@@ -43,7 +46,7 @@ public class Author {
 
     @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    private List<Poem> poems;
+    private List<Composition> compositions;
 
     @JsonIgnore
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -108,17 +111,6 @@ public class Author {
     public void removeRole(Role role){
         this.roles.remove(role);
         role.getAuthors().remove(this);
-    }
-
-//  методы, связывающие Author и Poem. При двухсторонней связи считается хорошей практикой
-    public void addPoem(Poem poem) {
-        poems.add(poem);
-        poem.setAuthor(this);
-    }
-
-    public void removeComment(Poem poem) {
-        poems.remove(poem);
-        poem.setAuthor(null);
     }
 
     @Override

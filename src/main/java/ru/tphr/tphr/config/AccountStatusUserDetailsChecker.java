@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 
 import java.security.Principal;
 
-// класс обрабтывает ситуации, когда пользователь неактивен или заблокирован
+// класс обрабатывает ситуации, когда пользователь неактивен или заблокирован
 // и выводит соответствующие сообщения
 public class AccountStatusUserDetailsChecker implements UserDetailsChecker {
 
@@ -20,7 +20,7 @@ public class AccountStatusUserDetailsChecker implements UserDetailsChecker {
     public void check(UserDetails userDetails) {
         if (!userDetails.isEnabled()) {
             System.out.println(!userDetails.isEnabled());
-            System.out.println("аккаунт неактивирован ");
+            System.out.println("аккаунт не активирован ");
             throw new DisabledException("User is disabled");
         }
 

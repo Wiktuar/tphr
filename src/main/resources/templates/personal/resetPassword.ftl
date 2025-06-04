@@ -31,7 +31,7 @@
                     <span class="showPassword" data-target="password" ></span>
                 </div>
                 <div class="fName">
-                    <label for="confirm_password">Пвторите пароль:</label>
+                    <label for="confirm_password">Повторите пароль:</label>
                     <input type="password" id="confirm_password" name="confirm_password"/>
                     <span class="showPassword" data-target="confirm_password"></span>
                 </div>

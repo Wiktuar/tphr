@@ -77,7 +77,7 @@ ul {
 h3 {
     margin-top: 20px;
     margin-bottom: 20px;
-    font-family: "Alexander";
+    font-family: "Alexander", Arial, sans-serif ;
     font-size: 2em;
     color: darkred;
 }
@@ -93,7 +93,41 @@ h3 {
 .poem_fool_content {
     width: fit-content;
     margin: 20px auto;
-    font-family: "Arsenal-Regular";
+    font-family: "Arsenal-Regular", Arial, sans-serif;
     font-size: 1.3em;
     overflow: hidden;
+}
+
+@media (max-width: 900px) {
+    .cabinet_container {
+        width: 100%;
+    }
+
+    .left-sb {
+        display: none;
+    }
+
+    .right-sb {
+        width: 100%;
+        padding-bottom: 10px;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    .right-sb div {
+        width: 98%;
+    }
+
+    .poem_fool_image {
+        width: 90vw;
+    }
+
+    .poem_fool_content {
+        width: 100%;
+        padding-left: 3%;
+        padding-right: 3%;
+        font-size: .8em;
+    }
 }

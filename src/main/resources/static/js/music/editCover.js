@@ -24,7 +24,7 @@ export const addCanvas = function(){
                         let cHeight = canvasContainer.style.maxHeight.slice(0, -2);
                         addPoemBox.style.maxHeight = cHeight + pHeight + "px";
                     }
-                }, 200 );
+                }, 200);
             };
             fr.readAsDataURL(files[0]);
         });
@@ -34,14 +34,14 @@ function _createCanvas(){
     const canvasContainer = document.querySelector(".edit_cover_container");
     canvasContainer.insertAdjacentHTML("afterbegin", `
             <div class="preview_cover">
-                <img src="" id="image" class="image" alt="Картинка обложки">
+                <img src="" id="image" class="compose_image" alt="Картинка обложки">
                 <canvas id="canvas" class="canvas">
                     Your browser does not support JS or HTML5!
                 </canvas>
             </div>
             <div class="result_cover">
                 <h3>Превью картинки</h3>
-                <div class="resultPhoto">
+                <div class="result_comp_cover">
                     <canvas id="myCanvas" width="250px" height="200px">
                         Your browser does not support JS or HTML5!
                     </canvas>
@@ -104,7 +104,10 @@ const canvasCreator = {
 
     getElementsFromHTML(){
         this.container = document.querySelector(".preview_cover");
-        this.image = document.querySelector(".image");
+        this.image = document.querySelector(".compose_image");
+        if(this.image.offsetLeft > 0){
+            this.closeEnough = 10;
+        }
         this.canvas = document.getElementById('canvas');
         this.ctx = canvas.getContext('2d');
         this.myCanvas = document.getElementById("myCanvas");
@@ -131,6 +134,18 @@ const canvasCreator = {
         this.canvas.addEventListener('mouseout', e => {
             this.mouseOut();
         });
+
+        this.canvas.addEventListener('touchstart', e => {
+            this.mouseDown(e);
+        });
+
+        this.canvas.addEventListener('touchmove', e=> {
+            this.mouseMove(e);
+        });
+
+        this.canvas.addEventListener('touchend', e => {
+            this.mouseUp(e);
+        });
     },
 
     checkCloseEnough(p1, p2) {
@@ -138,8 +153,19 @@ const canvasCreator = {
     },
 
     mouseDown(e) {
-        this.mouseX = e.pageX - this.container.offsetLeft;
-        this.mouseY = e.pageY - this.container.offsetTop;
+        this.mouseX = 0;
+        this.mouseY = 0;
+
+        if(e.type === 'touchstart'){
+            this.mouseX = Math.floor(e.touches[0].clientX) - this.image.offsetLeft;
+            this.mouseY = Math.floor(e.touches[0].pageY) - this.container.offsetTop;
+        }
+
+        if(e.type === 'mousedown'){
+            this.mouseX = e.pageX - this.container.offsetLeft;
+            this.mouseY = e.pageY - this.container.offsetTop;
+        }
+
 
         // 4 cases:
         // 1. top left
@@ -191,8 +217,21 @@ const canvasCreator = {
     },
 
     mouseMove(e) {
-        this.mouseX = e.pageX - this.container.offsetLeft;
-        this.mouseY = e.pageY - this.container.offsetTop;
+
+        this.mouseX = 0;
+        this.mouseY = 0;
+
+        e.preventDefault();
+
+        if(e.type === 'touchmove'){
+            this.mouseX = Math.floor(e.touches[0].clientX) - this.image.offsetLeft;
+            this.mouseY = Math.floor(e.touches[0].pageY) - this.container.offsetTop;
+        }
+
+        if(e.type === 'mousemove'){
+            this.mouseX = e.pageX - this.container.offsetLeft;
+            this.mouseY = e.pageY - this.container.offsetTop;
+        }
 
         if(this.mouseX < this.rect.startX + this.closeEnough && this.mouseX > this.rect.startX - this.closeEnough &&
             this.mouseY < this.rect.startY + this.closeEnough && this.mouseY > this.rect.startY - this.closeEnough

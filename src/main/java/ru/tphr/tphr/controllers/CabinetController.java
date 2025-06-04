@@ -6,11 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.tphr.tphr.DTO.AuthorCabinetDTO;
+import ru.tphr.tphr.DTO.CompositionDTO;
 import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.services.*;
 import ru.tphr.tphr.utils.ConvertEntityToDTO;
 import ru.tphr.tphr.utils.HeaderMenuUtil;
+import ru.tphr.tphr.utils.Utils;
 
 import java.security.Principal;
 import java.util.List;
@@ -68,7 +70,7 @@ public class CabinetController {
     @GetMapping("/cabinet/poems")
     public String getAllLikesPoemDto(Model model,
                                      Principal principal){
-        List<LikesPoemDto> lpd =  poemService.getPoemsByUser(principal.getName(),principal.getName());
+        List<? extends CompositionDTO> lpd =  poemService.getPoemsByUser(principal.getName(),principal.getName());
         model.addAttribute("poems", lpd);
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return "cabinet/poems";
@@ -81,6 +83,7 @@ public class CabinetController {
                                Principal principal,
                                Model model){
         LikesPoemDto likesPoemDto = poemService.getPoemDtoWithLikesAndComments(principal.getName(), id);
+        likesPoemDto.setReleaseDate(Utils.getFormatedDate(likesPoemDto.getReleaseDate()));
         String content = contentService.findById(id).getContent();
         likesPoemDto.setContent(content);
         model.addAttribute("poem", likesPoemDto);

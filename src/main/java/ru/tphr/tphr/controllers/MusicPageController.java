@@ -9,9 +9,11 @@ import ru.tphr.tphr.DTO.CompositionDTO;
 import ru.tphr.tphr.DTO.LikesAlbumDto;
 import ru.tphr.tphr.services.music.AlbumService;
 import ru.tphr.tphr.utils.HeaderMenuUtil;
+import ru.tphr.tphr.utils.Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -33,7 +35,7 @@ public class MusicPageController {
     @GetMapping("/cabinet/music")
     public String getAllAlbums(Principal principal,
                                Model model) {
-        Set<LikesAlbumDto> albums = albumService.getAlbumsByUser(principal.getName());
+        List<? extends CompositionDTO> albums = albumService.getAlbumsByUser(principal.getName());
         model.addAttribute("albums", albums);
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return "cabinet/musics";
@@ -45,12 +47,13 @@ public class MusicPageController {
                                HttpServletRequest request,
                                Model model) {
         LikesAlbumDto lDto = albumService.getLikesAlbumDto(headerMenuUtil.getPrincipalName(), id);
+        lDto.setReleaseDate(Utils.getFormatedDate(lDto.getReleaseDate()));
         model.addAttribute("album", lDto);
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         return (request.getRequestURL().toString().contains("/main/music")) ? "single/singlePlayer" : "cabinet/music";
     }
 
-//  метод удаления стихотворения по его ID
+//  метод удаления альбома по его ID
     @GetMapping("/cabinet/delete/album/{id}")
     public String deleteAlbumById(@PathVariable long id){
         albumService.deleteAlbumById(id);

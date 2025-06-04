@@ -2,10 +2,12 @@ package ru.tphr.tphr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.tphr.tphr.DTO.CompositionDTO;
 import ru.tphr.tphr.DTO.EditPoemDTO;
 import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.entities.poem.Poem;
 import ru.tphr.tphr.repository.PoemRepo;
+import ru.tphr.tphr.utils.Utils;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -43,15 +45,15 @@ public class PoemService {
 
 //  метод, позволяющий получить все Poem конкретного пользователя с количеством лайков и комментариев
     @Transactional
-    public List<LikesPoemDto> getPoemsByUser(String email1, String email2){
-        return poemRepo.getPoemsByUser(email1, email2);
+    public List<? extends CompositionDTO> getPoemsByUser(String email1, String email2){
+        return Utils.sortCompositionList(poemRepo.getPoemsByUser(email1, email2));
     }
 
 //  метод, позволяющий получить все Poem конкретного пользователя с количеством лайков и комментариев
 //  по его ID
     @Transactional
-    public List<LikesPoemDto> getPoemsByAuthorID(String email, long id){
-        return poemRepo.getPoemsByAuthorID(email, id);
+    public List<? extends CompositionDTO> getPoemsByAuthorID(String email, long id){
+        return Utils.sortCompositionList(poemRepo.getPoemsByAuthorID(email, id));
     }
 
 //  метод, возвращающий список всех стихотворений.

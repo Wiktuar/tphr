@@ -18,7 +18,8 @@ h1 {
     margin-bottom: 30px;
     text-align: center;
     font-family: Alexander;
-    font-size: 35px;
+    font-size: 25px;
+    font-style: italic;
     color: #2f3640;
 }
 
@@ -28,13 +29,30 @@ h1 {
     align-items: center;
     gap: 10px;
     color: #2f3640;
+    text-decoration: none;
 }
 
-.author_link:hover {
+.author_link:hover, .author_link:active {
     border: 2px solid #2f3640;
 }
 
 .avatar {
     width: 70px;
     border-radius: 50%;
+}
+
+@media (max-width: 500px) {
+    .authors_container {
+        grid-template-columns: repeat(1, 95vw);
+        justify-content: center;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .author_link:hover, .author_link:active {
+        border: 2px solid #2f3640;
+    }
 }

@@ -1,17 +1,62 @@
+@font-face {
+    font-family: 'Alexander';
+    src: url('../fonts/Alexander.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .author_data {
     width: 1200px;
     margin: 0 auto;
     display: flex;
+    gap: 20px;
 }
 
 .personal {
     width: 30%;
 }
 
+.author_name {
+    margin-bottom: 30px;
+    font-family: "Alexander", Arial, sans-serif;
+    font-size: 24px;
+    font-style: italic;
+    text-align: center;
+}
+
+.author_avatar {
+    display: block;
+    margin: 0 auto;
+}
+
+.desc_and_social {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .description {
+    margin-bottom: 20px;
     font-size: 20px;
     font-family: Tahoma sans-serif;
     text-align: justify;
+    overflow: hidden;
+    transition: max-height .4s ease-out;
+}
+
+.full_text_btn {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 250px;
+    height: 40px;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.full_text_btn img {
+    width: 20px;
 }
 
 /*социальные сети автора*/
@@ -45,8 +90,8 @@
 .compose_links {
     width: 1000px;
     margin: 50px auto;
-    justify-content: center;
     display: flex;
+    justify-content: center;
     gap: 50px;
 }
 
@@ -68,5 +113,78 @@
     display: flex;
     justify-content: center;
     font-size: 30px;
+}
+
+@media (max-width: 500px) {
+    .author_data {
+        width: 94%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .personal {
+        width: 100%;
+    }
+
+    .author_name {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .author_avatar {
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .desc_and_social {
+        align-items: center;
+    }
+
+    .description {
+        margin-bottom: 20px;
+        font-size: 20px;
+        font-family: Tahoma sans-serif;
+        text-align: justify;
+        overflow: hidden;
+        transition: max-height .4s ease-out;
+    }
+
+    .author_social_nets {
+        margin-top: 20px;
+    }
+
+    /*социальные сети автора*/
+    .flex-social-nets {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /*ссылки на кнопки*/
+    .compose_links {
+        display: none;
+    }
+
+    .compose_btn {
+        width: 200px;
+        height: 45px;
+        display: block;
+        font-size: 20px;
+        padding: 8px 24px;
+        border-radius: 8px;
+        margin: 16px auto 0;
+        border: none;
+        background: #e74c3c;
+        color: #f5f6fa;
+        cursor: pointer;
+    }
+
+    .compose_container.default {
+        display: flex;
+        justify-content: center;
+        font-size: 30px;
+    }
+
 }
 

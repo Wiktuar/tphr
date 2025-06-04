@@ -4,6 +4,35 @@
     align-items: center;
 }
 
+/*блок автора сайта*/
+.author {
+    width: 1000px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin: 0 auto 40px;
+}
+
+.my-photo {
+    display: block;
+    width: 300px;
+    float: left;
+}
+
+.appeal {
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-style: italic;
+    color: #e74c3c;
+    text-align: center;
+}
+
+.about_author {
+    font-size: 20px;
+    text-align: justify;
+}
+
+/*стили формы отправки отзыва*/
 h3 {
     text-align: center;
     font-size: 26px;
@@ -13,17 +42,16 @@ h3 {
 
 /*стили формы отправки отзыва*/
 form {
+    width: 700px;
+    height: fit-content;
     margin: 0 auto;
     font-size: 20px;
     font-style: italic;
 }
 
 .fName {
-    min-width: 500px;
-    min-height: 60px;
+    width: 500px;
     margin-top: 35px;
-    margin-left: 15px;
-    position: relative;
 }
 
 .fName label {
@@ -32,8 +60,8 @@ form {
 }
 
 .fName input {
-    min-width: 400px;
-    min-height: 40px;
+    width: 700px;
+    height: 40px;
     margin-top: 10px;
     padding-left: 15px;
     display: block;
@@ -51,7 +79,7 @@ input:focus {
 
 textarea {
     display: block;
-    width: 70%;
+    width: 700px;
     height: 400px;
     margin-top: 10px;
     padding: 10px;
@@ -66,12 +94,11 @@ textarea {
 .review_btn {
     width: 300px;
     height: 45px;
+    margin: 35px auto 0;
     display: block;
-    font-size: 20px;
     padding: 8px 24px;
+    font-size: 20px;
     border-radius: 8px;
-    margin-top: 35px;
-    margin-left: 200px;
     border: none;
     background: #e74c3c;
     color: #f5f6fa;
@@ -95,8 +122,118 @@ textarea {
 /*стили вывода ошибки заполнения формы*/
 .attention {
     margin-top: 35px;
-    margin-left: 180px;
     font-size: 18px;
     font-family: Arial, Tahoma, sans-serif;
     text-align: left;
+}
+
+@media (max-width: 500px) {
+    /*блок автора сайта*/
+    .author {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        align-items: center;
+        margin: 0 auto 20px;
+    }
+
+    .my-photo {
+        display: block;
+        width: 200px;
+        float: none;
+    }
+
+    .appeal {
+        width: 94%;
+        margin: 0 auto 30px;
+        font-size: 24px;
+        font-style: italic;
+        color: #e74c3c;
+        text-align: center;
+    }
+
+    .about_author {
+        width: 94%;
+        margin: 0 auto;
+        font-size: 20px;
+        text-align: justify;
+    }
+
+    /*стили формы отправки отзыва*/
+    h3 {
+        font-size: 22px;
+    }
+
+    /*стили формы отправки отзыва*/
+    form {
+        width: 98%;
+    }
+
+    .fName {
+        width: 100%;
+        height: fit-content;
+        margin-top: 20px;
+        margin-left: 0;
+        position: relative;
+    }
+
+    .fName label {
+        display: block;
+        padding-left: 30px;
+    }
+
+    .fName input {
+        width: 100%;
+        height: 30px;
+        margin-top: 10px;
+        padding-left: 15px;
+        display: block;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
+        font-size: 20px;
+        font-family: Tahoma sans-serif;
+    }
+
+    input:focus {
+        box-shadow: none;
+        border: 5px solid #2f3640;
+    }
+
+    textarea {
+        display: block;
+        width: 100%;
+        height: 250px;
+        margin: 10px auto;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.82);
+        font-size: 1em;
+        font-family: Tahoma sans-serif;
+        background-color: white;
+    }
+
+    .review_btn {
+        width: 300px;
+        height: 45px;
+        display: block;
+        margin: 35px auto;
+        padding: 8px 24px;
+        font-size: 20px;
+        border-radius: 8px;
+        border: none;
+        background: #e74c3c;
+        color: #f5f6fa;
+        cursor: pointer;
+    }
+
+    /*стили вывода ошибки заполнения формы*/
+    .attention {
+        margin: 35px auto 0;
+        font-size: 20px;
+        font-family: Arial, Tahoma, sans-serif;
+        text-align: center;
+    }
 }

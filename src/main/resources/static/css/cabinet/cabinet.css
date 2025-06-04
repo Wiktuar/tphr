@@ -2,7 +2,7 @@
     display: flex;
     margin: 0 auto;
     width: 1400px;
-    min-height: 100vh;
+    min-height: 95vh;
     background-color: #ffe0b3;
 }
 
@@ -126,12 +126,8 @@ ul {
 }
 
 @media (max-width: 769px) {
-    .flex-social-nets {
-        flex-direction: column;
-    }
-
-    .change-data {
-        width: 150px;
+    .cabinet_container {
+        width: 100%;
     }
 
     .left-sb {
@@ -139,17 +135,33 @@ ul {
     }
 
     .right-sb {
-        background-color: red;
         width: 100%;
     }
 
-    .flex-wrapper1 {
+    .flex-wrapper {
         flex-direction: column;
+        justify-content: center;
     }
 
-    .mobile-menu {
-        display: block;
-        width: 200px;
-        margin: 0 auto;
+    .user-photo {
+        width: 100vw;
+    }
+
+    .personal-data {
+        width: 100%;
+        height: fit-content;
+    }
+
+    .flex-social-nets {
+        margin-top: 30px;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .change-data {
+        width: 70%;
+        text-align: center;
     }
 }

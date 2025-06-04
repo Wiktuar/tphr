@@ -85,6 +85,7 @@
 }
 
 .close_cross.forbidden {
+    pointer-events: none;
     cursor: not-allowed;
     opacity: .3;
 }
@@ -152,4 +153,219 @@
     font-size: 18px;
 }
 
+
+/*эти стили используются, если пользователь не авторизован*/
+.enter_for_like {
+    display: none;
+}
+
+.enter_for_like.visible {
+    display: block;
+    position: absolute;
+    top: -270px;
+    left: 10px;
+    width: 500px;
+    min-height: 250px;
+    background-color: white;
+    padding: 20px 15px 10px 25px;
+    color: gray;
+    box-shadow: 0 10px 10px #57541D;
+}
+
+.enter_for_like .enter_question {
+    margin-bottom: 20px;
+    font-size: 25px;
+}
+
+.enter_for_like p {
+    margin-bottom: 65px;
+    font-size: 22px;
+}
+
+/*стили блока предложения авторизации/
+.enter_for_comment {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 30px;
+}
+
+/*стили для мобильной версии сайта*/
+@media (max-width: 900px) {
+    /*сили лайков и количества комментариев*/
+
+    .meta {
+        width: 100%;
+        padding-left: 3%;
+        padding-right: 3%;
+    }
+
+    .like_btn {
+        cursor: pointer;
+    }
+
+    .p_comment {
+        width: 30px;
+    }
+
+    .like_comment {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-left: 2%;
+    }
+
+    .p_digit_l, .p_digit_c {
+        font-size: 1em;
+    }
+
+    .releaseDate {
+        text-align: right;
+        padding-right: 5%;
+        font-size: 1em;
+    }
+
+
+    /*стилли комментариев*/
+
+    .comments_container {
+        width: 100%;
+    }
+
+    .comment_block {
+        width: 95%;
+        margin: 10px auto;
+        padding-top: 5px;
+        padding-left: 5px;
+    }
+
+    .comment_author_avatar {
+        width: 10%;
+        display: block;
+        border-radius: 50%;
+    }
+
+    .comment_body {
+        position: relative;
+        width: 100%;
+        margin-left: 2%;
+        padding-right: 2%;
+    }
+
+    .comment_author_name {
+        margin-bottom: 5px;
+        padding-top: 5px;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .comment_text {
+        padding-top: 15px;
+    }
+
+    .edit_pencil {
+        position: absolute;
+        left: 80%;
+        top: 5px;
+        width: 5%;
+        opacity: .3;
+    }
+
+    .close_cross {
+        position: absolute;
+        left: 92%;
+        top: 5px;
+        width: 5%;
+        opacity: .3;
+    }
+
+    .close_cross.forbidden {
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: .3;
+    }
+
+    .close_cross:hover, .edit_pencil:hover {
+        opacity: 1;
+    }
+
+    .time_stamp {
+        float: right;
+        font-size: .8em;
+    }
+
+    .new_comment {
+        width: 100%;
+        height: 200px;
+        margin-bottom: 15px;
+        background-color: white;
+    }
+
+    .new_comment textarea {
+        width: 90%;
+        height: 150px;
+        font-size: 14px;
+    }
+
+    .comments_footer {
+        padding-right: 3%;
+    }
+
+    .reset_btn {
+        width: auto;
+        font-size: 1em;
+        padding: 5px 15px;
+    }
+
+    .send_comment_btn {
+        width: auto;
+        font-size: 1em;
+        padding: 5px 15px;
+    }
+
+    /*картинка виньетки*/
+    .vignette {
+        display: block;
+        margin: 0 auto;
+    }
+
+    /*эти стили используются, если пользователь не авторизован*/
+    .enter_for_like {
+        display: none;
+    }
+
+    .enter_for_like.visible {
+        display: block;
+        position: absolute;
+        top: -160px;
+        left: 10px;
+        width: 90vw;
+        min-height: fit-content;
+        background-color: white;
+        padding: 20px 15px 10px 25px;
+        color: gray;
+        box-shadow: 0 10px 10px #57541D;
+    }
+
+    .enter_for_like .enter_question {
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+
+    .enter_for_like p {
+        margin-bottom: 40px;
+        font-size: 18px;
+    }
+
+    /*стили блока предложения авторизации*/
+
+    .enter_for_comment {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .auth_link {
+        color: white;
+    }
+}
 

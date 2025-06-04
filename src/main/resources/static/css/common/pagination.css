@@ -1,0 +1,25 @@
+.pag_list {
+    display: none;
+    gap: 3px;
+    margin: 30px auto;
+}
+
+.pag_item {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+}
+
+.pag_item:hover {
+    background-color: #2f3640;
+    color: white;
+}
+
+.pag_item.clicked {
+    background-color: #2f3640;
+    color: white;
+}

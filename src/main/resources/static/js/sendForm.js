@@ -9,6 +9,7 @@ const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirm_password");
 const imageAva = document.getElementById("inp_img");
 const reCaptcha = document.getElementById("g-recaptcha-response");
+const description = document.getElementById("description");
 const vk = document.getElementById("vk");
 const tg = document.getElementById("tg");
 const yt = document.getElementById("yt");
@@ -23,10 +24,14 @@ function mistakeMethod(mistake) {
 
 //метод, проверяющий различные поля формы
 function _checkFormFields(){
-    const checkPersonPattern = /^[А-Яа-яЁёA-Za-z]+$/;
+    const checkPersonPattern = /^[А-Яа-яЁёA-Za-z-\s]+$/;
     const checkEmptyPattern = /^\s*$/;
-    const checkEmailPattern = /^[0-9A-Za-z@.]+$/;
+    const checkEmailPattern = /^[0-9A-Za-z@._-]+$/;
     const checkPasswordPattern = /^[^а-яА-ЯёЁ\s]+$/;
+
+    if(description.value){
+        description.value = description.value.trim();
+    }
 
     let recaptcha = grecaptcha.getResponse();
     if(recaptcha.length === 0){
@@ -104,7 +109,7 @@ $regBtn.addEventListener("click", e => {
     e.preventDefault();
     if(_checkFormFields())return;
 
-    // const endPoint = "/saveauthor";
+    const endPoint = "/saveauthor";
     const formData = new FormData();
     formData.append("firstName", firstName.value);
     formData.append("lastName", lastName.value);
@@ -112,29 +117,30 @@ $regBtn.addEventListener("click", e => {
     formData.append("password", password.value);
     formData.append("pathToAvatar", imageAva.value);
     formData.append("recaptcha-response", grecaptcha.getResponse());
+    formData.append("description", description.value);
     formData.append("vk", vk.value);
     formData.append("tg", tg.value);
     formData.append("yt", yt.value);
     formData.append("rt", rt.value);
 
-    // fetch(endPoint, {
-    //     method: "post",
-    //     body: formData
-    // })
-    //     .then(response => {
-    //         if(response.status === 400) {
-    //             attentionWindow.open();
-    //             attentionWindow.setContent(`<p>Аккаунт с почтой <span style="red">${email.value}</span> уже занят</p>`);
-    //         } else if(response.status === 401){
-    //             attentionWindow.open();
-    //             attentionWindow.setContent(`<p>Ошибка валидации капчи. Попробуйте еще раз</p>`);
-    //         } else if (response.status === 200){
-    //             attentionWindow.open();
-    //             attentionWindow.setTitle(`<p style="text-align: center; font-size: 20px">Поздравляем!</p>`);
-    //             attentionWindow.setContent(`<p>Вы успешно зарегистрированы.
-    //                     На Ваш email мы направили письмо с ссылкой для активации Вашего аккаунта</p>`);
-    //             attentionWindow.setHandLer();
-    //         }
-    //     })
-    //     .catch(error => console.error(error));
+    fetch(endPoint, {
+        method: "post",
+        body: formData
+    })
+        .then(response => {
+            if(response.status === 400) {
+                attentionWindow.open();
+                attentionWindow.setContent(`<p>Аккаунт с почтой <span style="red">${email.value}</span> уже занят</p>`);
+            } else if(response.status === 401){
+                attentionWindow.open();
+                attentionWindow.setContent(`<p>Ошибка валидации капчи. Попробуйте еще раз</p>`);
+            } else if (response.status === 200){
+                attentionWindow.open();
+                attentionWindow.setTitle(`<p style="text-align: center; font-size: 20px">Поздравляем!</p>`);
+                attentionWindow.setContent(`<p>Вы успешно зарегистрированы.
+                        На Ваш email мы направили письмо с ссылкой для активации Вашего аккаунта</p>`);
+                attentionWindow.setHandLer();
+            }
+        })
+        .catch(error => console.error(error));
 })

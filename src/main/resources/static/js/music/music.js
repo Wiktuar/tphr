@@ -1,5 +1,5 @@
 //https://doka.guide/js/form-data/
-import {player} from "./simplePlayer.js";
+import {createPlayer} from "./simplePlayer.js";
 import {toMinAndSec, getAttentionDiv, addTrimListeners} from "./utils.js";
 import {album, single} from "./addHTML.js";
 import {addCanvas} from "./editCover.js";
@@ -25,7 +25,8 @@ export function createMusicPlayers(){
                pauseSong(audio.parentNode.querySelector(".img_src"), audio);
             } else {
                // случай, когда мы создаем новый плеер и внего загружаем аудиофайл
-               file.parentNode.insertAdjacentHTML('beforeend', player);
+               // file.parentNode.insertAdjacentHTML('beforeend', player);
+               file.parentNode.insertBefore(createPlayer(), file.previousElementSibling);
                const progress = file.parentNode.querySelector(".progress");
                const audio = file.parentNode.querySelector(".audio");
                audio.src = URL.createObjectURL(file.files[0]);
@@ -111,12 +112,12 @@ function addForm(button, html){
        if(fc.childNodes.length){
          fc.innerHTML ="";
        }
-
       fc.insertAdjacentHTML("beforeend", html);
       createMusicPlayers();
       addCanvas();
       addTrimListeners();
       addFileListener();
+
       document.querySelector(".send_audio_btn")
           .addEventListener("click", sendForm);
     })
@@ -264,6 +265,7 @@ function addFileListener(){
 
 // функция отслеживащая общий вес файлов, добавленных через файловый инпут.
 function getFileSize(){
+
     const sendBtn = document.querySelector(".send_audio_btn");
     const fileList = document.querySelectorAll('input[type=file]');
     const warning = document.querySelector(".sizeofFiles");
@@ -278,7 +280,7 @@ function getFileSize(){
     // на экране пользователь видит предупреждение
     if(sendBtn.disabled){
         sendBtn.style.cursor = "not-allowed";
-        warning.textContent = `Размер загруженных файлов ${(totalCount/1000000).toFixed(2)} из 75мб 
+        warning.textContent = `Размер загруженных файлов ${(totalCount/1000000).toFixed(2)} из 75мб
                 Превышен допустимый разер файлов`;
     } else {
         sendBtn.style.cursor = "pointer";

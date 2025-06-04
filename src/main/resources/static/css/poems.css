@@ -108,13 +108,13 @@ form input {
     margin-top: 30px;
     width: 40%;
     height: 45px;
-    padding-top: 12px;
-    padding-left: 20px;
+    padding: 12px 20px;
     cursor: pointer;
     display: inline-block;
     background-color: #2f3640;
     color: #f5f6fa;
     border-radius: 8px;
+    text-align: center;
 }
 
 #cover_input {
@@ -145,7 +145,7 @@ textarea {
     background-color: white;
 }
 
-/*стили флекс контейнера и превью стихов*/
+/*стили grid контейнера и превью стихов*/
 
 .poems-container {
     display: grid;
@@ -413,9 +413,9 @@ textarea {
     position: relative;
 }
 
-.image {
+.compose_image {
     display: inline-block;
-    max-width: 350px;
+    width: 350px;
 }
 
 .canvas {
@@ -433,7 +433,7 @@ textarea {
     justify-content: center;
 }
 
-.resultPhoto {
+.result_comp_cover {
     margin: 0 auto;
 }
 
@@ -446,6 +446,135 @@ textarea {
     font-size: 2em;
     font-family: Arial, sans-serif;
     text-align: left;
+}
+
+/*стили для мобильной версии сайта*/
+@media (max-width: 900px) {
+    .cabinet_container {
+        width: 100%;
+    }
+
+    .left-sb {
+        display: none;
+    }
+
+    .right-sb {
+        width: 100%;
+    }
+
+    .add_poem_btn, .confirm_btn {
+        width: 70%;
+        height: auto;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    .add_poem_box {
+        width: 100%;
+    }
+
+    form {
+        width: 100%;
+        margin-top: 0;
+    }
+
+
+    form input {
+        width: 95%;
+    }
+
+    textarea {
+        width: 95%;
+    }
+
+    .view_cover {
+        width: 100%;
+    }
+
+    .view_cover img {
+        width: 70vw;
+    }
+
+    .default_cover {
+        display: block;
+        width: 80%;
+        margin: 0 auto;
+        font-size: 16px;
+        text-align: justify;
+    }
+
+    .fileInput label {
+        margin-top: 15px;
+        width: 85%;
+        height: auto;
+        padding: 12px 20px;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .savePoem {
+        width: 85%;
+        height: auto;
+        margin-top: 15px;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    /*стили редактирования картинки изображения*/
+    .edit_cover_container {
+        width: 100%;
+        display: block;
+    }
+
+    .preview_cover {
+        width: 100%;
+        margin: 0 auto 30px;
+    }
+
+    .compose_image {
+        display: block;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .result_cover {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .result_comp_cover {
+        width: 250px;
+        height: 200px;
+    }
+
+
+    .result_cover h3 {
+        display: none;
+    }
+
+    .confirm_btn {
+        margin-bottom: 0;
+    }
+
+    /*стили grid контейнера и превью стихов*/
+    .poems-container {
+        display: grid;
+        gap: 30px;
+        grid-template-columns: repeat(1, 95vw);
+        justify-content: center;
+        width: 100%;
+        margin: 0 auto 30px;
+    }
+
+    /*стиль превью-блока стихотворения*/
+    .poem_box {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+   .ph {
+       font-size: 0.8em;
+   }
 }
 
 

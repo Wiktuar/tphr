@@ -3,6 +3,7 @@ package ru.tphr.tphr.utils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
+import ru.tphr.tphr.DTO.CompositionDTO;
 import ru.tphr.tphr.entities.Composition;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.entities.security.Role;
@@ -16,18 +17,18 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Utils {
+
+    //  k - 24- часовой формат времени, h- 12-ти часовой формат времени
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
+    private static final DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     //метод преобразования ролей в GrantedAuthority для Spring Security
     public static Collection<? extends GrantedAuthority> mapRoleToAuthority(Set<Role> roles) {
@@ -59,9 +60,13 @@ public class Utils {
 
 //  метод, переводящий в строку текущее время. (в базе данных время хранится в виде строки)
     public static String convertTimeToString(){
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-//  k - 24- часовой формат времени, h- 12-ти часовой формат времени
-        return new SimpleDateFormat("dd-MM-yyyy kk:mm:ss").format(timestamp);
+        return LocalDateTime.now().format(formatter);
+    }
+
+//  метод, возвращающий строку времени в нужноv для вывода порядке
+    public static String getFormatedDate(String inputDate){
+        LocalDateTime ldt = LocalDateTime.parse(inputDate, formatter);
+        return ldt.format(outputFormatter);
     }
 
 //  метод, берущий стизотворение и выделяющий из него первые четыре строфы
@@ -82,7 +87,8 @@ public class Utils {
 
 //  метод, добавляющий тег переноса строки в описание автора
     public static String addBrTagDescription(String data){
-        return data.replaceAll("\\r\\n", "<br><br>");
+        return Arrays.stream(data.split("\\r\\n")).filter(s -> !s.isEmpty())
+                .collect(Collectors.joining("<br><br>"));
     }
 
 //  метод, добавляющий вметс <br> символы переноса строки
@@ -108,8 +114,9 @@ public class Utils {
         }
     }
 
-//  установление социаьным сетям автора параметр null, если с формы пришла пустая строка
-    public static void changeSocialNets(Author author){
+//  установление социаьным сетям автора и его описанию параметр null, если с формы пришла пустая строка
+    public static void changeSocialNetsAndDescription(Author author){
+        if(author.getDescription().isEmpty())author.setDescription(null);
         if(author.getVk().isEmpty())author.setVk(null);
         if(author.getYt().isEmpty())author.setYt(null);
         if(author.getTg().isEmpty())author.setTg(null);
@@ -120,5 +127,17 @@ public class Utils {
     public static void changeFileName(Composition c, Pattern p, String email ){
         Matcher m = p.matcher(c.getFileName());
         c.setFileName(m.replaceFirst(email));
+    }
+
+//  метод сортировки полученного списка Composition
+    public static List<? extends CompositionDTO> sortCompositionList(List<? extends CompositionDTO> compList){
+        compList.sort(new Comparator<CompositionDTO>() {
+            @Override
+            public int compare(CompositionDTO o1, CompositionDTO o2) {
+                return o2.getReleaseDate().compareTo(o1.getReleaseDate());
+            }
+        });
+        compList.forEach(a -> a.setReleaseDate(Utils.getFormatedDate(a.getReleaseDate())));
+        return compList;
     }
 }

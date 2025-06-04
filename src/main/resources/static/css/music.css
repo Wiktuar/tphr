@@ -93,8 +93,9 @@ h3 {
 
 .player_wrapper {
     width: 600px;
-    min-height: 400px;
-    margin: 0 auto 100px;
+    margin: 0 auto 60px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -151,7 +152,7 @@ h3 {
 
 /*список песен*/
 .song_list {
-    width: 530px;
+    width: 560px;
     background-color: #f3f153;
 }
 
@@ -166,5 +167,74 @@ h3 {
 
 .item.active {
     background-color: #72392b;
+    color: #f3f153;
 }
 
+@media (max-width: 900px) {
+    .cabinet_container {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .left-sb {
+        display: none;
+    }
+
+    .right-sb {
+        width: 100%;
+    }
+
+    .album_container {
+        width: 100%;
+    }
+
+/*  стили музыкального плеера  */
+    .player_wrapper {
+        width: 100%;
+        margin-bottom: 30px;
+        padding: 5px;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    .player {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .cover {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .cover_img {
+        width: 70vw;
+        margin-bottom: 20px;
+    }
+
+    .title_time {
+        flex-direction: column;
+        justify-content: center;
+        gap: 15px;
+        font-size: 18px;
+    }
+
+    .item {
+        gap: 20px;
+        font-size: 16px;
+    }
+
+    .progress_container {
+        width: 100%;
+    }
+
+/*  список песен  */
+    .song_list {
+        width: 100%;
+    }
+}

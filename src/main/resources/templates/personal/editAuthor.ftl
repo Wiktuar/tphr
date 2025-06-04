@@ -3,6 +3,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/common/common.css">
     <link rel="stylesheet" href="/css/cabinet/editAuthor.css">
@@ -83,7 +86,12 @@
             </form>
         </div>
     </div>
-<@c.footer></@c.footer>
+
+    <#--    мобильное меню для сайта   -->
+    <@c.bottomMenu></@c.bottomMenu>
+    <#--блок добавления футера-->
+    <@c.footer></@c.footer>
+</div>
 <#-- Скрипты, относящиеся к модальному окну -->
 <script src="/js/modal/base.js"></script>
 <script src="/js/modal/plugins/modal.js"></script>

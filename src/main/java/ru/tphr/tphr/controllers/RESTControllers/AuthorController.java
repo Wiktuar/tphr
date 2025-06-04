@@ -7,22 +7,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import ru.tphr.tphr.DTO.CaptchaResponseDto;
+import ru.tphr.tphr.DTO.CompositionDTO;
 import ru.tphr.tphr.entities.security.Author;
 import ru.tphr.tphr.exceptions.AuthorExistsException;
+import ru.tphr.tphr.services.AllComposeService;
 import ru.tphr.tphr.services.AuthorService;
-import ru.tphr.tphr.services.PoemService;
+import ru.tphr.tphr.utils.HeaderMenuUtil;
 import ru.tphr.tphr.utils.Utils;
 
-import javax.security.sasl.AuthenticationException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RestController
 public class AuthorController {
@@ -38,7 +38,14 @@ public class AuthorController {
     private String secret;
 
     private RestTemplate restTemplate;
+    private HeaderMenuUtil headerMenuUtil;
     private AuthorService authorService;
+    private AllComposeService allComposeService;
+
+    @Autowired
+    public void setHeaderMenuUtil(HeaderMenuUtil headerMenuUtil) {
+        this.headerMenuUtil = headerMenuUtil;
+    }
 
     @Autowired
     public void setAuthorService(AuthorService authorService) {
@@ -48,6 +55,11 @@ public class AuthorController {
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    @Autowired
+    public void setAllComposeService(AllComposeService allComposeService) {
+        this.allComposeService = allComposeService;
     }
 
     //    метод сначала проверяет есть ли пользователь в базе с таким email,
@@ -67,7 +79,8 @@ public class AuthorController {
 
         setPathToAvatar(author, targetPath);
 
-        Utils.changeSocialNets(author);
+        author.setDescription(Utils.addBrTagDescription(author.getDescription()));
+        Utils.changeSocialNetsAndDescription(author);
 
         authorService.saveAuthor(author);
         return ResponseEntity.ok().build();
@@ -86,7 +99,7 @@ public class AuthorController {
             setPathToAvatar(author, targetPath);
         }
 
-        Utils.changeSocialNets(author);
+        Utils.changeSocialNetsAndDescription(author);
         authorService.saveEditAuthor(author);
 
         if(!principal.getName().equals(author.getEmail())){
@@ -96,6 +109,10 @@ public class AuthorController {
             return ResponseEntity.accepted().build();
         }
         return ResponseEntity.ok().build();
+    }
+
+    public List<? extends CompositionDTO> getAllAuthorsCompositions(@PathVariable long id){
+        return allComposeService.getAllComposeDtoByAuthorId(headerMenuUtil.getPrincipalName(), id);
     }
 
     private void setPathToAvatar(Author author, Path targetPath) throws IOException {

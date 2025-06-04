@@ -11,13 +11,12 @@ const modalWindow = $.modal( {
         <div class="resultAvatar">
             <h3>Ваша аватарка</h3>
             <div class="resultPhoto">
-                <canvas id="myCanvas" width="300" height="300">
+                <canvas id="myCanvas">
                     Your browser does not support JS or HTML5!
                 </canvas>
             </div>
         </div>
     `,
-    width: "800px;",
     footerButtons: [
         {
             text: "Ok",

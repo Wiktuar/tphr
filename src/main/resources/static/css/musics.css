@@ -115,6 +115,11 @@ ul {
     margin: 0 auto;
 }
 
+.default_cover {
+    font-weight: bold;
+    font-style: italic;
+}
+
 /*стили для выбора и обрезки обложки альбома*/
 .edit_cover_container {
     display: flex;
@@ -128,7 +133,7 @@ ul {
     position: relative;
 }
 
-.image {
+.compose_image {
     display: inline-block;
     max-width: 350px;
 }
@@ -158,8 +163,9 @@ ul {
     justify-content: center;
     align-items: center;
     gap: 15px;
+    flex-wrap: wrap;
     margin-bottom: 30px;
-    height: 60px;
+    min-height: 60px;
     padding-left: 20px;
 }
 
@@ -192,15 +198,13 @@ input[type=file] {
 
 label {
     width: 250px;
-    height: 45px;
-    padding-top: 12px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 12px 20px;
     cursor: pointer;
     display: inline-block;
     background-color: #2f3640;
     color: #f5f6fa;
     border-radius: 8px;
+    text-align: center;
 }
 
 .send_audio_btn, .confirm_btn {
@@ -473,5 +477,140 @@ label {
     margin: 20px auto;
     font-size: 16px;
     text-align: center;
+}
+
+@media (max-width: 900px) {
+    .cabinet_container {
+        width: 100%;
+    }
+
+    .left-sb {
+        display: none;
+    }
+
+    .right-sb {
+        width: 100%;
+    }
+
+    /*стили кнопок выбора сингла или альбома*/
+    .choose-music {
+        width: 94%;
+        margin: 0 auto 15px;
+    }
+
+    .create-single, .create-album {
+        padding: 5px;
+        gap: 20px;
+        cursor: pointer;
+        border: none;
+        border-radius: unset;
+    }
+
+    .add_music_img {
+        max-width: 30vw;
+    }
+
+    .create_music_header {
+        font-size: 1em;
+        color: #2f3640;
+    }
+
+    /* стили добавления музыки*/
+    input[type=text] {
+        width: 90%;
+        min-width: 90%;
+        height: 30px;
+        font-size: 18px;
+        font-family: Tahoma, Arial, sans-serif;
+    }
+
+    .add_song {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 30px;
+        min-height: 60px;
+        padding-left: 0;
+    }
+
+    .player {
+        padding-left: 0;
+    }
+
+    /*стили редактирования картинки изображения*/
+
+    .cover {
+        width: 70vw;
+    }
+
+    .default_cover {
+        display: block;
+        width: 80%;
+        margin: 0 auto;
+        font-size: 16px;
+        text-align: justify;
+        font-weight: bold;
+    }
+
+    .edit_cover_container {
+        width: 100%;
+        display: block;
+        margin-bottom: 0;
+    }
+
+    .preview_cover {
+        width: 100%;
+        margin: 0 auto 30px;
+    }
+
+    .compose_image {
+        display: block;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .result_cover {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .result_comp_cover {
+        width: 250px;
+        height: 200px;
+        margin: 0 auto;
+    }
+
+    .result_cover h3 {
+        display: none;
+    }
+
+    /*стили grid контейнера и превью альбомов*/
+    .albums-container {
+        display: grid;
+        gap: 30px;
+        grid-template-columns: repeat(1, 95vw);
+        justify-content: center;
+        width: 100%;
+        margin: 0 auto 30px;
+    }
+
+    .album_box {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    .meta-data {
+        padding: 10px 0;
+    }
+
+    .btn {
+        background: unset;
+    }
+
+    .ah {
+        font-size: 0.8em;
+    }
 }
 

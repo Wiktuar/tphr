@@ -38,6 +38,18 @@ export function addTrimListeners(){
     }))
 }
 
+//  метод получения размера файла
+export async function queryFileSize(filePath){
+    const formData = new FormData();
+    formData.append("filePath", filePath);
+    const result = await fetch("/main/filesize", {
+        method: 'POST',
+        body: formData
+    });
+
+    return await result.json();
+}
+
 
 
 // function verticalApearElemenet(element, btn){

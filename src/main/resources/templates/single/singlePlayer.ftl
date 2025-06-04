@@ -4,6 +4,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="/css/reset.css">
   <link rel="stylesheet" href="/css/common/common.css">
   <link rel="stylesheet" href="/css/music.css">
@@ -21,7 +24,7 @@
     <div class="album_container">
         <img src="/upload/${album.pathToAvatar}" class="author_avatar" alt="Аватар автора">
         <div class="author_name">${album.firstName} ${album.lastName}</div>
-      <h3>${album.header}</h3>
+         <h3>${album.header}</h3>
       <div class="player_wrapper">
         <div class="player">
           <div class="cover"><img src="/upload/${album.fileName}" class="cover_img" alt="картинка альбома"></div>
@@ -52,6 +55,11 @@
           <span class="p_digit_l">${album.likes}</span>
           <img src="/img/comments.png" class="p_comment" alt="комментарии">
           <span class="p_digit_c">${album.comments}</span>
+          <div class="enter_for_like">
+            <h4 class="enter_question">Понравилось произведение?</h4>
+            <p>Войдите в аккаунт, чтобы поставить отметку</p>
+            <a href="/target/album/${album.id}" class="login">Войти</a>
+          </div>
         </div>
         <div class="releaseDate">${album.releaseDate?truncate(11, "")}</div>
       </div>

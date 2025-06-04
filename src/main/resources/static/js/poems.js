@@ -29,6 +29,7 @@ document.querySelector(".savePoem")
         const sendBtn = form.querySelector(".savePoem");
         if(checkMistakes().hasMistakes){
             form.insertBefore(getAttentionDiv(checkMistakes().message), sendBtn);
+            return;
         }
 
         const data = new FormData(form);
@@ -37,7 +38,6 @@ document.querySelector(".savePoem")
             method: "POST",
             body: data,
         }).then(response => {
-            console.log(response.status);
             if(response.status === 200)
                 document.location = "/cabinet/poems";
             else if(response.status === 422){
@@ -129,42 +129,22 @@ function checkMistakes(form){
 
     const headerText = document.getElementById("text");
     const content = document.getElementById("content");
+
+    headerText.value = headerText.value.trim();
+    headerText.value = headerText.value.replaceAll(/\s+/g, ' ');
+    content.value = content.value.trim();
+
     if(!headerText.value) {
         error.hasMistakes = true;
-        error.message = "Вы не заполнили заглавие стиховторения";
+        error.message = "Вы не заполнили заглавие стихотворения!";
     }
 
     if(!content.value) {
         error.hasMistakes = true;
-        error.message = "Вы не заполнили содержание стиховторения";
+        error.message = "Вы не заполнили содержание стихотворения";
     }
 
     return error;
 }
-
-// отображение загруженной фотографии на обложку стиха
-// const image = document.getElementById("image");
-// const view_cover = document.querySelector(".view_cover");
-// const default_cover = document.querySelector(".default_cover");
-//
-// document.getElementById('file')
-//     .addEventListener('change', e => {
-//         let files = e.target.files;
-//         let fr = new FileReader();
-//         fr.onloadend = function() {
-//             image.src = fr.result;
-//             image.addEventListener("load", resize);
-//             default_cover.textContent = "";;
-//         };
-//         fr.readAsDataURL(files[0]);
-//     });
-
-// function resize(){
-//     if(image.naturalWidth < image.naturalHeight){
-//         image.style.width = '45%';
-//     } else {
-//         image.style.width = '60%';
-//     }
-// }
 
 

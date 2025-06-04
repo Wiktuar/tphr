@@ -15,8 +15,8 @@ function _checkFormFields(){
     const lastName = document.getElementById("lastName");
     const email = document.getElementById("email");
 
-    const checkPersonPattern = /[^А-Яа-яЁё]/;
-    const checkEmailPattern = /[^0-9A-Za-z@.]/;
+    const checkPersonPattern = /[^А-Яа-яЁёA-Za-z-\s]/;
+    const checkEmailPattern = /[^0-9A-Za-z@._-]/;
     const checkEmptyPattern = /^\s*$/;
 
     if(checkEmptyPattern.test(firstName.value)){
@@ -39,7 +39,7 @@ function _checkFormFields(){
         return true;
     }
 
-    if(firstName.value.trim().length > 12){
+    if(firstName.value.trim().length > 15){
         mistakeMethod('В поле "Имя" слишком много символов');
         return true;
     }
@@ -49,7 +49,7 @@ function _checkFormFields(){
         return true;
     }
 
-    if(lastName.value.trim().length > 20){
+    if(lastName.value.trim().length > 25){
         mistakeMethod('В поле "Фамилия" слишком много символов');
         return true;
     }

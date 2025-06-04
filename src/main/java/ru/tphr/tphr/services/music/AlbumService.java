@@ -12,6 +12,7 @@ import ru.tphr.tphr.entities.music.Album;
 import ru.tphr.tphr.repository.CompositionRepo;
 import ru.tphr.tphr.repository.music.AlbumRepo;
 import ru.tphr.tphr.services.AuthorService;
+import ru.tphr.tphr.utils.Utils;
 
 import java.io.File;
 import java.util.List;
@@ -43,11 +44,10 @@ public class AlbumService {
        return albumRepo.save(album);
     }
 
-//  метод, возвращающий все альбоы одного пользователя с превью-песней, лайками и комментариями
+//  метод, возвращающий все альбоvы одного пользователя с превью-песней, лайками и комментариями
     @Transactional
-    public Set<LikesAlbumDto> getAlbumsByUser(String email){
-        Set<LikesAlbumDto> albums = albumRepo.getAlbumsByUser(email);
-        return albums;
+    public List<? extends CompositionDTO> getAlbumsByUser(String email){
+        return Utils.sortCompositionList(albumRepo.getAlbumsByUser(email));
     }
 
 //  получение конкретного LikesAlbumDto по ID альбома
@@ -66,8 +66,8 @@ public class AlbumService {
     }
 
 //  метод получение LikesAlbumDto для конкретного пользователя по его ID
-    public List<LikesAlbumDto> getAlbumsByUserID(String email, Long id){
-        return albumRepo.getAlumsByAuthorID(email, id);
+    public List<? extends CompositionDTO> getAlbumsByUserID(String email, Long id){
+        return Utils.sortCompositionList(albumRepo.getAlumsByAuthorID(email, id));
     }
 
 //  метод удаления альбома  по его ID

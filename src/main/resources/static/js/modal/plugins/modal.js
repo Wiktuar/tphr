@@ -47,8 +47,6 @@ function _createModalFooter(buttons= {}){
 // это системная приватная функция. На это указывает нижнее подчеркивание. её не надо вызывать отдельно
 //функция формирует модальное окно
 function _createModal(options){
-    //дефолтное значение ширины модального окна
-    const DEFAULT_WIDTH = "600px";
 
     //создается корневой элемент <div class=""vmodal>  и добавляется в него содержимое
     const modal = document.createElement('div');
@@ -58,7 +56,7 @@ function _createModal(options){
     modal.insertAdjacentHTML('afterbegin',
         `
     <div class="modal-overlay" data-close="true">
-        <div class="modal-window" style="width: ${options.width || DEFAULT_WIDTH}">
+        <div class="modal-window">
             <div class="vmodal-header">
                 <span class="modal-title">${options.title || "Окно"}</span>
                 ${options.closeable ? `<span class="modal-close" data-close="true">&times;</span>` : ""}
@@ -92,7 +90,7 @@ $.modal = function (options){
 
     //создан произвольный объект, чтобы работал слушатель ниже, вызывающий его метод.
     //этот объект и возвращает функция
-    // фактически - это набор функций для работы с модальеым окном, которое лежит в константе  $modal
+    // фактическиоф - это набор функций для работы с модальеым окном, которое лежит в константе  $modal
     const modal = {
         open(){
             if(destroyed){
@@ -149,16 +147,23 @@ $.modal = function (options){
 
         setHandLer(){
             let buttons = Array.from(document.querySelectorAll(".btn"));
-            buttons[0].onclick = function(){
-                const body = document.querySelector("[data-content]");
-                if (body.textContent === "Отзыв успешно отправлен!"){
-                    attentionWindow.close();
-                    document.location = "/";
-                } else {
-                    attentionWindow.close();
-                    document.location = "/cabinet";
-                }
+            if(buttons.length === 1){
+                buttons[0].addEventListener("click", nextAct);
+            } else {
+                buttons[1].addEventListener("click", nextAct);
             }
         }
     });
+}
+
+// функция, определяющая действие пользователя после нажатия на кнопку "Хорошо";
+function nextAct(){
+    const body = document.querySelector("[data-content]");
+    if (body.textContent === "Отзыв успешно отправлен!"){
+        document.location = "/";
+        attentionWindow.close();
+    } else {
+        document.location = "/cabinet";
+        attentionWindow.close();
+    }
 }

@@ -3,6 +3,9 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/poems.css">
     <link rel="stylesheet" href="/css/common/common.css">
@@ -36,7 +39,7 @@
                             <span class="default_cover">*Это изображение будет установлено по умолчанию. Лучше его заменить.</span>
                         </div>
                         <div class="fileInput">
-                            <label for="cover_input">Загрузите картинку для стихотворения</label>
+                            <label for="cover_input">Загрузите картинку</label>
                             <input type="file" id="cover_input" accept="image/*">
                             <input type="hidden" id="result_cover_input" name="cover" value="poemCover.jpg" data-form>
                         </div>

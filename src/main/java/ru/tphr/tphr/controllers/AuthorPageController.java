@@ -6,13 +6,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.tphr.tphr.DTO.AuthorCabinetDTO;
+import ru.tphr.tphr.DTO.CompositionDTO;
+import ru.tphr.tphr.services.AllComposeService;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.utils.HeaderMenuUtil;
+
+import java.util.List;
 
 @Controller
 public class AuthorPageController {
     private AuthorService authorService;
     private HeaderMenuUtil headerMenuUtil;
+
 
     @Autowired
     public void setAuthorService(AuthorService authorService) {
@@ -24,6 +29,7 @@ public class AuthorPageController {
         this.headerMenuUtil = headerMenuUtil;
     }
 
+    //  метод получения страницы отдельного автора
     @GetMapping("/main/author/{id}")
     public String getAuthorPage(@PathVariable long id,
                                 Model model){
@@ -36,8 +42,9 @@ public class AuthorPageController {
 //   метод получения всех авторов
     @GetMapping("/main/authors")
     public String getAllAuthors(Model model){
+        System.out.println(authorService.getOnlyAuthors().size());
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
-        model.addAttribute("authors", authorService.getAllAuthors());
+        model.addAttribute("authors", authorService.getOnlyAuthors());
         return "authors";
     }
 }

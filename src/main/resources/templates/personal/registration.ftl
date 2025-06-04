@@ -54,7 +54,7 @@
                     <div class="image-wrapper">
                         <div class="fileInput">
                             <p>Добавьте аватар, чтобы Вас узнавали на улице</p>
-                            <label for="file">Загрузите картинку для аватарки</label>
+                            <label for="file" class="ava-label">Загрузите картинку для аватарки</label>
                             <input type="file"  id="file" name="file" accept="image/*">
                         </div>  <!-- end of .fileInput -->
                         <div class="imgPreview">
@@ -63,7 +63,9 @@
                     </div>  <#--end of .image-wrapper -->
                 </div> <#--end of .flex-wrapper -->
             </div> <#--end of .flex-container -->
+<#--            <div id="recaptchaContainer" style="width: 500px; margin: 0 auto; transform:scale(0.8);transform-origin:0 0">-->
             <div class="g-recaptcha" data-sitekey = "6LfWK9snAAAAANq4m051wQ-VPZP3z9UA_4ERO9Sj"></div>
+<#--            </div>-->
 
             <#-- Блок добавления социальных сетей -->
             <div class="button">
@@ -72,7 +74,7 @@
             <div class="additional">
                 <div class="about_me">
                     <p class="about_me_header">Расскажите немного о себе. Где вы живете? Чем увлекаетесь? Что вдохновляет Вас на творчество? Что для Вас Православие? и т.д.</p>
-                    <textarea name="description" maxlength="2000" placeholder="Всего 2000 символов"></textarea>
+                    <textarea id="description" name="description" maxlength="2000" placeholder="Всего 2000 символов"></textarea>
                 </div>
                 <uL class="social-box">
                     <li class="sc-block">
@@ -111,6 +113,7 @@
 <script src="/js/socialBox.js"></script>
 <#--Скрипты отправки формы-->
 <script src="/js/registerControl.js"></script>
+<script src="/js/header.js"></script>
 <script src="/js/sendForm.js"></script>
 </body>
 </html>

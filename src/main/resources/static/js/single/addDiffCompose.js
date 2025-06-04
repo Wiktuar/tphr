@@ -1,19 +1,24 @@
-import {createMusicPlayersForAlbums} from "./music/music.js";
+import {createMusicPlayersForAlbums} from "../music/music.js";
 
 //получение элементов страницы
 const poemBtn = document.getElementById("poem_btn");
-const proseBtn = document.getElementById("prose_btn");
+const bottomPoemBtn = document.querySelector(".bottom_poem_btn");
+// const proseBtn = document.getElementById("prose_btn");
 const musicBtn = document.getElementById("music_btn");
-const drawBtn = document.getElementById("draw_btn");
+const bottomMusicBtn = document.querySelector(".bottom_music_btn");
+// const drawBtn = document.getElementById("draw_btn");
 const compContainer = document.querySelector(".compose_container")
 
 poemBtn.addEventListener("click", () => getPoems(authorId));
+bottomPoemBtn.addEventListener("click", () => getPoems(authorId));
 musicBtn.addEventListener("click", () => getAlbums(authorId));
+bottomMusicBtn.addEventListener("click", () => getAlbums(authorId));
 
 //получение стихотворений автора
 async function getPoems(id){
     const res = await fetch(`/authors/${id}/poems`);
     if (!Number(res.headers.get("X-Total-Count"))){
+        compContainer.classList.add("default");
         compContainer.textContent = "Здесь пока ничего нет :((";
         return;
     }
@@ -27,6 +32,7 @@ async function getPoems(id){
 async function getAlbums(id){
     const res = await fetch(`/authors/${id}/albums`);
     if (!Number(res.headers.get("X-Total-Count"))){
+        compContainer.classList.add("default");
         compContainer.textContent = "Здесь пока ничего нет :((";
         return;
     }
@@ -37,8 +43,8 @@ async function getAlbums(id){
     createMusicPlayersForAlbums(compContainer);
 }
 
-proseBtn.addEventListener("click", defaultContent);
-drawBtn.addEventListener("click", defaultContent);
+// proseBtn.addEventListener("click", defaultContent);
+// drawBtn.addEventListener("click", defaultContent);
 
 // функция дефолтного контента для прозы и рисунков, которых пока нет
 function defaultContent(){

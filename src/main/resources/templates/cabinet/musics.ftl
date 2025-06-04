@@ -3,10 +3,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/common/common.css">
-    <link rel="stylesheet" href="/css/musics.css">
     <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/musics.css">
     <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
     <title>Save Music</title>
 </head>
@@ -57,7 +60,7 @@
                                     <img src="/upload/${album.fileName}" class="album-image" alt="тематическая картинка">
                                     <div class="album_content">
                                        <div class="player">
-                                            <div class="first_song_title">${album.song.header}</span></div>
+                                            <div class="first_song_title">${album.song.header}</div>
                                             <div class="meta-data">
                                                 <div class="current_time">00:00</div>
                                                 <audio class="audio" src="/upload/${album.song.urlToMusicFile}" preload="metadata" data-status="pause"></audio>

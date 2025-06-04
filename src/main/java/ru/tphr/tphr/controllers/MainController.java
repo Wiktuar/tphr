@@ -6,12 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.tphr.tphr.DTO.AllComposeDTO;
+import ru.tphr.tphr.DTO.CompositionDTO;
 import ru.tphr.tphr.DTO.LikesPoemDto;
 import ru.tphr.tphr.services.AllComposeService;
 import ru.tphr.tphr.services.AuthorService;
 import ru.tphr.tphr.services.ContentService;
 import ru.tphr.tphr.services.PoemService;
 import ru.tphr.tphr.utils.HeaderMenuUtil;
+import ru.tphr.tphr.utils.Utils;
 
 import java.util.List;
 
@@ -52,7 +54,7 @@ public class MainController {
     //  метод получения стихотворений на индексной странице
     @GetMapping("/")
     public String getMainPage(Model model){
-        List<AllComposeDTO> acd = allComposeService.getAllCompose(headerMenuUtil.getPrincipalName());
+        List<? extends CompositionDTO> acd = allComposeService.getAllCompose(headerMenuUtil.getPrincipalName());
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
         model.addAttribute("allComposDTO", acd);
         return "index";
@@ -64,6 +66,7 @@ public class MainController {
     public String getPoemById(@PathVariable long id,
                               Model model){
         LikesPoemDto likesPoemDto = poemService.getPoemDtoWithLikesAndComments(headerMenuUtil.getPrincipalName(), id);
+        likesPoemDto.setReleaseDate(Utils.getFormatedDate(likesPoemDto.getReleaseDate()));
         String content = contentService.findById(id).getContent();
         likesPoemDto.setContent(content);
         model.addAttribute("authorDTO", headerMenuUtil.getAuthorDTO());
@@ -71,11 +74,21 @@ public class MainController {
         return "single/singlePoem";
     }
 
+//  метод для аутентификации для лайка стихотворения
     @GetMapping("/target/poem/{id}")
     public String getLoginPoem(@PathVariable String id){
         String targetString = "/main/poem/" + id;
         return "redirect:" + targetString;
     }
+
+//  метод для аутентификации для лайка музыкального альбома
+    @GetMapping("/target/album/{id}")
+    public String getLoginAlbum(@PathVariable String id){
+        String targetString = "/main/music/" + id;
+        return "redirect:" + targetString;
+    }
+
+
 
 
 //    @PostMapping("/fail")

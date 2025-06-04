@@ -7,10 +7,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/common/common.css">
-    <link rel="stylesheet" href="/css/poem.css">
     <link rel="stylesheet" href="/css/common/likesAndComments.css">
+    <link rel="stylesheet" href="/css/common/pagination.css">
+    <link rel="stylesheet" href="/css/poem.css">
     <script src="https://kit.fontawesome.com/7535b878e8.js" crossorigin="anonymous"></script>
     <title>Редактирование стихотворения</title>
 </head>
@@ -23,7 +27,7 @@
         <@c.cabinetButtons></@c.cabinetButtons>
 
         <div class="right-sb">
-           <h3>${poem.header}</h3>
+           <h3 id="fulltext">${poem.header}</h3>
             <div>
                 <img src="/upload/${poem.fileName}" class="poem_fool_image" alt="тематическая картинка">
                 <div class="poem_fool_content">
@@ -40,6 +44,11 @@
                 </div>
                 <div class="releaseDate">${poem.releaseDate?truncate(11, "")}</div>
             </div>
+
+    <#--    пагинация. Рендеринг из JS    -->
+            <ul class="pag_list">
+
+            </ul>
 
             <img src="/img/vin.png" class="vignette" alt="виньетка">
             <div class="comments_container">
@@ -70,6 +79,7 @@
     let knownUser = ${known?string('1', '0')};
 </script>
 <script src="/js/header.js"></script>
+<script src="/js/pagination.js"></script>
 <script src="/js/comments.js"></script>
 <script src="/js/likes.js"></script>
 </body>

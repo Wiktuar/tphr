@@ -27,9 +27,7 @@ function isMeLiked(isNeLiked){
 
 // функция добавления или удаления лайков
 async function addOrRemoveLike(id, knownUser){
-    console.log("method works");
     if(knownUser === 0){
-        console.log("toggle works");
         suggestAuthorDiv.classList.toggle("visible");
         return;
     }
